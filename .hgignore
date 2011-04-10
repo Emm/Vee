@@ -1,0 +1,10 @@
+.*\.o
+CMakeCache.txt
+CMakeFiles
+.*\.cmake
+.*\.bin
+.*\.dir
+.*\.log
+Makefile.*
+run.sh
+vee-web/src/src
