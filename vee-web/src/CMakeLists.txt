@@ -2,6 +2,9 @@
 # you can modify the behavior by setting some variables, e.g.
 #   set(QT_USE_OPENGL TRUE)
 # -> this will cause cmake to include and link against the OpenGL module
+
+INCLUDE_DIRECTORIES(/usr/include/tclap)
+
 set(QT_USE_QTWEBKIT TRUE)
 include(${QT_USE_FILE})
 # see http://cmake.org/cmake/help/cmake2.6docs.html#module:FindQt4 for a complete list
@@ -21,4 +24,4 @@ qt4_automoc(${vee-web_SRCS})
 add_executable(vee-web ${vee-web_SRCS})
 
 # link the "vee-web" target against the Qt libraries. which libraries exactly, is defined by the "include(${QT_USE_FILE})" line above, which sets up this variable.
-target_link_libraries(vee-web argtable2 ${QT_LIBRARIES})
+target_link_libraries(vee-web ${QT_LIBRARIES})
