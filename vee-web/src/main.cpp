@@ -10,6 +10,8 @@
 #include <QTextStream>
 #include <QStringList>
 #include <QFile>
+#include <QX11EmbedWidget>
+
 #include <QDebug>
 
 #include <cstdlib>
@@ -21,7 +23,8 @@
 /**
  Builds HTML from the contents of stdin
 */
-QString makeHtml() {
+QString
+makeHtml() {
     QString html;
     QTextStream stdinStream(stdin);
     QString line;
@@ -37,7 +40,8 @@ QString makeHtml() {
  * Builds a QUrl object from the positional parameter. Attempts to find a local
  * file first, if there is no such file, assumes the parameter is a URL.
  */
-QUrl makeUrl(const QString& urlStr) {
+QUrl
+makeUrl(const QString& urlStr) {
     QUrl url;
     if (QFile::exists(urlStr))
         url = QUrl::fromLocalFile(urlStr);
@@ -49,19 +53,22 @@ QUrl makeUrl(const QString& urlStr) {
 /**
  * Parses the command-line arguments.
  */
-void parseArgv(int argc, char** argv, int* windowId, std::string& urlOrFile) {
+void
+parseArgv(int argc, char** argv, ulong* windowId, std::string& urlOrFile) {
     try {
         TCLAP::CmdLine cmd(PROJECT_NAME, ' ', PROJECT_VERSION);
 
-        TCLAP::ValueArg<int> winIdArg("w", "window-id", "X server window ID, for embedding", false, 0, "integer");
+        TCLAP::ValueArg<ulong> winIdArg("w", "window-id", "X server window ID, for embedding", false, 0, "integer");
         cmd.add(winIdArg);
 
         TCLAP::UnlabeledValueArg<std::string> urlArg("url", "URL or filename", true, "", "url");
         cmd.add(urlArg);
         cmd.parse(argc, argv);
-       
-       *windowId = winIdArg.getValue();
-       urlOrFile.assign(urlArg.getValue());
+        if (winIdArg.isSet()) {
+            ulong wid = winIdArg.getValue();
+            windowId = &wid;
+        }
+        urlOrFile.assign(urlArg.getValue());
     }
     catch(TCLAP::ArgException &e) {
         fprintf(stderr, "Error %s for %s\n", e.error().c_str(), e.argId().c_str());
@@ -69,27 +76,24 @@ void parseArgv(int argc, char** argv, int* windowId, std::string& urlOrFile) {
     }
 }
 
-int main(int argc, char *argv[])
-{
+int
+main(int argc, char *argv[]) {
     QApplication app(argc, argv);
 
     QString html;
     QUrl url;
-    int* windowId;
+    ulong* windowId;
     std::string urlOrFile;
 
     QStringList args = QCoreApplication::arguments();
 
-    parseArgv(argc, argv, windowId, urlOrFile);
+    parseArgv(app.argc(), app.argv(), windowId, urlOrFile);
 
     if (urlOrFile.compare("-") == 0 || urlOrFile.empty()) {
-        qDebug() << "Reading from stdin";
         html = makeHtml();
     }
     else {
-        qDebug() << "Will load from a URL";
         url = makeUrl(QString(urlOrFile.c_str()));
-        qDebug() << url;
     }
     QWebView view;
 
@@ -98,7 +102,18 @@ int main(int argc, char *argv[])
     else
         view.setHtml(html);
 
-    view.show();
+    QWidget* mainWidget;
+    if (windowId == NULL) {
+        mainWidget = &view;
+    }
+    else {
+        QX11EmbedWidget* embedWidget = new QX11EmbedWidget();
+        embedWidget->embedInto(*windowId);
+        view.setParent(embedWidget);
+
+        mainWidget = embedWidget;
+    }
+    mainWidget->show();
 
     return app.exec();
 }
