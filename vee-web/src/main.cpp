@@ -66,7 +66,7 @@ parseArgv(int argc, char** argv, ulong* windowId, std::string& urlOrFile) {
         cmd.parse(argc, argv);
         if (winIdArg.isSet()) {
             ulong wid = winIdArg.getValue();
-            windowId = &wid;
+            *windowId = wid;
         }
         urlOrFile.assign(urlArg.getValue());
     }
@@ -104,10 +104,12 @@ main(int argc, char *argv[]) {
 
     QWidget* mainWidget;
     if (windowId == NULL) {
+        qDebug() << "Going to be displayed standalone";
         mainWidget = &view;
     }
     else {
         QX11EmbedWidget* embedWidget = new QX11EmbedWidget();
+        qDebug() << "Going to embed into " << windowId;
         embedWidget->embedInto(*windowId);
         view.setParent(embedWidget);
 
