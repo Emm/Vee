@@ -5,6 +5,7 @@ CMakeFiles
 .*\.bin
 .*\.dir
 .*\.log
+.*\.cxx
 Makefile.*
 run.sh
 vee-web/src/src
