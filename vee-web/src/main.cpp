@@ -1,8 +1,8 @@
 /**
- * Vik is a browser based on the integration of several different applications,
+ * Vee is a browser based on the integration of several different applications,
  * each running in their own process.
  *
- * Vik-browser is the browser part of Vik.
+ * Vee-web is the browser part of Vee.
  */
 
 #include <QApplication>
