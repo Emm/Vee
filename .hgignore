@@ -9,3 +9,4 @@ CMakeFiles
 Makefile.*
 run.sh
 vee-web/src/src
+vee-frontend/src/src
