@@ -11,6 +11,7 @@
 #include <QStringList>
 #include <QFile>
 #include <QX11EmbedWidget>
+#include <QVBoxLayout>
 
 #include <QDebug>
 
@@ -104,14 +105,13 @@ main(int argc, char *argv[]) {
 
     QWidget* mainWidget;
     if (windowId == NULL) {
-        qDebug() << "Going to be displayed standalone";
         mainWidget = &view;
     }
     else {
         QX11EmbedWidget* embedWidget = new QX11EmbedWidget();
-        qDebug() << "Going to embed into " << windowId;
+        embedWidget->setLayout(new QVBoxLayout());
         embedWidget->embedInto(*windowId);
-        view.setParent(embedWidget);
+        embedWidget->layout()->addWidget(&view);
 
         mainWidget = embedWidget;
     }
