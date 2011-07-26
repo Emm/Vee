@@ -1,12 +1,15 @@
 #include "embedcontainer.h"
 
 EmbedContainer::EmbedContainer(EmbedCommand& embedContainer, QWidget* parent) : QWidget(parent) {
-    setLayout(new QVBoxLayout());
+    QVBoxLayout* layout = new QVBoxLayout();
     mContainer = new QX11EmbedContainer();
-    mContainer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    mLabel = new QLabel(QString("Loading"));
-    layout()->addWidget(mLabel);
-    layout()->addWidget(mContainer);
+    //mContainer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    //mLabel = new QLabel(QString("Loading"));
+    //layout->addWidget(mLabel);
+    layout->addWidget(mContainer);
+    setLayout(layout);
+    setStyleSheet("background-color: #FFF");
+    setStyleSheet("padding: 0; margin: 0");
 
     mExecutable = &(embedContainer.executable());
     mArguments = embedContainer.arguments(mContainer->winId());
@@ -16,6 +19,7 @@ EmbedContainer::EmbedContainer(EmbedCommand& embedContainer, QWidget* parent) : 
     connect(mContainer, SIGNAL(clientIsEmbedded()), this, SLOT(clientIsEmbedded()));
     connect(mContainer, SIGNAL(error(QX11EmbedContainer::Error)), this, SLOT(error(QX11EmbedContainer::Error)));
     connect(mContainer, SIGNAL(clientClosed()), this, SLOT(clientClosed()));
+
 }
 
 void EmbedContainer::embed() {
@@ -31,7 +35,7 @@ void EmbedContainer::clientClosed() {
 
 void EmbedContainer::clientIsEmbedded() {
     qDebug() << "Embedded";
-    layout()->removeWidget(mLabel);
+    //layout()->removeWidget(mLabel);
 }
 
 void EmbedContainer::error(QX11EmbedContainer::Error error) {

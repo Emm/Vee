@@ -14,16 +14,9 @@ int main(int argc, char* argv[]) {
 
     MainWindow mainWindow;
 
-    QString executable("../../vee-web/src/src/vee-web");
-    EmbedCommand cmd = EmbedCommand(executable);
-
-    cmd << QString("-w");
-    cmd << EmbedCommand::WIN_ID;
-    cmd << QString("reddit.com");
-
+    mainWindow.init("reddit.com");
 
     mainWindow.show();
-    mainWindow.embed(cmd);
 
     return app.exec(); 
 }
