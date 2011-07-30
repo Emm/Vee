@@ -3,9 +3,10 @@
 #   set(QT_USE_OPENGL TRUE)
 # -> this will cause cmake to include and link against the OpenGL module
 
-INCLUDE_DIRECTORIES(/usr/include/tclap)
+include_directories(/usr/include/tclap)
 
 set(QT_USE_QTMAIN TRUE)
+set(QT_USE_QTDBUS TRUE)
 include(${QT_USE_FILE})
 # see http://cmake.org/cmake/help/cmake2.6docs.html#module:FindQt4 for a complete list
 
@@ -20,6 +21,9 @@ set(vee-frontend_SRCS
     main.cpp
 )
 
+qt4_add_dbus_interface(vee-frontend_SRCS ${CMAKE_SOURCE_DIR}/../interfaces/com.trolltech.Qt.QWebView.xml 
+        qwebview_interface)
+
 set(vee-frontend_MOC_HDRS
     embedcontainer.h
     embedtabs.h
@@ -31,6 +35,9 @@ qt4_wrap_cpp(vee-frontend_MOC_SRCS ${vee-frontend_MOC_HDRS})
 # tell cmake to create .moc files for all files in the variable vee-frontend_SRCS that require such a file.
 # note: this assumes that you use #include "header.moc" in your files
 qt4_automoc(${vee-frontend_SRCS})
+
+include_directories( ${CMAKE_BINARY_DIR}/src )
+include_directories( ${CMAKE_SOURCE_DIR} )
 
 # create an executable file named "vee" from the source files in the variable "vee-frontend_SRCS".
 add_executable(vee ${vee-frontend_SRCS} ${vee-frontend_MOC_SRCS})

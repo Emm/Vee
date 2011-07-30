@@ -1,6 +1,6 @@
 #include "embedcontainer.h"
 
-EmbedContainer::EmbedContainer(EmbedCommand& embedContainer, QWidget* parent) : QWidget(parent) {
+EmbedContainer::EmbedContainer(EmbedCommand& embedCommand, QWidget* parent) : QWidget(parent) {
     QVBoxLayout* layout = new QVBoxLayout();
     mContainer = new QX11EmbedContainer();
     //mContainer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -11,30 +11,32 @@ EmbedContainer::EmbedContainer(EmbedCommand& embedContainer, QWidget* parent) : 
     setStyleSheet("background-color: #FFF");
     setStyleSheet("padding: 0; margin: 0");
 
-    mExecutable = &(embedContainer.executable());
-    mArguments = embedContainer.arguments(mContainer->winId());
+    mExecutable = &(embedCommand).executable();
+    mArguments = embedCommand.arguments(mContainer->winId());
     qDebug() << "WinID: " << mContainer->winId();
     mProcess = new QProcess(mContainer);
 
     connect(mContainer, SIGNAL(clientIsEmbedded()), this, SLOT(clientIsEmbedded()));
     connect(mContainer, SIGNAL(error(QX11EmbedContainer::Error)), this, SLOT(error(QX11EmbedContainer::Error)));
-    connect(mContainer, SIGNAL(clientClosed()), this, SLOT(clientClosed()));
-
+    connect(mContainer, SIGNAL(clientClosed()), this, SIGNAL(clientClosed()));
 }
 
 void EmbedContainer::embed() {
-    mProcess->setStandardOutputFile(QString("/tmp/tab.1.log"));
-    mProcess->setStandardErrorFile(QString("/tmp/tab.2.log"));
+//    mProcess->setStandardOutputFile(QString("/tmp/tab.1.log"));
+//    mProcess->setStandardErrorFile(QString("/tmp/tab.2.log"));
     qDebug() << "Starting: " << *mExecutable << " " << *mArguments;
     mProcess->start(*mExecutable, *mArguments);
-}
-
-void EmbedContainer::clientClosed() {
-    qDebug() << "Client closed";
+    ulong instanceId = mContainer->winId();
+    QString serviceId = QString("com.trolltech.Qt.QWebView_%1").arg(instanceId);
+    qDebug() << serviceId;
+    mInterface = new ComTrolltechQtQWebViewInterface(serviceId, "/VeeWebView", QDBusConnection::sessionBus(), this); 
+    connect(mInterface, SIGNAL(titleChanged(const QString &)), this, SIGNAL(titleChanged(const QString &)));
+    qDebug() << "Connected";
 }
 
 void EmbedContainer::clientIsEmbedded() {
     qDebug() << "Embedded";
+    qDebug() << "Title: " << mInterface->title();
     //layout()->removeWidget(mLabel);
 }
 

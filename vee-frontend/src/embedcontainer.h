@@ -7,6 +7,7 @@
 #include <QVBoxLayout>
 #include <QDebug>
 
+#include "qwebview_interface.h"
 #include "embedcommand.h"
 
 class EmbedContainer: public QWidget {
@@ -19,9 +20,12 @@ public:
 
 public slots:
 
-    void clientClosed();
     void clientIsEmbedded();
     void error(QX11EmbedContainer::Error error); 
+
+signals:
+    void titleChanged(const QString & title);
+    void clientClosed();
 
 private:
     QProcess *mProcess;
@@ -29,6 +33,7 @@ private:
     QStringList *mArguments;
     QLabel *mLabel;
     QX11EmbedContainer *mContainer;
+    ComTrolltechQtQWebViewInterface *mInterface;
 };
 
 #endif

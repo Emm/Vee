@@ -12,11 +12,14 @@
 #include <QFile>
 #include <QX11EmbedWidget>
 #include <QVBoxLayout>
+#include <QDBusConnection>
 
 #include <QDebug>
 
 #include <cstdlib>
 #include <tclap/CmdLine.h>
+
+#include "qwebviewadaptor.h"
 
 #define PROJECT_NAME "vee-browser"
 #define PROJECT_VERSION "0.1"
@@ -77,6 +80,15 @@ parseArgv(int argc, char** argv, ulong* windowId, std::string& urlOrFile) {
     }
 }
 
+void
+exposeWebViewToDBus(QWebView* view, ulong instanceId) {
+    new QWebViewAdaptor(view);
+    QDBusConnection dbus = QDBusConnection::sessionBus();
+    QString serviceId = QString("com.trolltech.Qt.QWebView_%1").arg(instanceId);
+    dbus.registerObject("/VeeWebView", view);
+    dbus.registerService(serviceId);
+}
+
 int
 main(int argc, char *argv[]) {
     QApplication app(argc, argv);
@@ -108,6 +120,8 @@ main(int argc, char *argv[]) {
         mainWidget = &view;
     }
     else {
+        exposeWebViewToDBus(&view, *windowId);
+
         QX11EmbedWidget* embedWidget = new QX11EmbedWidget();
         embedWidget->setLayout(new QVBoxLayout());
         embedWidget->embedInto(*windowId);

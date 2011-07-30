@@ -14,6 +14,9 @@ public:
 
     EmbedTabs(QWidget* parent=0);
     void embed(EmbedCommand& embedCommand);
+
+public slots:
+    void containerTitleChanged(const QString & title);
 };
 
 #endif

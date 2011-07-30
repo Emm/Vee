@@ -1,0 +1,32 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+  <interface name="com.trolltech.Qt.QWebView">
+    <property name="title" type="s" access="read"/>
+    <signal name="loadStarted">
+    </signal>
+    <signal name="loadProgress">
+      <arg name="progress" type="i" direction="out"/>
+    </signal>
+    <signal name="loadFinished">
+      <arg type="b" direction="out"/>
+    </signal>
+    <signal name="titleChanged">
+      <arg name="title" type="s" direction="out"/>
+    </signal>
+    <signal name="statusBarMessage">
+      <arg name="text" type="s" direction="out"/>
+    </signal>
+    <signal name="selectionChanged">
+    </signal>
+    <signal name="iconChanged">
+    </signal>
+    <method name="stop">
+    </method>
+    <method name="back">
+    </method>
+    <method name="forward">
+    </method>
+    <method name="reload">
+    </method>
+  </interface>
+</node>
