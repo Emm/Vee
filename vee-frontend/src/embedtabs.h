@@ -10,13 +10,21 @@
 class EmbedTabs: public QTabWidget {
     Q_OBJECT
 
-public:
+private:
+    int getTabPosition();
 
+public:
     EmbedTabs(QWidget* parent=0);
     void embed(EmbedCommand& embedCommand);
 
 public slots:
-    void containerTitleChanged(const QString & title);
+    void updateTabTitle(const QString & title);
+    void updateTabUrl(const QString & url);
+    void setUrl(const QString & url);
+
+signals:
+    void titleChanged(const QString & title);
+    void urlChanged(const QString & url);
 };
 
 #endif

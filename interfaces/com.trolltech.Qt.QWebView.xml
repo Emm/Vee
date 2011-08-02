@@ -2,6 +2,7 @@
 <node>
   <interface name="com.trolltech.Qt.QWebView">
     <property name="title" type="s" access="read"/>
+    <property name="url" type="s" access="readwrite"/>
     <signal name="loadStarted">
     </signal>
     <signal name="loadProgress">
@@ -12,6 +13,9 @@
     </signal>
     <signal name="titleChanged">
       <arg name="title" type="s" direction="out"/>
+    </signal>
+    <signal name="urlChanged">
+      <arg name="url" type="s" direction="out"/>
     </signal>
     <signal name="statusBarMessage">
       <arg name="text" type="s" direction="out"/>
@@ -27,6 +31,9 @@
     <method name="forward">
     </method>
     <method name="reload">
+    </method>
+    <method name="setHtml">
+        <arg name="html" type="s" direction="in"/>
     </method>
   </interface>
 </node>

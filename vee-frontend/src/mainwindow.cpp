@@ -13,7 +13,10 @@ MainWindow::MainWindow() {
 
     setLayout(layout);
 
-    connect(urlBar, SIGNAL(returnPressed()), this, SLOT(addTab()));
+    connect(urlBar, SIGNAL(returnPressed()), this, SLOT(setUrl()));
+    setWindowTitle("vee");
+    connect(mTabs, SIGNAL(titleChanged(const QString &)), this, SLOT(setTitle(const QString &)));
+    connect(mTabs, SIGNAL(urlChanged(const QString &)), urlBar, SLOT(setText(const QString &)));
 }
 
 void MainWindow::init(const QString& url) {
@@ -30,4 +33,14 @@ void MainWindow::addTab() {
     cmd << EmbedCommand::WIN_ID;
     cmd << QString(url);
     mTabs->embed(cmd);
+}
+
+void MainWindow::setUrl() {
+    const QString & url = urlBar->text();
+    mTabs->setUrl(url);
+}
+
+void MainWindow::setTitle(const QString & title) {
+    QString finalTitle = title + " - vee";
+    setWindowTitle(finalTitle);
 }

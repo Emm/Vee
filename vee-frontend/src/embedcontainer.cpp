@@ -22,25 +22,31 @@ EmbedContainer::EmbedContainer(EmbedCommand& embedCommand, QWidget* parent) : QW
 }
 
 void EmbedContainer::embed() {
-//    mProcess->setStandardOutputFile(QString("/tmp/tab.1.log"));
-//    mProcess->setStandardErrorFile(QString("/tmp/tab.2.log"));
+    //mProcess->setStandardOutputFile(QString("/tmp/tab.1.log"));
+    //mProcess->setStandardErrorFile(QString("/tmp/tab.2.log"));
     qDebug() << "Starting: " << *mExecutable << " " << *mArguments;
     mProcess->start(*mExecutable, *mArguments);
     ulong instanceId = mContainer->winId();
     QString serviceId = QString("com.trolltech.Qt.QWebView_%1").arg(instanceId);
     qDebug() << serviceId;
     mInterface = new ComTrolltechQtQWebViewInterface(serviceId, "/VeeWebView", QDBusConnection::sessionBus(), this); 
+    connect(mInterface, SIGNAL(urlChanged(const QString &)), this, SIGNAL(urlChanged(const QString &)));
     connect(mInterface, SIGNAL(titleChanged(const QString &)), this, SIGNAL(titleChanged(const QString &)));
     qDebug() << "Connected";
 }
 
 void EmbedContainer::clientIsEmbedded() {
-    qDebug() << "Embedded";
-    qDebug() << "Title: " << mInterface->title();
     //layout()->removeWidget(mLabel);
 }
 
 void EmbedContainer::error(QX11EmbedContainer::Error error) {
     qDebug() << "Error";
     mLabel->setText("Error while embedding, got code: " + error);
+}
+
+void EmbedContainer::setUrl(const QString & url) {
+    if (!mInterface)
+        return;
+    //mInterface->setHtml("<html><body><h1>mooh</body></html>");
+    mInterface->setUrl(url);
 }

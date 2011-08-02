@@ -10,14 +10,17 @@
 class MainWindow : public QWidget {
     Q_OBJECT
 
-public slots:
-    void addTab();
+private slots:
+    void setUrl(); 
+    void setTitle(const QString & title);
 
 public:
     MainWindow();
     void init(const QString& url);
 
 private:
+    void addTab();
+
     QLineEdit* urlBar;
     EmbedTabs *mTabs;
 };

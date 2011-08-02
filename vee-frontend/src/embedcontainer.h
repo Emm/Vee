@@ -22,8 +22,10 @@ public slots:
 
     void clientIsEmbedded();
     void error(QX11EmbedContainer::Error error); 
+    void setUrl(const QString & url);
 
 signals:
+    void urlChanged(const QString & title);
     void titleChanged(const QString & title);
     void clientClosed();
 
