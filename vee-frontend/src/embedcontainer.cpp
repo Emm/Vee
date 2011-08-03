@@ -36,6 +36,7 @@ void EmbedContainer::embed() {
 }
 
 void EmbedContainer::clientIsEmbedded() {
+    mContainer->setFocus(Qt::OtherFocusReason);
     //layout()->removeWidget(mLabel);
 }
 
