@@ -6,7 +6,6 @@
  */
 
 #include <QApplication>
-#include <QWebView>
 #include <QTextStream>
 #include <QStringList>
 #include <QFile>
@@ -19,7 +18,8 @@
 #include <cstdlib>
 #include <tclap/CmdLine.h>
 
-#include "viewadaptor.h"
+#include "view.h"
+#include "view_adaptor.h"
 
 #define PROJECT_NAME "vee-browser"
 #define PROJECT_VERSION "0.1"
@@ -40,19 +40,6 @@ makeHtml() {
     return html;
 }
 
-/**
- * Builds a QUrl object from the positional parameter. Attempts to find a local
- * file first, if there is no such file, assumes the parameter is a URL.
- */
-QUrl
-makeUrl(const QString& urlStr) {
-    QUrl url;
-    if (QFile::exists(urlStr))
-        url = QUrl::fromLocalFile(urlStr);
-    else
-        url = QUrl::fromUserInput(urlStr);
-    return url;
-}
 
 /**
  * Parses the command-line arguments.
@@ -81,7 +68,7 @@ parseArgv(int argc, char** argv, ulong* windowId, std::string& urlOrFile) {
 }
 
 void
-exposeWebViewToDBus(QWebView* view, ulong instanceId) {
+exposeWebViewToDBus(View* view, ulong instanceId) {
     new ViewAdaptor(view);
     QDBusConnection dbus = QDBusConnection::sessionBus();
     QString serviceId = QString("org.vee.web.View_%1").arg(instanceId);
@@ -102,18 +89,14 @@ main(int argc, char *argv[]) {
 
     parseArgv(app.argc(), app.argv(), windowId, urlOrFile);
 
+    View view;
     if (urlOrFile.compare("-") == 0 || urlOrFile.empty()) {
         html = makeHtml();
+        view.setHtml(html);
     }
     else {
-        url = makeUrl(QString(urlOrFile.c_str()));
+        view.loadUrlOrPath(QString(urlOrFile.c_str()));
     }
-    QWebView view;
-
-    if (!url.isEmpty())
-        view.load(url);
-    else
-        view.setHtml(html);
 
     QWidget* mainWidget;
     if (windowId == NULL) {

@@ -35,5 +35,8 @@
     <method name="setHtml">
         <arg name="html" type="s" direction="in"/>
     </method>
+    <method name="loadUrlOrPath">
+        <arg name="value" type="s" direction="in"/>
+    </method>
   </interface>
 </node>

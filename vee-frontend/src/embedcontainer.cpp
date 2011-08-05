@@ -48,6 +48,5 @@ void EmbedContainer::error(QX11EmbedContainer::Error error) {
 void EmbedContainer::setUrl(const QString & url) {
     if (!mInterface)
         return;
-    //mInterface->setHtml("<html><body><h1>mooh</body></html>");
-    mInterface->setUrl(url);
+    mInterface->loadUrlOrPath(url);
 }
