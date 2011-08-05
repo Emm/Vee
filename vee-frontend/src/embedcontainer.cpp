@@ -27,9 +27,9 @@ void EmbedContainer::embed() {
     qDebug() << "Starting: " << *mExecutable << " " << *mArguments;
     mProcess->start(*mExecutable, *mArguments);
     ulong instanceId = mContainer->winId();
-    QString serviceId = QString("com.trolltech.Qt.QWebView_%1").arg(instanceId);
+    QString serviceId = QString("org.vee.web.View_%1").arg(instanceId);
     qDebug() << serviceId;
-    mInterface = new ComTrolltechQtQWebViewInterface(serviceId, "/VeeWebView", QDBusConnection::sessionBus(), this); 
+    mInterface = new OrgVeeWebViewInterface(serviceId, "/VeeWebView", QDBusConnection::sessionBus(), this); 
     connect(mInterface, SIGNAL(urlChanged(const QString &)), this, SIGNAL(urlChanged(const QString &)));
     connect(mInterface, SIGNAL(titleChanged(const QString &)), this, SIGNAL(titleChanged(const QString &)));
     qDebug() << "Connected";

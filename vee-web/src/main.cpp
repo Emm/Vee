@@ -19,7 +19,7 @@
 #include <cstdlib>
 #include <tclap/CmdLine.h>
 
-#include "qwebviewadaptor.h"
+#include "viewadaptor.h"
 
 #define PROJECT_NAME "vee-browser"
 #define PROJECT_VERSION "0.1"
@@ -82,9 +82,9 @@ parseArgv(int argc, char** argv, ulong* windowId, std::string& urlOrFile) {
 
 void
 exposeWebViewToDBus(QWebView* view, ulong instanceId) {
-    new QWebViewAdaptor(view);
+    new ViewAdaptor(view);
     QDBusConnection dbus = QDBusConnection::sessionBus();
-    QString serviceId = QString("com.trolltech.Qt.QWebView_%1").arg(instanceId);
+    QString serviceId = QString("org.vee.web.View_%1").arg(instanceId);
     dbus.registerObject("/VeeWebView", view);
     dbus.registerService(serviceId);
 }

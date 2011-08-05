@@ -13,12 +13,11 @@ include(${QT_USE_FILE})
 
 
 set(vee-web_SRCS
-    qwebviewadaptor.cpp
     main.cpp
 )
 
-#qt4_add_dbus_adaptor(vee-web_SRCS ${CMAKE_SOURCE_DIR}/../interfaces/com.trolltech.Qt.QWebView.xml 
-#        qwebview.h QWebView)
+qt4_add_dbus_adaptor(vee-web_SRCS ${CMAKE_SOURCE_DIR}/../interfaces/org.vee.web.View.xml 
+        qwebview.h QWebView)
 
 qt4_wrap_cpp(vee-web_SRCS ${vee-web_MOC_HDRS})
 
