@@ -19,7 +19,7 @@
 #include <tclap/CmdLine.h>
 
 #include "view.h"
-#include "view_adaptor.h"
+#include "view_adaptor_impl.h"
 
 #define PROJECT_NAME "vee-browser"
 #define PROJECT_VERSION "0.1"
@@ -69,7 +69,7 @@ parseArgv(int argc, char** argv, ulong* windowId, std::string& urlOrFile) {
 
 void
 exposeWebViewToDBus(View* view, ulong instanceId) {
-    new ViewAdaptor(view);
+    new ViewAdaptorImpl(view);
     QDBusConnection dbus = QDBusConnection::sessionBus();
     QString serviceId = QString("org.vee.web.View_%1").arg(instanceId);
     dbus.registerObject("/VeeWebView", view);
@@ -90,6 +90,7 @@ main(int argc, char *argv[]) {
     parseArgv(app.argc(), app.argv(), windowId, urlOrFile);
 
     View view;
+    exposeWebViewToDBus(&view, *windowId);
     if (urlOrFile.compare("-") == 0 || urlOrFile.empty()) {
         html = makeHtml();
         view.setHtml(html);
@@ -103,7 +104,6 @@ main(int argc, char *argv[]) {
         mainWidget = &view;
     }
     else {
-        exposeWebViewToDBus(&view, *windowId);
 
         QX11EmbedWidget* embedWidget = new QX11EmbedWidget();
         embedWidget->setLayout(new QVBoxLayout());

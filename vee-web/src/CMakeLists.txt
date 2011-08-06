@@ -13,9 +13,14 @@ include(${QT_USE_FILE})
 
 
 set(vee-web_SRCS
+    view_adaptor_impl.cpp
     view.cpp
     main.cpp
 )
+
+set(vee-web_MOC_HDRS
+    view_adaptor_impl.h
+    )
 
 qt4_add_dbus_adaptor(vee-web_SRCS ${CMAKE_SOURCE_DIR}/../interfaces/org.vee.web.View.xml 
         view.h View view_adaptor)

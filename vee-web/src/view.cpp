@@ -13,5 +13,5 @@ void View::loadUrlOrPath(const QString &value) {
     else
         url = QUrl::fromUserInput(value);
     // FIXME loading from a local url doesn't work anymore
-    load(url);
+    setUrl(url);
 }
