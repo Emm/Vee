@@ -1,6 +1,6 @@
 <!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
 <node>
-  <interface name="com.trolltech.Qt.QWebView">
+  <interface name="org.vee.web.View">
     <property name="title" type="s" access="read"/>
     <property name="url" type="s" access="readwrite"/>
     <signal name="loadStarted">
@@ -34,6 +34,9 @@
     </method>
     <method name="setHtml">
         <arg name="html" type="s" direction="in"/>
+    </method>
+    <method name="loadUrlOrPath">
+        <arg name="value" type="s" direction="in"/>
     </method>
   </interface>
 </node>

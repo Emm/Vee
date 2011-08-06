@@ -21,8 +21,9 @@ set(vee-frontend_SRCS
     main.cpp
 )
 
-qt4_add_dbus_interface(vee-frontend_SRCS ${CMAKE_SOURCE_DIR}/../interfaces/com.trolltech.Qt.QWebView.xml 
-        qwebview_interface)
+qt4_add_dbus_interface(vee-frontend_SRCS
+    ${CMAKE_SOURCE_DIR}/../interfaces/org.vee.web.View.xml 
+        vee_web_view_interface)
 
 set(vee-frontend_MOC_HDRS
     embedcontainer.h

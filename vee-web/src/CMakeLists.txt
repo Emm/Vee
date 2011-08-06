@@ -13,12 +13,17 @@ include(${QT_USE_FILE})
 
 
 set(vee-web_SRCS
-    qwebviewadaptor.cpp
+    view_adaptor_impl.cpp
+    view.cpp
     main.cpp
 )
 
-#qt4_add_dbus_adaptor(vee-web_SRCS ${CMAKE_SOURCE_DIR}/../interfaces/com.trolltech.Qt.QWebView.xml 
-#        qwebview.h QWebView)
+set(vee-web_MOC_HDRS
+    view_adaptor_impl.h
+    )
+
+qt4_add_dbus_adaptor(vee-web_SRCS ${CMAKE_SOURCE_DIR}/../interfaces/org.vee.web.View.xml 
+        view.h View view_adaptor)
 
 qt4_wrap_cpp(vee-web_SRCS ${vee-web_MOC_HDRS})
 
@@ -27,7 +32,7 @@ qt4_wrap_cpp(vee-web_SRCS ${vee-web_MOC_HDRS})
 qt4_automoc(${vee-web_SRCS})
 
 include_directories( ${CMAKE_BINARY_DIR}/src )
-include_directories( ${CMAKE_SOURCE_DIR} )
+include_directories( ${CMAKE_SOURCE_DIR}/src )
 
 # create an executable file named "vee-web" from the source files in the variable "vee-web_SRCS".
 add_executable(vee-web ${vee-web_SRCS} ${vee-web_MOC_HDRS})

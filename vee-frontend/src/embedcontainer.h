@@ -7,7 +7,7 @@
 #include <QVBoxLayout>
 #include <QDebug>
 
-#include "qwebview_interface.h"
+#include "vee_web_view_interface.h"
 #include "embedcommand.h"
 
 class EmbedContainer: public QWidget {
@@ -35,7 +35,7 @@ private:
     QStringList *mArguments;
     QLabel *mLabel;
     QX11EmbedContainer *mContainer;
-    ComTrolltechQtQWebViewInterface *mInterface;
+    OrgVeeWebViewInterface *mInterface;
 };
 
 #endif

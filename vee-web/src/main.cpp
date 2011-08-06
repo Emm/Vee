@@ -6,7 +6,6 @@
  */
 
 #include <QApplication>
-#include <QWebView>
 #include <QTextStream>
 #include <QStringList>
 #include <QFile>
@@ -19,7 +18,8 @@
 #include <cstdlib>
 #include <tclap/CmdLine.h>
 
-#include "qwebviewadaptor.h"
+#include "view.h"
+#include "view_adaptor_impl.h"
 
 #define PROJECT_NAME "vee-browser"
 #define PROJECT_VERSION "0.1"
@@ -40,19 +40,6 @@ makeHtml() {
     return html;
 }
 
-/**
- * Builds a QUrl object from the positional parameter. Attempts to find a local
- * file first, if there is no such file, assumes the parameter is a URL.
- */
-QUrl
-makeUrl(const QString& urlStr) {
-    QUrl url;
-    if (QFile::exists(urlStr))
-        url = QUrl::fromLocalFile(urlStr);
-    else
-        url = QUrl::fromUserInput(urlStr);
-    return url;
-}
 
 /**
  * Parses the command-line arguments.
@@ -81,10 +68,10 @@ parseArgv(int argc, char** argv, ulong* windowId, std::string& urlOrFile) {
 }
 
 void
-exposeWebViewToDBus(QWebView* view, ulong instanceId) {
-    new QWebViewAdaptor(view);
+exposeWebViewToDBus(View* view, ulong instanceId) {
+    new ViewAdaptorImpl(view);
     QDBusConnection dbus = QDBusConnection::sessionBus();
-    QString serviceId = QString("com.trolltech.Qt.QWebView_%1").arg(instanceId);
+    QString serviceId = QString("org.vee.web.View_%1").arg(instanceId);
     dbus.registerObject("/VeeWebView", view);
     dbus.registerService(serviceId);
 }
@@ -102,25 +89,21 @@ main(int argc, char *argv[]) {
 
     parseArgv(app.argc(), app.argv(), windowId, urlOrFile);
 
+    View view;
+    exposeWebViewToDBus(&view, *windowId);
     if (urlOrFile.compare("-") == 0 || urlOrFile.empty()) {
         html = makeHtml();
+        view.setHtml(html);
     }
     else {
-        url = makeUrl(QString(urlOrFile.c_str()));
+        view.loadUrlOrPath(QString(urlOrFile.c_str()));
     }
-    QWebView view;
-
-    if (!url.isEmpty())
-        view.load(url);
-    else
-        view.setHtml(html);
 
     QWidget* mainWidget;
     if (windowId == NULL) {
         mainWidget = &view;
     }
     else {
-        exposeWebViewToDBus(&view, *windowId);
 
         QX11EmbedWidget* embedWidget = new QX11EmbedWidget();
         embedWidget->setLayout(new QVBoxLayout());
