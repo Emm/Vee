@@ -7,6 +7,10 @@ include_directories(/usr/include/tclap)
 set(QT_USE_QTWEBKIT TRUE)
 set(QT_USE_QTDBUS TRUE)
 include(${QT_USE_FILE})
+
+include_directories( ${CMAKE_CURRENT_BINARY_DIR} )
+include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
+
 # see http://cmake.org/cmake/help/cmake2.6docs.html#module:FindQt4 for a complete list
 
 # the variable "vee-web_SRCS" contains all .cpp files of this project
@@ -22,17 +26,13 @@ set(vee-web_MOC_HDRS
     view_adaptor_impl.h
     )
 
-qt4_add_dbus_adaptor(vee-web_SRCS ${CMAKE_SOURCE_DIR}/../interfaces/org.vee.web.View.xml 
-        view.h View view_adaptor)
+qt4_add_dbus_adaptor(vee-web_SRCS ${VEE_WEB_DBUS_XML} view.h View view_adaptor)
 
 qt4_wrap_cpp(vee-web_SRCS ${vee-web_MOC_HDRS})
 
 # tell cmake to create .moc files for all files in the variable vee-web_SRCS that require such a file.
 # note: this assumes that you use #include "header.moc" in your files
 qt4_automoc(${vee-web_SRCS})
-
-include_directories( ${CMAKE_BINARY_DIR}/src )
-include_directories( ${CMAKE_SOURCE_DIR}/src )
 
 # create an executable file named "vee-web" from the source files in the variable "vee-web_SRCS".
 add_executable(vee-web ${vee-web_SRCS} ${vee-web_MOC_HDRS})

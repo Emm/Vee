@@ -1,12 +1,4 @@
-.*\.o
-CMakeCache.txt
-CMakeFiles
-.*\.cmake
-.*\.bin
-.*\.dir
-.*\.log
-.*\.cxx
-Makefile.*
 run.sh
 vee-web/src/src
 vee-frontend/src/src
+build

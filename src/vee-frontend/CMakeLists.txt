@@ -4,6 +4,7 @@
 # -> this will cause cmake to include and link against the OpenGL module
 
 include_directories(/usr/include/tclap)
+include_directories( ${CMAKE_CURRENT_BINARY_DIR} )
 
 set(QT_USE_QTMAIN TRUE)
 set(QT_USE_QTDBUS TRUE)
@@ -21,9 +22,7 @@ set(vee-frontend_SRCS
     main.cpp
 )
 
-qt4_add_dbus_interface(vee-frontend_SRCS
-    ${CMAKE_SOURCE_DIR}/../interfaces/org.vee.web.View.xml 
-        vee_web_view_interface)
+qt4_add_dbus_interface(vee-frontend_SRCS ${VEE_WEB_DBUS_XML} vee_web_view_interface)
 
 set(vee-frontend_MOC_HDRS
     embedcontainer.h
@@ -37,8 +36,6 @@ qt4_wrap_cpp(vee-frontend_MOC_SRCS ${vee-frontend_MOC_HDRS})
 # note: this assumes that you use #include "header.moc" in your files
 qt4_automoc(${vee-frontend_SRCS})
 
-include_directories( ${CMAKE_BINARY_DIR}/src )
-include_directories( ${CMAKE_SOURCE_DIR} )
 
 # create an executable file named "vee" from the source files in the variable "vee-frontend_SRCS".
 add_executable(vee ${vee-frontend_SRCS} ${vee-frontend_MOC_SRCS})
