@@ -10,3 +10,4 @@ include_directories(
 
 
 test(vee-web test_view_url)
+test(vee-web test_view_file)

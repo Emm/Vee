@@ -1,17 +1,21 @@
 #include "view.h"
 
 #include <QFile>
+#include <QFileInfo>
 #include <QDebug>
 View::View(QWidget* parent) : QWebView(parent) {
 }
 
 void View::loadUrlOrPath(const QString &value) {
     QUrl url;
-
-    if (QFile::exists(value))
-        url = QUrl::fromLocalFile(value);
+    QFileInfo fileInfo(value);
+    QString fileName = fileInfo.fileName();
+    if (fileInfo.isFile() && (fileName.endsWith(".html", Qt::CaseInsensitive)
+                || fileName.endsWith(".htm", Qt::CaseInsensitive))) {
+        QString absPath = fileInfo.absoluteFilePath();
+        url = QUrl::fromLocalFile(absPath);
+    }
     else
         url = QUrl::fromUserInput(value);
-    // FIXME loading from a local url doesn't work anymore
     setUrl(url);
 }
