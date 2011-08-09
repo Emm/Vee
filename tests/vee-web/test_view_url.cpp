@@ -2,13 +2,19 @@
 #include <QtTest/QtTest>
 #include "view.h"
 
+/**
+ * Tests View object with URLs
+ */
 class TestViewUrl: public QObject {
 Q_OBJECT
+
 private:
     View* mView;
     bool mSuccess;
+
 public slots:
     void setSuccess(bool success);
+
 private slots:
     void init();
     void testLoadUrlOrPathWithCorrectUrl();
