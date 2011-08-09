@@ -1,7 +1,7 @@
+#include <QtTest/QtTest>
 #include <QFileInfo>
 #include <QTemporaryFile>
 #include <QTextStream>
-#include <QtTest/QtTest>
 
 #include "view.h"
 
