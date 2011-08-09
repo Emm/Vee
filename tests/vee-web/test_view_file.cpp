@@ -1,4 +1,3 @@
-#include <QObject>
 #include <QFileInfo>
 #include <QTemporaryFile>
 #include <QTextStream>

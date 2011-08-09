@@ -1,4 +1,3 @@
-#include <QObject>
 #include <QtTest/QtTest>
 #include "view.h"
 
