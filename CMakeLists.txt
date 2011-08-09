@@ -4,5 +4,7 @@ project(vee)
 find_package(Qt4 REQUIRED)
 set(VEE_WEB_DBUS_XML ${CMAKE_SOURCE_DIR}/interfaces/org.vee.web.View.xml)
 
+enable_testing()
 add_subdirectory(./src/vee-frontend)
 add_subdirectory(./src/vee-web)
+add_subdirectory(./tests)

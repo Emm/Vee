@@ -19,7 +19,6 @@ include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 set(vee-web_SRCS
     view_adaptor_impl.cpp
     view.cpp
-    main.cpp
 )
 
 set(vee-web_MOC_HDRS
@@ -35,7 +34,10 @@ qt4_wrap_cpp(vee-web_SRCS ${vee-web_MOC_HDRS})
 qt4_automoc(${vee-web_SRCS})
 
 # create an executable file named "vee-web" from the source files in the variable "vee-web_SRCS".
-add_executable(vee-web ${vee-web_SRCS} ${vee-web_MOC_HDRS})
+add_library(libvee-web ${vee-web_SRCS} ${vee-web_MOC_HDRS})
+set_target_properties(libvee-web PROPERTIES OUTPUT_NAME vee-web)
+add_executable(vee-web main.cpp)
 
 # link the "vee-web" target against the Qt libraries. which libraries exactly, is defined by the "include(${QT_USE_FILE})" line above, which sets up this variable.
-target_link_libraries(vee-web ${QT_LIBRARIES})
+target_link_libraries(libvee-web ${QT_LIBRARIES})
+target_link_libraries(vee-web libvee-web)
