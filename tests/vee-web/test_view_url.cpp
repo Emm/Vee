@@ -16,8 +16,8 @@ public slots:
 
 private slots:
     void init();
-    void testLoadUrlOrPathWithCorrectUrl();
-    void testLoadUrlOrPathWithWrongUrl();
+    void testCorrectUrl();
+    void testWrongUrl();
     void cleanup();
 };
 
@@ -26,14 +26,14 @@ void TestViewUrl::init() {
     connect(mView, SIGNAL(loadFinished(bool)), this, SLOT(setSuccess(bool)));
 }
 
-void TestViewUrl::testLoadUrlOrPathWithCorrectUrl() {
+void TestViewUrl::testCorrectUrl() {
     mSuccess = false;
     mView->loadUrlOrPath(QString("about:blank"));
     QTest::qWait(10);
     QCOMPARE(mSuccess, true);
 }
 
-void TestViewUrl::testLoadUrlOrPathWithWrongUrl() {
+void TestViewUrl::testWrongUrl() {
     mSuccess = true;
     mView->loadUrlOrPath(QString("abut:wrongurl"));
     QTest::qWait(10);
