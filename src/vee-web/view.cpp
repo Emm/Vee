@@ -19,5 +19,5 @@ void View::loadUrlOrPath(const QString &value) {
     }
     else
         url = QUrl::fromUserInput(value);
-    setUrl(url);
+    load(url);
 }
