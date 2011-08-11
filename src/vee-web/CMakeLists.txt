@@ -17,15 +17,15 @@ include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 
 
 set(vee-web_SRCS
-    view_adaptor_impl.cpp
-    view.cpp
+    vee_web_view_adaptor_impl.cpp
+    vee_web_view.cpp
 )
 
 set(vee-web_MOC_HDRS
-    view_adaptor_impl.h
+    vee_web_view_adaptor_impl.h
     )
 
-qt4_add_dbus_adaptor(vee-web_SRCS ${VEE_WEB_DBUS_XML} view.h View view_adaptor)
+qt4_add_dbus_adaptor(vee-web_SRCS ${VEE_WEB_DBUS_XML} vee_web_view.h VeeWebView vee_web_view_adaptor)
 
 qt4_wrap_cpp(vee-web_SRCS ${vee-web_MOC_HDRS})
 

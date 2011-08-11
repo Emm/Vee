@@ -1,14 +1,14 @@
 #include <QtTest/QtTest>
-#include "view.h"
+#include "vee_web_view.h"
 
 /**
  * Tests View object with URLs
  */
-class TestViewUrl: public QObject {
+class TestVeeWebViewUrl: public QObject {
 Q_OBJECT
 
 private:
-    View* mView;
+    VeeWebView* mView;
     bool mSuccess;
 
 public slots:
@@ -21,31 +21,31 @@ private slots:
     void cleanup();
 };
 
-void TestViewUrl::init() {
-    mView = new View();
+void TestVeeWebViewUrl::init() {
+    mView = new VeeWebView();
     connect(mView, SIGNAL(loadFinished(bool)), this, SLOT(setSuccess(bool)));
 }
 
-void TestViewUrl::testCorrectUrl() {
+void TestVeeWebViewUrl::testCorrectUrl() {
     mSuccess = false;
     mView->loadUrlOrPath(QString("about:blank"));
     QTest::qWait(10);
     QCOMPARE(mSuccess, true);
 }
 
-void TestViewUrl::testWrongUrl() {
+void TestVeeWebViewUrl::testWrongUrl() {
     mSuccess = true;
     mView->loadUrlOrPath(QString("abut:wrongurl"));
     QTest::qWait(10);
     QCOMPARE(mSuccess, false);
 }
 
-void TestViewUrl::cleanup() {
+void TestVeeWebViewUrl::cleanup() {
     delete mView;
 }
 
-void TestViewUrl::setSuccess(bool success) {
+void TestVeeWebViewUrl::setSuccess(bool success) {
     mSuccess = success;
 }
 
-QTEST_MAIN(TestViewUrl)
+QTEST_MAIN(TestVeeWebViewUrl)

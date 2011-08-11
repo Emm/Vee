@@ -14,7 +14,7 @@ int main(int argc, char* argv[]) {
 
     MainWindow mainWindow;
 
-    mainWindow.init("reddit.com");
+    mainWindow.init("about:blank");
 
     mainWindow.show();
 

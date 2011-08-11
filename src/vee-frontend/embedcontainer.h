@@ -35,7 +35,7 @@ private:
     QStringList *mArguments;
     QLabel *mLabel;
     QX11EmbedContainer *mContainer;
-    OrgVeeWebViewInterface *mInterface;
+    OrgVeeWebVeeWebViewInterface *mInterface;
 };
 
 #endif

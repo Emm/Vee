@@ -22,14 +22,14 @@ EmbedContainer::EmbedContainer(EmbedCommand& embedCommand, QWidget* parent) : QW
 }
 
 void EmbedContainer::embed() {
-    //mProcess->setStandardOutputFile(QString("/tmp/tab.1.log"));
-    //mProcess->setStandardErrorFile(QString("/tmp/tab.2.log"));
+    mProcess->setStandardOutputFile(QString("/tmp/tab.1.log"));
+    mProcess->setStandardErrorFile(QString("/tmp/tab.2.log"));
     qDebug() << "Starting: " << *mExecutable << " " << *mArguments;
     mProcess->start(*mExecutable, *mArguments);
     ulong instanceId = mContainer->winId();
-    QString serviceId = QString("org.vee.web.View_%1").arg(instanceId);
+    QString serviceId = QString("org.vee.web.VeeWebView_%1").arg(instanceId);
     qDebug() << serviceId;
-    mInterface = new OrgVeeWebViewInterface(serviceId, "/VeeWebView", QDBusConnection::sessionBus(), this); 
+    mInterface = new OrgVeeWebVeeWebViewInterface(serviceId, "/VeeWebView", QDBusConnection::sessionBus(), this); 
     connect(mInterface, SIGNAL(urlChanged(const QString &)), this, SIGNAL(urlChanged(const QString &)));
     connect(mInterface, SIGNAL(titleChanged(const QString &)), this, SIGNAL(titleChanged(const QString &)));
     qDebug() << "Connected";

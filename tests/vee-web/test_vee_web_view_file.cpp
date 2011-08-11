@@ -3,15 +3,15 @@
 #include <QTemporaryFile>
 #include <QTextStream>
 
-#include "view.h"
+#include "vee_web_view.h"
 
 /**
- * Test View objects with local files.
+ * Test VeeWebView objects with local files.
  */
-class TestViewFile : public QObject {
+class TestVeeWebViewFile : public QObject {
 Q_OBJECT
 private:
-    View* mView;
+    VeeWebView* mView;
     QTemporaryFile* mHtmlFile;
     bool mSuccess;
 
@@ -24,20 +24,20 @@ private slots:
     void testRelativePath();
 };
 
-void TestViewFile::init() {
+void TestVeeWebViewFile::init() {
     // Relative filename (otherwise we can't test relative path), with html
     // extension (otherwise QWebView won't load the file)
-    mHtmlFile = new QTemporaryFile("test_view_file_XXXXXX.HTML");
+    mHtmlFile = new QTemporaryFile("test_vee_web_view_file_XXXXXX.HTML");
     if (mHtmlFile->open()) {
         QTextStream out(mHtmlFile);
         out << "<html><body>test</body></html>";
     }
     mHtmlFile->close();
-    mView = new View();
+    mView = new VeeWebView();
     connect(mView, SIGNAL(loadFinished(bool)), this, SLOT(setSuccess(bool)));
 }
 
-void TestViewFile::testAbsolutePath() {
+void TestVeeWebViewFile::testAbsolutePath() {
     QFileInfo fileInfo(*mHtmlFile);
     QString absPath = fileInfo.absoluteFilePath(); 
     mSuccess = false;
@@ -46,7 +46,7 @@ void TestViewFile::testAbsolutePath() {
     QCOMPARE(mSuccess, true);
 }
 
-void TestViewFile::testRelativePath() {
+void TestVeeWebViewFile::testRelativePath() {
     QFileInfo fileInfo(*mHtmlFile);
     QVERIFY(fileInfo.isRelative() == true);
     QString relPath = fileInfo.filePath(); 
@@ -56,13 +56,13 @@ void TestViewFile::testRelativePath() {
     QCOMPARE(mSuccess, true);
 }
 
-void TestViewFile::cleanup() {
+void TestVeeWebViewFile::cleanup() {
     delete mView;
     delete mHtmlFile;
 }
 
-void TestViewFile::setSuccess(bool success) {
+void TestVeeWebViewFile::setSuccess(bool success) {
     mSuccess = success;
 }
 
-QTEST_MAIN(TestViewFile)
+QTEST_MAIN(TestVeeWebViewFile)

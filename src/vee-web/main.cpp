@@ -18,10 +18,10 @@
 #include <cstdlib>
 #include <tclap/CmdLine.h>
 
-#include "view.h"
-#include "view_adaptor_impl.h"
+#include "vee_web_view.h"
+#include "vee_web_view_adaptor_impl.h"
 
-#define PROJECT_NAME "vee-browser"
+#define PROJECT_NAME "vee-web"
 #define PROJECT_VERSION "0.1"
 
 /**
@@ -68,10 +68,10 @@ parseArgv(int argc, char** argv, ulong* windowId, std::string& urlOrFile) {
 }
 
 void
-exposeWebViewToDBus(View* view, ulong instanceId) {
-    new ViewAdaptorImpl(view);
+exposeVeeWebViewToDBus(VeeWebView* view, ulong instanceId) {
+    new VeeWebViewAdaptorImpl(view);
     QDBusConnection dbus = QDBusConnection::sessionBus();
-    QString serviceId = QString("org.vee.web.View_%1").arg(instanceId);
+    QString serviceId = QString("org.vee.web.VeeWebView_%1").arg(instanceId);
     dbus.registerObject("/VeeWebView", view);
     dbus.registerService(serviceId);
 }
@@ -79,7 +79,7 @@ exposeWebViewToDBus(View* view, ulong instanceId) {
 int
 main(int argc, char *argv[]) {
     QApplication app(argc, argv);
-
+    printf("main()\n");
     QString html;
     QUrl url;
     ulong* windowId;
@@ -89,13 +89,13 @@ main(int argc, char *argv[]) {
 
     parseArgv(app.argc(), app.argv(), windowId, urlOrFile);
 
-    View view;
-    exposeWebViewToDBus(&view, *windowId);
+    VeeWebView view;
     if (urlOrFile.compare("-") == 0 || urlOrFile.empty()) {
         html = makeHtml();
         view.setHtml(html);
     }
     else {
+        exposeVeeWebViewToDBus(&view, *windowId);
         view.loadUrlOrPath(QString(urlOrFile.c_str()));
     }
 

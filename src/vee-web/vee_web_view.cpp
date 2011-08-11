@@ -1,13 +1,13 @@
-#include "view.h"
+#include "vee_web_view.h"
 
 #include <QFile>
 #include <QFileInfo>
 #include <QDebug>
 
-View::View(QWidget* parent) : QWebView(parent) {
+VeeWebView::VeeWebView(QWidget* parent) : QWebView(parent) {
 }
 
-void View::loadUrlOrPath(const QString &value) {
+void VeeWebView::loadUrlOrPath(const QString &value) {
     QUrl url;
     QFileInfo fileInfo(value);
     QString fileName = fileInfo.fileName();
