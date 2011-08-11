@@ -22,8 +22,8 @@ EmbedContainer::EmbedContainer(EmbedCommand& embedCommand, QWidget* parent) : QW
 }
 
 void EmbedContainer::embed() {
-    mProcess->setStandardOutputFile(QString("/tmp/tab.1.log"));
-    mProcess->setStandardErrorFile(QString("/tmp/tab.2.log"));
+    //mProcess->setStandardOutputFile(QString("/tmp/tab.1.log"));
+    //mProcess->setStandardErrorFile(QString("/tmp/tab.2.log"));
     qDebug() << "Starting: " << *mExecutable << " " << *mArguments;
     mProcess->start(*mExecutable, *mArguments);
     ulong instanceId = mContainer->winId();

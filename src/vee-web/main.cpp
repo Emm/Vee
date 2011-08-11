@@ -13,8 +13,6 @@
 #include <QVBoxLayout>
 #include <QDBusConnection>
 
-#include <QDebug>
-
 #include <cstdlib>
 #include <tclap/CmdLine.h>
 
@@ -79,7 +77,6 @@ exposeVeeWebViewToDBus(VeeWebView* view, ulong instanceId) {
 int
 main(int argc, char *argv[]) {
     QApplication app(argc, argv);
-    printf("main()\n");
     QString html;
     QUrl url;
     ulong* windowId;
