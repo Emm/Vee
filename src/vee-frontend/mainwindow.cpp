@@ -1,6 +1,7 @@
 #include <QDebug>
 
 #include "mainwindow.h"
+#include <QFileInfo>
 
 MainWindow::MainWindow() {
     QVBoxLayout* layout = new QVBoxLayout();
@@ -24,9 +25,22 @@ void MainWindow::init(const QString& url) {
     addTab();
 }
 
+void assertExecutable(const QString & executable) {
+    QFileInfo fileInfo(executable);
+    if (!fileInfo.isFile()) {
+        fprintf(stderr, "The binary %s doesn't exist or is not a file", executable.toUtf8().data());
+        exit(1);
+    }
+    if (!fileInfo.isExecutable()) {
+        fprintf(stderr, "The binary %s is not executable", executable.toUtf8().data());
+        exit(1);
+    }
+}
+
 void MainWindow::addTab() {
     const QString & url = urlBar->text();
-    QString executable("../../vee-web/src/src/vee-web");
+    QString executable("src/vee-web/vee-web");
+    assertExecutable(executable);
     EmbedCommand cmd = EmbedCommand(executable);
 
     cmd << QString("-w");
