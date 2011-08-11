@@ -20,6 +20,8 @@ set(vee-web_SRCS
     vee_web_view_adaptor_impl.cpp
     vee_web_view.cpp
     commandline.cpp
+    widget_builder.cpp
+    dbus_manager.cpp
 )
 
 set(vee-web_MOC_HDRS
