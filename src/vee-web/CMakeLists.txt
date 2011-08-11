@@ -19,6 +19,7 @@ include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 set(vee-web_SRCS
     vee_web_view_adaptor_impl.cpp
     vee_web_view.cpp
+    commandline.cpp
 )
 
 set(vee-web_MOC_HDRS
