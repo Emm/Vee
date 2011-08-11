@@ -15,6 +15,7 @@
 
 #include <cstdlib>
 
+#include "constants.h"
 #include "commandline.h"
 #include "vee_web_view.h"
 #include "vee_web_view_adaptor_impl.h"
@@ -50,32 +51,37 @@ main(int argc, char *argv[]) {
     QApplication app(argc, argv);
     QString html;
     QUrl url;
-    ulong* windowId;
-    std::string urlOrFile;
 
     QStringList args = QCoreApplication::arguments();
 
-    parseArgv(app.argc(), app.argv(), windowId, urlOrFile);
+    CommandLineParser parser(APP_NAME, APP_VERSION);
+    int success = parser.parse(app.argc(), app.argv());
 
+    if (success == COMMANDLINE_PARSING_ERROR) {
+        fprintf(stderr, parser.errorMessage().toUtf8().data());
+        exit(1);
+    }
+    const QString & urlOrFile = parser.urlOrFile();
+    ulong windowId = parser.windowId();
     VeeWebView view;
-    if (urlOrFile.compare("-") == 0 || urlOrFile.empty()) {
+    if (urlOrFile.compare("-") == 0 || urlOrFile.isEmpty()) {
         html = makeHtml();
         view.setHtml(html);
     }
     else {
-        exposeVeeWebViewToDBus(&view, *windowId);
-        view.loadUrlOrPath(QString(urlOrFile.c_str()));
+        exposeVeeWebViewToDBus(&view, windowId);
+        view.loadUrlOrPath(urlOrFile);
     }
 
     QWidget* mainWidget;
-    if (windowId == NULL) {
+    if (windowId == 0) {
         mainWidget = &view;
     }
     else {
 
         QX11EmbedWidget* embedWidget = new QX11EmbedWidget();
         embedWidget->setLayout(new QVBoxLayout());
-        embedWidget->embedInto(*windowId);
+        embedWidget->embedInto(windowId);
         embedWidget->layout()->addWidget(&view);
 
         mainWidget = embedWidget;
