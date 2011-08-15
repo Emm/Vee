@@ -1,22 +1,20 @@
 #include "dbus_manager.h"
 #include "vee_web_view_adaptor_impl.h"
 
-DBusManager::DBusManager(const QString & serviceIdTemplate, const QString & objectPath, const ulong instanceId) {
-    mServiceId = serviceIdTemplate.arg(instanceId);
-    mObjectPath = objectPath;
+DBusManager::DBusManager(const QString & serviceId, const QString & objectPath) : mServiceId(serviceId), mObjectPath(objectPath) {
 }
 
 DBusManager::~DBusManager() {
 }
 
-void DBusManager::registerWidget(VeeWebView* view) {
-    new VeeWebViewAdaptorImpl(view);
+void DBusManager::registerWidget(VeeWebView & view) const {
+    new VeeWebViewAdaptorImpl(& view);
     QDBusConnection dbus = QDBusConnection::sessionBus();
-    dbus.registerObject(mObjectPath, view);
+    dbus.registerObject(mObjectPath, & view);
     dbus.registerService(mServiceId);
 }
 
-void DBusManager::unregisterWidget() {
+void DBusManager::unregisterWidget() const {
     QDBusConnection dbus = QDBusConnection::sessionBus();
     dbus.unregisterObject(mObjectPath);
     dbus.unregisterService(mServiceId);

@@ -6,13 +6,13 @@
 
 class DBusManager {
 private:
-    QString mServiceId;
-    QString mObjectPath;
+    const QString & mServiceId;
+    const QString & mObjectPath;
 public:
-    explicit DBusManager(const QString & serviceIdTemplate, const QString & objectPath, const ulong instanceId);
+    explicit DBusManager(const QString & serviceId, const QString & objectPath);
     virtual ~DBusManager();
-    void registerWidget(VeeWebView* widget);
-    void unregisterWidget();
+    void registerWidget(VeeWebView & widget) const;
+    void unregisterWidget() const;
 };
 
 #endif

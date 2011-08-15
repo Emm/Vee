@@ -67,30 +67,3 @@ const QString & CommandLineParser::errorMessage() {
     else
         return *(new QString);
 }
-
-/**
- * Parses the command-line arguments.
- */
-/*
-void parseArgv(int argc, char** argv, ulong* windowId, std::string& urlOrFile) {
-    try {
-        TCLAP::CmdLine cmd(PROJECT_NAME, ' ', PROJECT_VERSION);
-
-        TCLAP::ValueArg<ulong> winIdArg("w", "window-id", "X server window ID, for embedding", false, 0, "integer");
-        cmd.add(winIdArg);
-
-        TCLAP::UnlabeledValueArg<std::string> urlArg("url", "URL or filename", true, "", "url");
-        cmd.add(urlArg);
-        cmd.parse(argc, argv);
-        if (winIdArg.isSet()) {
-            ulong wid = winIdArg.getValue();
-            *windowId = wid;
-        }
-        urlOrFile.assign(urlArg.getValue());
-    }
-    catch(TCLAP::ArgException &e) {
-        fprintf(stderr, "Error %s for %s\n", e.error().c_str(), e.argId().c_str());
-        std::exit(1);
-    }
-}
-*/

@@ -12,29 +12,37 @@
 #include "dbus_manager.h"
 #include "widget_builder.h"
 
-int main(int argc, char *argv[]) {
-    QApplication app(argc, argv);
-
+QWidget* initApp(int argc, char* argv[]) {
     CommandLineParser parser(APP_NAME, APP_VERSION);
-    int success = parser.parse(app.argc(), app.argv());
+    int success = parser.parse(argc, argv);
 
     if (success == COMMANDLINE_PARSING_ERROR) {
         fprintf(stderr, parser.errorMessage().toUtf8().data());
         exit(1);
     }
-    const QString & urlOrFile = parser.urlOrFile();
-    const ulong windowId = parser.windowId();
+    QString urlOrFile = parser.urlOrFile();
+    ulong windowId = parser.windowId();
+    QWidget* mainWidget;
+    if (windowId != NULL_WINDOW_ID) {
+        QString serviceId = QString::fromUtf8(SERVICE_ID_TEMPLATE).arg(windowId);
+        QString objectPath = QString::fromUtf8(OBJECT_PATH);
+        DBusManager dbusManager(serviceId, objectPath);
 
-    DBusManager dbusManager(SERVICE_ID_TEMPLATE, OBJECT_PATH, windowId);
+        WidgetBuilder embeddedWidgetBuilder(urlOrFile, windowId, & dbusManager);
+        mainWidget = embeddedWidgetBuilder.build();
+    }
+    else {
+        WidgetBuilder standaloneWidgetBuilder(urlOrFile);
+        mainWidget = standaloneWidgetBuilder.build();
+    }
 
-    WidgetBuilder widgetBuilder;
+    return mainWidget;
+}
 
-    widgetBuilder.setUrlOrFile(urlOrFile);
-    widgetBuilder.setWindowId(windowId);
-    widgetBuilder.setDBusManager(&dbusManager);
+int main(int argc, char *argv[]) {
+    QApplication app(argc, argv);
 
-    QWidget* mainWidget = widgetBuilder.build();
-
+    QWidget* mainWidget = initApp(app.argc(), app.argv());
     mainWidget->show();
 
     return app.exec();
