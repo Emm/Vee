@@ -1,14 +1,15 @@
 #include "commandline.h"
+#include "constants.h"
 
 CommandLineParser::CommandLineParser(const QString & appName, const QString & appVersion) {
     mParser = new TCLAP::CmdLine(appName.toUtf8().data(), ' ',
             appVersion.toUtf8().data());
-    mWinIdArg = new TCLAP::ValueArg<ulong>("w", "window-id", "X server window ID, for embedding", false, 0, "integer");
+    mWinIdArg = new TCLAP::ValueArg<ulong>("w", "window-id", "X server window ID, for embedding", false, NULL_WINDOW_ID, "integer");
     mParser->add(*mWinIdArg);
 
     mUrlArg = new TCLAP::UnlabeledValueArg<std::string>("url", "URL or filename", true, "", "url");
     mParser->add(*mUrlArg);
-    mWindowId = 0;
+    mWindowId = NULL_WINDOW_ID;
     mUrlOrFile = NULL;
     mErrorMessage = NULL;
 }
