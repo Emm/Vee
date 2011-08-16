@@ -6,8 +6,8 @@
 
 class DBusManager {
 private:
-    const QString & mServiceId;
-    const QString & mObjectPath;
+    const QString mServiceId;
+    const QString mObjectPath;
 public:
     explicit DBusManager(const QString & serviceId, const QString & objectPath);
     virtual ~DBusManager();
