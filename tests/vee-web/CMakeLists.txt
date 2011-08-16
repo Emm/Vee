@@ -11,3 +11,4 @@ include_directories(
 test(vee-web test_vee_web_view_url)
 test(vee-web test_vee_web_view_file)
 test(vee-web test_vee_web_view_adaptor_impl)
+test(vee-web test_command_line_parser)
