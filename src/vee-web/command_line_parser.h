@@ -1,5 +1,5 @@
-#ifndef COMMANDLINE_H
-#define COMMANDLINE_H
+#ifndef COMMAND_LINE_PARSER_H
+#define COMMAND_LINE_PARSER_H
 
 #include <QString>
 #include <tclap/CmdLine.h>

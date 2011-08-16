@@ -8,7 +8,7 @@
 #include <QApplication>
 
 #include "constants.h"
-#include "commandline.h"
+#include "command_line_parser.h"
 #include "dbus_manager.h"
 #include "widget_builder.h"
 

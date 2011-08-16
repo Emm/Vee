@@ -1,4 +1,4 @@
-#include "commandline.h"
+#include "command_line_parser.h"
 #include "constants.h"
 
 CommandLineParser::CommandLineParser(const QString & appName, const QString & appVersion) {

@@ -19,7 +19,7 @@ include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 set(vee-web_SRCS
     vee_web_view_adaptor_impl.cpp
     vee_web_view.cpp
-    commandline.cpp
+    command_line_parser.cpp
     widget_builder.cpp
     dbus_manager.cpp
 )
