@@ -14,18 +14,14 @@ class VeeWebViewInterface : public QDBusAbstractInterface {
 Q_OBJECT
 
 public:
-    explicit VeeWebViewInterface(const QString &service, const QString &path, const char * interfaceName, const QDBusConnection &connection, QObject *parent);
-    virtual ~VeeWebViewInterface();
+    explicit VeeWebViewInterface(const QString &service, const QString &path,
+            const char * interfaceName, const QDBusConnection &connection,
+            QObject *parent) : QDBusAbstractInterface(service, path, interfaceName, connection, parent) {};
+
+    virtual ~VeeWebViewInterface() {};
 signals:
     void urlChanged(const QString & url);
 };
-
-
-VeeWebViewInterface::VeeWebViewInterface(const QString &service, const QString &path, const char * interfaceName, const QDBusConnection &connection, QObject *parent) : QDBusAbstractInterface(service, path, interfaceName, connection, parent) {
-}
-
-VeeWebViewInterface::~VeeWebViewInterface() {
-}
 
 /**
  * Tests ViewAdaptorImpl. 
@@ -38,48 +34,42 @@ private:
     QString* mUrl;
 
 public slots:
-    void setUrl(const QString & url);
+    void setUrl(const QString & url) {
+        mUrl = new QString(url);
+    };
 
 private slots:
-    void init();
-    void testBroadcastUrl();
-    void cleanup();
+    void init() {
+        mView = new VeeWebView();
+        mUrl = NULL;
+        new VeeWebViewAdaptorImpl(mView);
+        QDBusConnection dbus = QDBusConnection::sessionBus();
+        dbus.registerService(TEST_SERVICE_ID);
+        dbus.registerObject(TEST_SERVICE_PATH, mView);
+        QTest::qWait(10);
+        mInterface = new VeeWebViewInterface(TEST_SERVICE_ID, TEST_SERVICE_PATH, WEB_VIEW_INTERFACE, QDBusConnection::sessionBus(), this); 
+    };
+
+    void testBroadcastUrl() {
+        QDBusConnection dbus = QDBusConnection::sessionBus();
+        connect(mInterface, SIGNAL(urlChanged(const QString &)), this, SLOT(setUrl(const QString &)));
+        QString url("about:blank");
+        mView->loadUrlOrPath(url);
+        QTest::qWait(10);
+        if (mUrl == NULL)
+            QFAIL("The broadcastUrl signal wasn't received by the interface");
+        else
+            QCOMPARE(*mUrl, url);
+    };
+
+    void cleanup() {
+        QDBusConnection dbus = QDBusConnection::sessionBus();
+        dbus.unregisterObject(TEST_SERVICE_PATH);
+        dbus.unregisterService(TEST_SERVICE_ID);
+        delete mView;
+        if (mUrl != NULL)
+            delete mUrl;
+    };
 };
-
-void TestVeeWebViewAdaptorImpl::init() {
-    mView = new VeeWebView();
-    mUrl = NULL;
-    new VeeWebViewAdaptorImpl(mView);
-    QDBusConnection dbus = QDBusConnection::sessionBus();
-    dbus.registerService(TEST_SERVICE_ID);
-    dbus.registerObject(TEST_SERVICE_PATH, mView);
-    QTest::qWait(10);
-    mInterface = new VeeWebViewInterface(TEST_SERVICE_ID, TEST_SERVICE_PATH, WEB_VIEW_INTERFACE, QDBusConnection::sessionBus(), this); 
-}
-
-void TestVeeWebViewAdaptorImpl::testBroadcastUrl() {
-    QDBusConnection dbus = QDBusConnection::sessionBus();
-    connect(mInterface, SIGNAL(urlChanged(const QString &)), this, SLOT(setUrl(const QString &)));
-    QString url("about:blank");
-    mView->loadUrlOrPath(url);
-    QTest::qWait(10);
-    if (mUrl == NULL)
-        QFAIL("The broadcastUrl signal wasn't received by the interface");
-    else
-        QCOMPARE(*mUrl, url);
-}
-
-void TestVeeWebViewAdaptorImpl::cleanup() {
-    QDBusConnection dbus = QDBusConnection::sessionBus();
-    dbus.unregisterObject(TEST_SERVICE_PATH);
-    dbus.unregisterService(TEST_SERVICE_ID);
-    delete mView;
-    if (mUrl != NULL)
-        delete mUrl;
-}
-
-void TestVeeWebViewAdaptorImpl::setUrl(const QString & url) {
-    mUrl = new QString(url);
-}
 
 QTEST_MAIN(TestVeeWebViewAdaptorImpl)
