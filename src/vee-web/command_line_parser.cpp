@@ -28,6 +28,8 @@ CommandLineParser::~CommandLineParser() {
 }
 
 int CommandLineParser::parse(int argc, char** argv) {
+    delete mErrorMessage;
+    delete mUrlOrFile;
     try {
         mParser->parse(argc, argv);
         if (mWinIdArg->isSet())
@@ -51,20 +53,20 @@ void CommandLineParser::reset() {
         delete mErrorMessage;
 }
 
-const QString & CommandLineParser::urlOrFile() {
+QString CommandLineParser::urlOrFile() {
     if (mUrlOrFile != NULL)
-        return *(new QString(*mUrlOrFile));
+        return QString(*mUrlOrFile);
     else
-        return *(new QString);
+        return QString();
 }
 
 ulong CommandLineParser::windowId() {
     return mWindowId;
 }
 
-const QString & CommandLineParser::errorMessage() {
+QString CommandLineParser::errorMessage() {
     if (mErrorMessage != NULL)
-        return *(new QString(*mErrorMessage));
+        return QString(*mErrorMessage);
     else
-        return *(new QString);
+        return QString();
 }

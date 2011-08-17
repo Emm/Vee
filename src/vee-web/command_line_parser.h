@@ -30,8 +30,8 @@ public:
     void reset();
 
     ulong windowId();
-    const QString & urlOrFile();
-    const QString & errorMessage();
+    QString urlOrFile();
+    QString errorMessage();
 };
 
 #endif
