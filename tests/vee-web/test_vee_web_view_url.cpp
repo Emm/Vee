@@ -12,40 +12,33 @@ private:
     bool mSuccess;
 
 public slots:
-    void setSuccess(bool success);
+    void setSuccess(bool success) {
+        mSuccess = success;
+    };
 
 private slots:
-    void init();
-    void testCorrectUrl();
-    void testWrongUrl();
-    void cleanup();
+    void init() {
+        mView = new VeeWebView();
+        connect(mView, SIGNAL(loadFinished(bool)), this, SLOT(setSuccess(bool)));
+    };
+
+    void testCorrectUrl() {
+        mSuccess = false;
+        mView->loadUrlOrPath(QString("about:blank"));
+        QTest::qWait(10);
+        QCOMPARE(mSuccess, true);
+    };
+ 
+    void testWrongUrl() {
+        mSuccess = true;
+        mView->loadUrlOrPath(QString("abut:wrongurl"));
+        QTest::qWait(10);
+        QCOMPARE(mSuccess, false);
+    };
+
+    void cleanup() {
+        delete mView;
+    };
 };
-
-void TestVeeWebViewUrl::init() {
-    mView = new VeeWebView();
-    connect(mView, SIGNAL(loadFinished(bool)), this, SLOT(setSuccess(bool)));
-}
-
-void TestVeeWebViewUrl::testCorrectUrl() {
-    mSuccess = false;
-    mView->loadUrlOrPath(QString("about:blank"));
-    QTest::qWait(10);
-    QCOMPARE(mSuccess, true);
-}
-
-void TestVeeWebViewUrl::testWrongUrl() {
-    mSuccess = true;
-    mView->loadUrlOrPath(QString("abut:wrongurl"));
-    QTest::qWait(10);
-    QCOMPARE(mSuccess, false);
-}
-
-void TestVeeWebViewUrl::cleanup() {
-    delete mView;
-}
-
-void TestVeeWebViewUrl::setSuccess(bool success) {
-    mSuccess = success;
-}
 
 QTEST_MAIN(TestVeeWebViewUrl)
