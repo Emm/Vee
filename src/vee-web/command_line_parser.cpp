@@ -35,7 +35,7 @@ int CommandLineParser::parse(int argc, char** argv) {
         if (mWinIdArg->isSet())
             mWindowId = mWinIdArg->getValue();
         mUrlOrFile = new QString(mUrlArg->getValue().c_str());
-        return COMMANDLINE_PARSING_SUCCESSFUL;
+        return COMMANDLINE_PARSING_SUCCESS;
     }
     catch(TCLAP::ArgException & e) {
         char* errorString;

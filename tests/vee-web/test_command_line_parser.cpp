@@ -21,7 +21,7 @@ private slots:
         CommandLineParser parser(QString("test_app"), QString("1.0"));
         int res = parser.parse(argc, argv);
 
-        QVERIFY(res == COMMANDLINE_PARSING_SUCCESSFUL);
+        QVERIFY(res == COMMANDLINE_PARSING_SUCCESS);
         QCOMPARE(parser.urlOrFile(), QString(urlOrFile));
         QCOMPARE(parser.windowId(), 5234ul);
     }
@@ -34,7 +34,7 @@ private slots:
         CommandLineParser parser(QString("test_app"), QString("1.0"));
         int res = parser.parse(argc, argv);
 
-        QVERIFY(res == COMMANDLINE_PARSING_SUCCESSFUL);
+        QVERIFY(res == COMMANDLINE_PARSING_SUCCESS);
         QCOMPARE(parser.urlOrFile(), QString(urlOrFile));
         QCOMPARE(parser.windowId(), 0ul);
     }
