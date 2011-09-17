@@ -54,7 +54,7 @@ private slots:
         QDBusConnection dbus = QDBusConnection::sessionBus();
         connect(mInterface, SIGNAL(urlChanged(const QString &)), this, SLOT(setUrl(const QString &)));
         QString url("about:blank");
-        mView->loadUrlOrPath(url);
+        mView->resolve(url);
         QTest::qWait(10);
         if (mUrl == NULL)
             QFAIL("The broadcastUrl signal wasn't received by the interface");

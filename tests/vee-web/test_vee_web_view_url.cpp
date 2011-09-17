@@ -24,14 +24,14 @@ private slots:
 
     void testCorrectUrl() {
         mSuccess = false;
-        mView->loadUrlOrPath(QString("about:blank"));
+        mView->resolve(QString("about:blank"));
         QTest::qWait(10);
         QCOMPARE(mSuccess, true);
     };
  
     void testWrongUrl() {
         mSuccess = true;
-        mView->loadUrlOrPath(QString("abut:wrongurl"));
+        mView->resolve(QString("abut:wrongurl"));
         QTest::qWait(10);
         QCOMPARE(mSuccess, false);
     };

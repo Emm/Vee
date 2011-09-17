@@ -7,7 +7,7 @@
 VeeWebView::VeeWebView(QWidget* parent) : QWebView(parent) {
 }
 
-void VeeWebView::loadUrlOrPath(const QString &value) {
+void VeeWebView::resolve(const QString &value) {
     QUrl url;
     QFileInfo fileInfo(value);
     QString fileName = fileInfo.fileName();

@@ -44,7 +44,7 @@ private slots:
         QFileInfo fileInfo(*mHtmlFile);
         QString absPath = fileInfo.absoluteFilePath();
         mSuccess = false;
-        mView->loadUrlOrPath(absPath);
+        mView->resolve(absPath);
         QTest::qWait(1000);
         QCOMPARE(mSuccess, true);
     };
@@ -54,7 +54,7 @@ private slots:
         QVERIFY(fileInfo.isRelative() == true);
         QString relPath = fileInfo.filePath();
         mSuccess = false;
-        mView->loadUrlOrPath(relPath);
+        mView->resolve(relPath);
         QTest::qWait(1000);
         QCOMPARE(mSuccess, true);
     };

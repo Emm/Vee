@@ -7,7 +7,7 @@ class VeeWebView : public QWebView {
 
 public:
     explicit VeeWebView(QWidget* parent=0);
-    void loadUrlOrPath(const QString &value);
+    void resolve(const QString &value);
 };
 
 #endif
