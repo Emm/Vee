@@ -7,7 +7,7 @@ CommandLineParser::CommandLineParser(const QString & appName, const QString & ap
     mWinIdArg = new TCLAP::ValueArg<ulong>("w", "window-id", "X server window ID, for embedding", false, NULL_WINDOW_ID, "integer");
     mParser->add(*mWinIdArg);
 
-    mUrlArg = new TCLAP::UnlabeledValueArg<std::string>("url", "URL or filename", true, "", "url");
+    mUrlArg = new TCLAP::UnlabeledValueArg<std::string>("url", "URL or filename", false, "", "url");
     mParser->add(*mUrlArg);
     mWindowId = NULL_WINDOW_ID;
     mUrlOrFile = NULL;
@@ -34,11 +34,13 @@ int CommandLineParser::parse(int argc, char** argv) {
         mParser->parse(argc, argv);
         if (mWinIdArg->isSet())
             mWindowId = mWinIdArg->getValue();
-        mUrlOrFile = new QString(mUrlArg->getValue().c_str());
+        if (mUrlArg->isSet()) {
+            mUrlOrFile = new QString(mUrlArg->getValue().c_str());
+        }
         return COMMANDLINE_PARSING_SUCCESS;
     }
     catch(TCLAP::ArgException & e) {
-        char* errorString;
+        char* errorString = NULL;
         snprintf(errorString, 256, "Error %s for %s\n", e.error().c_str(), e.argId().c_str());
         mErrorMessage = new QString(errorString);
         return COMMANDLINE_PARSING_ERROR;
