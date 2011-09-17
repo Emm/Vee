@@ -1,5 +1,3 @@
-run.sh
-vee-web/src/src
-vee-frontend/src/src
-build
-debug
+^run.sh$
+^build$
+^debug$
