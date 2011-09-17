@@ -19,6 +19,11 @@ set(vee-frontend_SRCS
     embedcontainer.cpp
     embedtabs.cpp
     mainwindow.cpp
+    view_resolver.cpp
+    vee_view_interface.cpp
+    vee_web_view_interface.cpp
+    view_builder.cpp
+    view_resolver_factory.cpp
     main.cpp
 )
 
@@ -27,6 +32,11 @@ set(vee-frontend_SRCS
 set(vee-frontend_MOC_HDRS
     embedcontainer.h
     embedtabs.h
+    view_resolver.h
+    vee_view_interface.h
+    vee_web_view_interface.h
+    view_builder.h
+    view_resolver_factory.h
     mainwindow.h
 )
 

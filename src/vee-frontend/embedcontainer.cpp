@@ -1,6 +1,6 @@
 #include "embedcontainer.h"
 
-EmbedContainer::EmbedContainer(EmbedCommand& embedCommand, QWidget* parent) : QWidget(parent) {
+/*EmbedContainer::EmbedContainer(EmbedCommand& embedCommand, QWidget* parent) : QWidget(parent) {
     QVBoxLayout* layout = new QVBoxLayout();
     mContainer = new QX11EmbedContainer();
     //mContainer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -19,9 +19,24 @@ EmbedContainer::EmbedContainer(EmbedCommand& embedCommand, QWidget* parent) : QW
     connect(mContainer, SIGNAL(clientIsEmbedded()), this, SLOT(clientIsEmbedded()));
     connect(mContainer, SIGNAL(error(QX11EmbedContainer::Error)), this, SLOT(error(QX11EmbedContainer::Error)));
     connect(mContainer, SIGNAL(clientClosed()), this, SIGNAL(clientClosed()));
+}*/
+
+EmbedContainer::EmbedContainer(ViewResolver* viewResolver, QWidget* parent):
+        QWidget(parent),
+        mViewResolver(viewResolver),
+        mView(NULL),
+        mContainer(new QX11EmbedContainer(this))  {
+    mViewResolver->setParent(this);
+
+    mViewResolver->setIdentifier(mContainer->winId());
+    connect(mViewResolver, SIGNAL(urlResolved(VeeViewInterface*)), this, SLOT(setView(VeeViewInterface*)));
+    connect(mViewResolver, SIGNAL(unresolvableUrl(QString &)), this, SLOT(setFailView(QString &)));
 }
 
-void EmbedContainer::embed() {
+EmbedContainer::~EmbedContainer() {
+    delete mViewResolver;
+}
+/*void EmbedContainer::embed() {
     //mProcess->setStandardOutputFile(QString("/tmp/tab.1.log"));
     //mProcess->setStandardErrorFile(QString("/tmp/tab.2.log"));
     qDebug() << "Starting: " << *mExecutable << " " << *mArguments;
@@ -43,10 +58,29 @@ void EmbedContainer::clientIsEmbedded() {
 void EmbedContainer::error(QX11EmbedContainer::Error error) {
     qDebug() << "Error";
     mLabel->setText("Error while embedding, got code: " + error);
-}
+}*/
 
 void EmbedContainer::setUrl(const QString & url) {
-    if (!mInterface)
-        return;
-    mInterface->loadUrlOrPath(url);
+    mViewResolver->resolve(url, mView);
+}
+
+void EmbedContainer::setView(VeeViewInterface* view) {
+    if (view != mView) {
+        disconnect();
+        delete mView;
+        mView = view;
+        mView->setParent(this);
+        connect(mView, SIGNAL(urlChanged(const QString &)), this, SIGNAL(urlChanged(const QString &)));
+        connect(mView, SIGNAL(titleChanged(const QString &)), this, SIGNAL(titleChanged(const QString &)));
+    }
+}
+
+void EmbedContainer::setFailView(QString & url) {
+    // FIXME display an error message
+}
+
+void EmbedContainer::disconnectView() {
+    if (mView != NULL) {
+        disconnect(mView, 0, this, 0);
+    }
 }

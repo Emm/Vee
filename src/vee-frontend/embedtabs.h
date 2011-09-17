@@ -6,21 +6,23 @@
 
 #include "embedcontainer.h"
 #include "embedcommand.h"
+#include "view_resolver_factory.h"
 
 class EmbedTabs: public QTabWidget {
     Q_OBJECT
 
 private:
+    ViewResolverFactory & mViewResolverFactory;
     int getTabPosition();
 
 public:
-    EmbedTabs(QWidget* parent=0);
-    void embed(EmbedCommand& embedCommand);
+    EmbedTabs(ViewResolverFactory & viewManagerFactory, QWidget* parent=0);
 
 public slots:
     void updateTabTitle(const QString & title);
     void updateTabUrl(const QString & url);
-    void setUrl(const QString & url);
+    void showUrlInNewTab(const QString & url);
+    void showUrlInActiveTab(const QString & url);
 
 signals:
     void titleChanged(const QString & title);

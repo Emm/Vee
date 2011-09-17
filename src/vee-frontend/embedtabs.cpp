@@ -1,9 +1,32 @@
 #include "embedtabs.h"
 
-EmbedTabs::EmbedTabs(QWidget* parent)
-    : QTabWidget(parent) {
+EmbedTabs::EmbedTabs(ViewResolverFactory & viewManagerFactory, QWidget* parent)
+    : QTabWidget(parent), mViewResolverFactory(viewManagerFactory) {
 }
 
+void EmbedTabs::showUrlInActiveTab(const QString & url) {
+    if (count() >0) {
+        EmbedContainer * container = qobject_cast<EmbedContainer *>(currentWidget());
+        if (container != NULL) {
+            container->setUrl(url);
+        }
+    }
+    else {
+        showUrlInNewTab(url);
+    }
+}
+
+void EmbedTabs::showUrlInNewTab(const QString & url) {
+    ViewResolver * viewResolver = mViewResolverFactory.buildViewResolver();
+    EmbedContainer* container = new EmbedContainer(viewResolver, this);
+    int newTabPosition = addTab(container, QString("Loading..."));
+    connect(container, SIGNAL(titleChanged(const QString &)), this, SLOT(updateTabTitle(const QString &)));
+    connect(container, SIGNAL(urlChanged(const QString &)), this, SLOT(updateTabUrl(const QString &)));
+    setCurrentIndex(newTabPosition);
+    container->setUrl(url);
+}
+
+/*
 void EmbedTabs::embed(EmbedCommand& embedCommand) {
     EmbedContainer* container = new EmbedContainer(embedCommand);
     int newTabPosition = addTab(container, QString("Loading..."));
@@ -13,11 +36,13 @@ void EmbedTabs::embed(EmbedCommand& embedCommand) {
     container->embed();
     container->show();
 }
+*/
 
 int EmbedTabs::getTabPosition() {
     QObject * senderObj = QObject::sender();
-    if (senderObj == 0) return -1;
+    if (senderObj == NULL) return -1;
     QWidget * sender = qobject_cast<QWidget *>(senderObj);
+    if (sender == NULL) return -1;
     int tabPosition = indexOf(sender);
     if (tabPosition < 0) return -1;
     return tabPosition;
@@ -41,9 +66,4 @@ void EmbedTabs::updateTabUrl(const QString & url) {
     if (tabPosition == currentIndex()) {
         emit urlChanged(url);
     }
-}
-
-void EmbedTabs::setUrl(const QString & url) {
-    EmbedContainer * widget = qobject_cast<EmbedContainer *>(currentWidget());
-    widget->setUrl(url);
 }

@@ -7,35 +7,30 @@
 #include <QVBoxLayout>
 #include <QDebug>
 
-#include "vee_web_view_interface.h"
-#include "embedcommand.h"
+#include "view_resolver.h"
 
 class EmbedContainer: public QWidget {
     Q_OBJECT
 
+private:
+    ViewResolver* mViewResolver;
+    VeeViewInterface* mView;
+    QX11EmbedContainer *mContainer;
+
+    void disconnectView();
 public:
     
-    EmbedContainer(EmbedCommand& embedCommand, QWidget* parent=0);
-    void embed();
+    explicit EmbedContainer(ViewResolver* viewResolver, QWidget* parent=0);
+    virtual ~EmbedContainer();
 
 public slots:
-
-    void clientIsEmbedded();
-    void error(QX11EmbedContainer::Error error); 
     void setUrl(const QString & url);
+    void setFailView(QString & url);
+    void setView(VeeViewInterface* view);
 
 signals:
     void urlChanged(const QString & title);
     void titleChanged(const QString & title);
-    void clientClosed();
-
-private:
-    QProcess *mProcess;
-    QString *mExecutable;
-    QStringList *mArguments;
-    QLabel *mLabel;
-    QX11EmbedContainer *mContainer;
-    OrgVeeWebVeeWebViewInterface *mInterface;
 };
 
 #endif

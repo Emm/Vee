@@ -5,23 +5,25 @@
 #include <QVBoxLayout>
 #include <QWidget>
 #include "embedtabs.h"
-#include "embedcommand.h"
+#include "view_resolver_factory.h"
 
 class MainWindow : public QWidget {
     Q_OBJECT
 
-private slots:
-    void setUrl(); 
-    void setTitle(const QString & title);
-
-public:
-    MainWindow();
-    void init(const QString& url);
-
 private:
-    void addTab();
-
     QLineEdit* urlBar;
     EmbedTabs *mTabs;
+
+public:
+    explicit MainWindow(ViewResolverFactory & viewManagerFactory);
+    virtual ~MainWindow();
+    void init(const QString& url);
+
+private slots:
+    void urlChanged();
+    void setTitle(const QString & title);
+
+signals:
+    void showUrlInActiveTab(const QString & url);
 };
 #endif

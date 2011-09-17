@@ -1,6 +1,6 @@
 #include <QApplication>
+#include "view_resolver_factory.h"
 #include "mainwindow.h"
-#include "embedcommand.h"
 
 #include <QApplication>
 #include <QProcess>
@@ -12,7 +12,8 @@
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
 
-    MainWindow mainWindow;
+    ViewResolverFactory viewManagerFactory;
+    MainWindow mainWindow(viewManagerFactory);
 
     mainWindow.init("reddit.com");
 

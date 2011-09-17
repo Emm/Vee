@@ -1,30 +1,34 @@
 #include "embedcommand.h"
 
-EmbedCommand::EmbedCommand(QString& executable) {
-    mExecutable = &executable;
-    mArguments = new QStringList();
-    mWinIdArgPos = -1;
+EmbedCommand::EmbedCommand(const QString& executable) : mExecutable(executable),
+    mArguments(new QStringList()), mWinIdArgPos(-1) {
 }
 
-void EmbedCommand::addArgument(QString& argument) {
+EmbedCommand::~EmbedCommand() {
+    delete mArguments;
+}
+
+void EmbedCommand::addArgument(const QString& argument) {
     *mArguments << argument;
 }
 
 void EmbedCommand::addWinId() {
     mWinIdArgPos = mArguments->size();
+    *mArguments << NULL;
 }
 
-QString& EmbedCommand::executable() {
-    return *mExecutable;
+const QString & EmbedCommand::executable() const {
+    return mExecutable;
 }
 
-QStringList* EmbedCommand::arguments(ulong winId) {
+QStringList* EmbedCommand::arguments(ulong winId) const {
     QStringList* arguments = new QStringList();
     arguments->reserve(mArguments->size() + 1);
     for (int i = 0 ; i < mArguments->size() ; i++) {
         if (i == mWinIdArgPos)
-            *arguments << QString::number(winId); 
-        *arguments << mArguments->at(i); 
+            *arguments << QString::number(winId);
+        else
+            *arguments << mArguments->at(i);
     }
     return arguments;
 }

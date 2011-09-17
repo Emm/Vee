@@ -9,19 +9,20 @@ class EmbedCommand {
 public:
     const static int WIN_ID = 0;
 
-    EmbedCommand(QString& executable);
+    explicit EmbedCommand(const QString & executable);
+    virtual ~EmbedCommand();
 
-    void addArgument(QString& argument);
+    void addArgument(const QString & argument);
     void addWinId();
-    QString& executable();
-    QStringList* arguments(ulong winId);
+    const QString & executable() const;
+    QStringList* arguments(ulong winId) const;
     void operator<< (QString argument);
     void operator<< (int WIN_ID);
 
 private:
-    int mWinIdArgPos;
-    QString *mExecutable;
+    QString mExecutable;
     QStringList *mArguments;
+    int mWinIdArgPos;
 };
 
 #endif

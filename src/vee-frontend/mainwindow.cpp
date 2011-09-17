@@ -3,26 +3,36 @@
 #include "mainwindow.h"
 #include <QFileInfo>
 
-MainWindow::MainWindow() {
+MainWindow::MainWindow(ViewResolverFactory & viewManagerFactory) : urlBar(new QLineEdit()),
+    mTabs(new EmbedTabs(viewManagerFactory)) {
+    urlBar->setParent(this);
+    mTabs->setParent(this);
+
     QVBoxLayout* layout = new QVBoxLayout();
 
-    urlBar = new QLineEdit();
     layout->addWidget(urlBar);
-
-    mTabs = new EmbedTabs();
     layout->addWidget(mTabs);
 
     setLayout(layout);
 
-    connect(urlBar, SIGNAL(returnPressed()), this, SLOT(setUrl()));
+    connect(urlBar, SIGNAL(returnPressed()), this, SLOT(urlChanged()));
+    connect(this, SIGNAL(showUrlInActiveTab(const QString &)), mTabs, SLOT(showUrlInActiveTab(const QString &)));
     setWindowTitle("vee");
     connect(mTabs, SIGNAL(titleChanged(const QString &)), this, SLOT(setTitle(const QString &)));
     connect(mTabs, SIGNAL(urlChanged(const QString &)), urlBar, SLOT(setText(const QString &)));
 }
 
+MainWindow::~MainWindow() {
+}
+
 void MainWindow::init(const QString& url) {
     urlBar->setText(url);
-    addTab();
+    emit showUrlInActiveTab(url);
+}
+
+void MainWindow::urlChanged() {
+    const QString & url = urlBar->text();
+    emit showUrlInActiveTab(url);
 }
 
 void assertExecutable(const QString & executable) {
@@ -36,8 +46,8 @@ void assertExecutable(const QString & executable) {
         exit(1);
     }
 }
-
-void MainWindow::addTab() {
+/*
+void MainWindow::urlChanged() {
     const QString & url = urlBar->text();
     QString executable("src/vee-web/vee-web");
     assertExecutable(executable);
@@ -49,11 +59,12 @@ void MainWindow::addTab() {
     mTabs->embed(cmd);
 }
 
-void MainWindow::setUrl() {
+void MainWindow::showUrlInActiveTab() {
+    emit(showUrlInActiveTab(
     const QString & url = urlBar->text();
-    mTabs->setUrl(url);
+    mTabs->showUrl(url);
 }
-
+*/
 void MainWindow::setTitle(const QString & title) {
     QString finalTitle = title + " - vee";
     setWindowTitle(finalTitle);
