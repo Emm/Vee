@@ -26,7 +26,7 @@ VeeWebView* WidgetBuilder::buildView() {
         view->setHtml(html);
     }
     else {
-        view->loadUrlOrPath(mUrlOrFile);
+        view->resolve(mUrlOrFile);
     }
     return view;
 }
