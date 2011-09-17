@@ -32,11 +32,11 @@
     </method>
     <method name="reload">
     </method>
+    <method name="resolve">
+      <arg name="url" type="s" direction="in"/>
+    </method>
     <method name="setHtml">
         <arg name="html" type="s" direction="in"/>
-    </method>
-    <method name="loadUrlOrPath">
-        <arg name="value" type="s" direction="in"/>
     </method>
   </interface>
 </node>

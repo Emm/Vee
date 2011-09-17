@@ -22,7 +22,7 @@ set(vee-frontend_SRCS
     main.cpp
 )
 
-qt4_add_dbus_interface(vee-frontend_SRCS ${VEE_WEB_DBUS_XML} vee_web_view_interface)
+#qt4_add_dbus_interface(vee-frontend_SRCS ${VEE_WEB_DBUS_XML} vee_web_view_interface)
 
 set(vee-frontend_MOC_HDRS
     embedcontainer.h
