@@ -8,5 +8,9 @@
     <signal name="titleChanged">
       <arg name="title" type="s" direction="out"/>
     </signal>
+    <signal name="error">
+      <arg name="errorType" type="i" direction="out"/>
+      <arg name="errorCode" type="i" direction="out"/>
+    </signal>
   </interface>
 </node>

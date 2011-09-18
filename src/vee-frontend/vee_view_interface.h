@@ -29,5 +29,6 @@ public slots:
 
 signals:
     void titleChanged(QString title);
+    void error(int errorType, int errorCode);
 };
 #endif
