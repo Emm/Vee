@@ -11,6 +11,7 @@ ViewBuilder::ViewBuilder(EmbedCommand* command, const QString &
     mServiceIdPattern(serviceIdPattern),
     mObjectPath(objectPath),
     mProcess(NULL) {
+    mWatcher.setConnection(QDBusConnection::sessionBus());
 }
 
 ViewBuilder::~ViewBuilder() {
@@ -29,6 +30,7 @@ void ViewBuilder::build(const ulong identifier) {
     QStringList * pArguments = mCommand->arguments(identifier);
     const QStringList & arguments = *pArguments; 
     mProcess->start(executable, arguments);
+    qDebug() << "Starting " << executable << " " << arguments;
     //delete pArguments;
     connect(mProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(processGotAnError(QProcess::ProcessError)));
     mService = mServiceIdPattern.arg(identifier);
