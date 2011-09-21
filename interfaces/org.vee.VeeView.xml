@@ -8,6 +8,10 @@
     <signal name="titleChanged">
       <arg name="title" type="s" direction="out"/>
     </signal>
+    <signal name="urlResolved">
+    </signal>
+    <signal name="urlNotResolved">
+    </signal>
     <signal name="error">
       <arg name="errorType" type="i" direction="out"/>
       <arg name="errorCode" type="i" direction="out"/>

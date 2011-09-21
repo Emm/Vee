@@ -17,6 +17,10 @@
     <signal name="urlChanged">
       <arg name="url" type="s" direction="out"/>
     </signal>
+    <signal name="urlResolved">
+    </signal>
+    <signal name="urlNotResolved">
+    </signal>
     <signal name="statusBarMessage">
       <arg name="text" type="s" direction="out"/>
     </signal>
