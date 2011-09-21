@@ -60,8 +60,6 @@ void ViewResolver::tryWithNextBuilder() {
     mCurrentViewBuilderPos++;
     if (mCurrentViewBuilderPos < mViewBuilders->size()) {
         ViewBuilder* viewBuilder = mViewBuilders->at(mCurrentViewBuilderPos);
-        viewBuilder->build(mIdentifier);
-        qDebug() << "After viewBuilder->build(" << mIdentifier << ")";
         connect(viewBuilder,
                 SIGNAL(viewBuilt(VeeViewInterface*)),
                 this,
@@ -70,6 +68,8 @@ void ViewResolver::tryWithNextBuilder() {
                 SIGNAL(error(ViewBuilder::BuilderError)),
                 this,
                 SLOT(viewBuilderError(ViewBuilder::BuilderError)));
+        viewBuilder->build(mIdentifier);
+        qDebug() << "After viewBuilder->build(" << mIdentifier << ")";
     }
     else {
         emit unresolvableUrl(mUrl);

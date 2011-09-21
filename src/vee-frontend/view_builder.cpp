@@ -29,8 +29,6 @@ void ViewBuilder::build(const ulong identifier) {
     const QString & executable = mCommand->executable();
     QStringList * pArguments = mCommand->arguments(identifier);
     const QStringList & arguments = *pArguments; 
-    mProcess->start(executable, arguments);
-    qDebug() << "Starting " << executable << " " << arguments;
     //delete pArguments;
     connect(mProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(processGotAnError(QProcess::ProcessError)));
     mService = mServiceIdPattern.arg(identifier);
@@ -40,6 +38,8 @@ void ViewBuilder::build(const ulong identifier) {
             SIGNAL(serviceOwnerChanged(const QString &, const QString &, const QString)),
             this,
             SLOT(serviceIsUp(const QString &, const QString &, const QString)));
+    qDebug() << "Starting " << executable << " " << arguments;
+    mProcess->start(executable, arguments);
 }
 
 void ViewBuilder::processGotAnError(QProcess::ProcessError processError) {
