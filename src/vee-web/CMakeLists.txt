@@ -25,6 +25,7 @@ set(vee-web_SRCS
 )
 
 set(vee-web_MOC_HDRS
+    vee_web_view.h
     vee_web_view_adaptor_impl.h
     )
 

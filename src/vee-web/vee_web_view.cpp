@@ -5,6 +5,7 @@
 #include <QDebug>
 
 VeeWebView::VeeWebView(QWidget* parent) : QWebView(parent) {
+    connect(this, SIGNAL(loadFinished(bool)), this, SLOT(broadcastLoadFinished(bool)));
 }
 
 void VeeWebView::resolve(const QString &value) {
@@ -20,4 +21,12 @@ void VeeWebView::resolve(const QString &value) {
     else
         url = QUrl::fromUserInput(value);
     load(url);
+}
+
+void VeeWebView::broadcastLoadFinished(bool ok) {
+    qDebug() << "broadcastLoadFinished(" << ok << ")";
+    if (ok)
+        emit urlResolved();
+    else
+        emit urlNotResolved();
 }
