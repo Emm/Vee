@@ -7,14 +7,14 @@ ViewResolver::ViewResolver(QVector<ViewBuilder*>* viewBuilders, QObject* parent)
         mCurrentView(NULL),
         mCurrentViewBuilderPos(-1),
         mIdentifier(-1) {
-    for (int i = 0 ; i < mViewBuilders->size() ; i++) {
-        ViewBuilder* viewBuilder = mViewBuilders->at(i);
-        viewBuilder->setParent(this);
-    }
 }
 
 ViewResolver::~ViewResolver() {
     delete mCurrentView;
+    for (int i = 0 ; i < mViewBuilders->size() ; i++) {
+        ViewBuilder* viewBuilder = mViewBuilders->at(i);
+        delete viewBuilder;
+    }
     delete mViewBuilders;
 }
 
