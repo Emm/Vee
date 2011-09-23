@@ -11,8 +11,9 @@
 #include "command_line_parser.h"
 #include "dbus_manager.h"
 #include "widget_builder.h"
+#include <QDebug>
 
-QWidget* initApp(int argc, char* argv[]) {
+void initApp(int argc, char* argv[]) {
     CommandLineParser parser(APP_NAME, APP_VERSION);
     int success = parser.parse(argc, argv);
 
@@ -29,21 +30,21 @@ QWidget* initApp(int argc, char* argv[]) {
         DBusManager dbusManager(serviceId, objectPath);
 
         WidgetBuilder embeddedWidgetBuilder(urlOrFile, windowId, & dbusManager);
+        qDebug() << "going to build widget";
         mainWidget = embeddedWidgetBuilder.build();
+        qDebug() << "widget built";
     }
     else {
         WidgetBuilder standaloneWidgetBuilder(urlOrFile);
         mainWidget = standaloneWidgetBuilder.build();
+        mainWidget->show();
     }
-
-    return mainWidget;
 }
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
 
-    QWidget* mainWidget = initApp(app.argc(), app.argv());
-    mainWidget->show();
+    initApp(app.argc(), app.argv());
 
     return app.exec();
 }

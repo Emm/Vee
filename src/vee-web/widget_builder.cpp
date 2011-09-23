@@ -4,6 +4,7 @@
 #include <QX11EmbedWidget>
 #include <QVBoxLayout>
 #include <QTextStream>
+#include <QDebug>
 
 WidgetBuilder::WidgetBuilder(const QString & urlOrFile, const ulong windowId, const DBusManager* dbusManager) : mUrlOrFile(urlOrFile), mWindowId(windowId), mDBusManager(dbusManager)  {
 }
@@ -21,11 +22,11 @@ VeeWebView* WidgetBuilder::buildView() {
     VeeWebView* view = new VeeWebView();
     if (shouldEmbed())
         mDBusManager->registerWidget(*view);
-    if (mUrlOrFile.compare("-") == 0 || mUrlOrFile.isEmpty()) {
+    if (mUrlOrFile.compare("-") == 0) {
         const QString & html = readHtmlFromStdin();
         view->setHtml(html);
     }
-    else {
+    else if (!mUrlOrFile.isEmpty()) {
         view->resolve(mUrlOrFile);
     }
     return view;
@@ -36,7 +37,6 @@ QWidget* WidgetBuilder::buildWidget(VeeWebView & view) const {
     if (shouldEmbed()) {
         QX11EmbedWidget* embedWidget = new QX11EmbedWidget();
         embedWidget->setLayout(new QVBoxLayout());
-        embedWidget->embedInto(mWindowId);
         embedWidget->layout()->addWidget(&view);
 
         widget = embedWidget;
