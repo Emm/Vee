@@ -11,7 +11,7 @@ VeeWebViewInterface::~VeeWebViewInterface() {
 
 
 QString VeeWebViewInterface::url() const {
-    return qvariant_cast< QString >(property("title"));
+    return qvariant_cast< QString >(property("url"));
 }
 
 QDBusPendingReply<> VeeWebViewInterface::reload() {

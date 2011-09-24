@@ -2,14 +2,11 @@
 <node>
   <interface name="org.vee.web.VeeWebView">
     <property name="title" type="s" access="read"/>
-    <property name="url" type="s" access="readwrite"/>
+    <property name="url" type="s" access="read"/>
     <signal name="loadStarted">
     </signal>
     <signal name="loadProgress">
       <arg name="progress" type="i" direction="out"/>
-    </signal>
-    <signal name="loadFinished">
-      <arg type="b" direction="out"/>
     </signal>
     <signal name="titleChanged">
       <arg name="title" type="s" direction="out"/>
@@ -21,9 +18,6 @@
     </signal>
     <signal name="urlNotResolved">
     </signal>
-    <signal name="statusBarMessage">
-      <arg name="text" type="s" direction="out"/>
-    </signal>
     <signal name="error">
       <arg name="errorType" type="i" direction="out"/>
       <arg name="errorCode" type="i" direction="out"/>
@@ -34,12 +28,13 @@
     </signal>
     <method name="stop">
     </method>
-    <method name="back">
-    </method>
-    <method name="forward">
-    </method>
     <method name="reload">
     </method>
+    <method name="embed">
+    </method>
+    <signal name="linkClicked">
+      <arg name="url" type="s" direction="out"/>
+    </signal>
     <method name="resolve">
       <arg name="url" type="s" direction="in"/>
     </method>

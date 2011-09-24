@@ -14,7 +14,6 @@ private:
 
     VeeWebView* buildView();
     inline bool shouldEmbed() const;
-    QWidget* buildWidget(VeeWebView & view) const;
     const QString & readHtmlFromStdin() const;
 
 public:

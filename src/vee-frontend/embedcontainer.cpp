@@ -1,4 +1,6 @@
 #include "embedcontainer.h"
+#include <QVBoxLayout>
+#include "vee_web_view_interface.h"
 
 /*EmbedContainer::EmbedContainer(EmbedCommand& embedCommand, QWidget* parent) : QWidget(parent) {
     QVBoxLayout* layout = new QVBoxLayout();
@@ -26,11 +28,15 @@ EmbedContainer::EmbedContainer(ViewResolver* viewResolver, QWidget* parent):
         mViewResolver(viewResolver),
         mView(NULL),
         mContainer(new QX11EmbedContainer(this))  {
+    setLayout(new QVBoxLayout());
+    layout()->addWidget(mContainer);
     mViewResolver->setParent(this);
 
     mViewResolver->setIdentifier(mContainer->winId());
-    connect(mViewResolver, SIGNAL(urlResolved(VeeViewInterface*)), this, SLOT(setView(VeeViewInterface*)));
+    connect(mViewResolver, SIGNAL(urlResolved(VeeViewInterface*, QString)), this, SLOT(setView(VeeViewInterface*, QString)));
     connect(mViewResolver, SIGNAL(unresolvableUrl(QString &)), this, SLOT(setFailView(QString &)));
+    connect(mContainer, SIGNAL(clientIsEmbedded()), this, SLOT(focusContainer()));
+    connect(mContainer, SIGNAL(error(QX11EmbedContainer::Error)), this, SLOT(showEmbedError(QX11EmbedContainer::Error)));
 }
 
 EmbedContainer::~EmbedContainer() {
@@ -64,19 +70,43 @@ void EmbedContainer::setUrl(const QString & url) {
     mViewResolver->resolve(url, mView);
 }
 
-void EmbedContainer::setView(VeeViewInterface* view) {
+void EmbedContainer::setView(VeeViewInterface* view, QString viewType) {
     if (view != mView) {
-        disconnect();
-        delete mView;
+        if (mView) {
+            disconnect();
+            mContainer->discardClient();
+            delete mView;
+        }
         mView = view;
-        mView->setParent(this);
-        connect(mView, SIGNAL(urlChanged(const QString &)), this, SIGNAL(urlChanged(const QString &)));
+        mViewType = viewType;
+        mView->setParent(mContainer);
+        mView->embed();
         connect(mView, SIGNAL(titleChanged(const QString &)), this, SIGNAL(titleChanged(const QString &)));
+        emit titleChanged(mView->title());
+        if (mViewType == "org.vee.VeeWebView") {
+            VeeWebViewInterface* webViewInt = qobject_cast<VeeWebViewInterface *>(mView);
+            if (webViewInt) {
+                connect(webViewInt, SIGNAL(urlChanged(const QString &)), this,
+                        SIGNAL(urlChanged(const QString &)));
+                emit urlChanged(webViewInt->url());
+            }
+        }
+        //mContainer->setFocus(Qt::OtherFocusReason);
     }
 }
 
 void EmbedContainer::setFailView(QString & url) {
     // FIXME display an error message
+}
+
+void EmbedContainer::focusContainer() {
+    qDebug() << "embedded";
+    mContainer->setFocus(Qt::OtherFocusReason);
+}
+
+void EmbedContainer::showEmbedError(QX11EmbedContainer::Error error) {
+    qDebug() << "error while embedding: " << error;
+    // FIXME actually handle error
 }
 
 void EmbedContainer::disconnectView() {

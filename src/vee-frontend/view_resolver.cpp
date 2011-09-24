@@ -30,6 +30,7 @@ void ViewResolver::askViewToResolve(VeeViewInterface* view) {
         mCurrentView = view;
         connect(mCurrentView, SIGNAL(urlResolved()), this, SLOT(viewResolvedUrl()));
         connect(mCurrentView, SIGNAL(urlNotResolved()), this, SLOT(viewDidntResolveUrl()));
+        qDebug() << "askViewToResolve(): connected";
         mCurrentView->resolve(mUrl);
     }
     else
@@ -38,7 +39,8 @@ void ViewResolver::askViewToResolve(VeeViewInterface* view) {
 
 void ViewResolver::viewResolvedUrl() {
     qDebug() << "ViewResolver::viewResolvedUrl()";
-    emit urlResolved(mCurrentView);
+    ViewBuilder* builder = currentBuilder();
+    emit urlResolved(mCurrentView, builder->viewType());
     cleanup();
 }
 
@@ -58,18 +60,18 @@ ulong ViewResolver::identifier() const {
 
 void ViewResolver::tryWithNextBuilder() {
     mCurrentViewBuilderPos++;
-    if (mCurrentViewBuilderPos < mViewBuilders->size()) {
-        ViewBuilder* viewBuilder = mViewBuilders->at(mCurrentViewBuilderPos);
-        connect(viewBuilder,
+    ViewBuilder* builder = currentBuilder();
+    if (builder != NULL) {
+        connect(builder,
                 SIGNAL(viewBuilt(VeeViewInterface*)),
                 this,
                 SLOT(askViewToResolve(VeeViewInterface*)));
-        connect(viewBuilder,
+        connect(builder,
                 SIGNAL(error(ViewBuilder::BuilderError)),
                 this,
                 SLOT(viewBuilderError(ViewBuilder::BuilderError)));
-        viewBuilder->build(mIdentifier);
-        qDebug() << "After viewBuilder->build(" << mIdentifier << ")";
+        builder->build(mIdentifier);
+        qDebug() << "After builder->build(" << mIdentifier << ")";
     }
     else {
         emit unresolvableUrl(mUrl);
@@ -85,14 +87,26 @@ void ViewResolver::cleanup() {
 }
 
 void ViewResolver::disconnectAll() {
-    if (mCurrentView != NULL)
-        disconnect(mCurrentView, 0, this, 0);
-    if (mCurrentViewBuilderPos > -1 && mCurrentViewBuilderPos < mViewBuilders->size())
-        disconnect(mViewBuilders->at(mCurrentViewBuilderPos), 0, this, 0);
+    if (mCurrentView != NULL) {
+        disconnect(mCurrentView, SIGNAL(urlResolved()), this, SLOT(viewResolvedUrl()));
+        disconnect(mCurrentView, SIGNAL(urlNotResolved()), this, SLOT(viewDidntResolveUrl()));
+    }
+    ViewBuilder* builder = currentBuilder();
+    if (builder != NULL)
+        disconnect(builder, 0, this, 0);
 }
 
 void ViewResolver::viewBuilderError(ViewBuilder::BuilderError error) {
     disconnectAll();
     // FIXME implement some error reporting here
     tryWithNextBuilder();
+}
+
+ViewBuilder* ViewResolver::currentBuilder() {
+    ViewBuilder* builder;
+    if (mCurrentViewBuilderPos > -1 && mCurrentViewBuilderPos < mViewBuilders->size())
+        builder = mViewBuilders->at(mCurrentViewBuilderPos);
+    else
+        builder = NULL;
+    return builder;
 }

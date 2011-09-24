@@ -15,6 +15,7 @@ class EmbedContainer: public QWidget {
 private:
     ViewResolver* mViewResolver;
     VeeViewInterface* mView;
+    QString mViewType;
     QX11EmbedContainer *mContainer;
 
     void disconnectView();
@@ -26,7 +27,9 @@ public:
 public slots:
     void setUrl(const QString & url);
     void setFailView(QString & url);
-    void setView(VeeViewInterface* view);
+    void setView(VeeViewInterface* view, QString viewType);
+    void focusContainer();
+    void showEmbedError(QX11EmbedContainer::Error error);
 
 signals:
     void urlChanged(const QString & title);

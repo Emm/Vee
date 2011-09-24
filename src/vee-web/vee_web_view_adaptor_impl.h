@@ -6,14 +6,15 @@
 class VeeWebViewAdaptorImpl : VeeWebViewAdaptor {
 
 Q_OBJECT
-Q_CLASSINFO("D-Bus Interface", "org.vee.web.VeeWebView")
+Q_CLASSINFO("D-Bus Interface", "org.vee.VeeWebView")
 
 public:
     explicit VeeWebViewAdaptorImpl(VeeWebView * parent);
     virtual ~VeeWebViewAdaptorImpl() {};
 
 private slots:
-    void broadcastUrl(const QUrl & url);
+    void broadcastUrlChanged(const QUrl & url);
+    void broadcastLinkClicked(const QUrl & url);
 };
 
 #endif

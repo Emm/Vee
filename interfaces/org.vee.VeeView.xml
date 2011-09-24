@@ -5,6 +5,8 @@
     <method name="resolve">
       <arg name="url" type="s" direction="in"/>
     </method>
+    <method name="embed">
+    </method>
     <signal name="titleChanged">
       <arg name="title" type="s" direction="out"/>
     </signal>

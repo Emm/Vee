@@ -13,7 +13,7 @@
 #include "widget_builder.h"
 #include <QDebug>
 
-void initApp(int argc, char* argv[]) {
+QWidget* initApp(int argc, char* argv[]) {
     CommandLineParser parser(APP_NAME, APP_VERSION);
     int success = parser.parse(argc, argv);
 
@@ -39,12 +39,13 @@ void initApp(int argc, char* argv[]) {
         mainWidget = standaloneWidgetBuilder.build();
         mainWidget->show();
     }
+    return mainWidget;
 }
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
 
-    initApp(app.argc(), app.argv());
+    QWidget* mainWidget = initApp(app.argc(), app.argv());
 
     return app.exec();
 }

@@ -26,6 +26,7 @@ public:
 
 public slots:
     QDBusPendingReply<> resolve(const QString &url);
+    QDBusPendingReply<> embed();
 
 signals:
     void titleChanged(QString title);

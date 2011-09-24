@@ -108,3 +108,7 @@ ViewBuilder::BuilderError ViewBuilder::processErrorToBuilderError(QProcess::Proc
         newError = ViewBuilder::UnknownError;
     return newError;
 }
+
+QString ViewBuilder::viewType() const {
+    return mInterfaceName;
+}

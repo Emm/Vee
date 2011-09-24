@@ -1,10 +1,6 @@
 #include "widget_builder.h"
 
-#include <QDBusConnection>
-#include <QX11EmbedWidget>
-#include <QVBoxLayout>
 #include <QTextStream>
-#include <QDebug>
 
 WidgetBuilder::WidgetBuilder(const QString & urlOrFile, const ulong windowId, const DBusManager* dbusManager) : mUrlOrFile(urlOrFile), mWindowId(windowId), mDBusManager(dbusManager)  {
 }
@@ -14,12 +10,11 @@ WidgetBuilder::~WidgetBuilder() {
 
 QWidget* WidgetBuilder::build() {
     VeeWebView* view = buildView();
-    QWidget* widget = buildWidget(*view);
-    return widget;
+    return view;
 }
 
 VeeWebView* WidgetBuilder::buildView() {
-    VeeWebView* view = new VeeWebView();
+    VeeWebView* view = new VeeWebView(mWindowId);
     if (shouldEmbed())
         mDBusManager->registerWidget(*view);
     if (mUrlOrFile.compare("-") == 0) {
@@ -30,21 +25,6 @@ VeeWebView* WidgetBuilder::buildView() {
         view->resolve(mUrlOrFile);
     }
     return view;
-}
-
-QWidget* WidgetBuilder::buildWidget(VeeWebView & view) const {
-    QWidget* widget;
-    if (shouldEmbed()) {
-        QX11EmbedWidget* embedWidget = new QX11EmbedWidget();
-        embedWidget->setLayout(new QVBoxLayout());
-        embedWidget->layout()->addWidget(&view);
-
-        widget = embedWidget;
-    }
-    else {
-        widget = & view;
-    }
-    return widget;
 }
 
 /**

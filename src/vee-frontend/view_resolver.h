@@ -19,6 +19,7 @@ private:
     void tryWithNextBuilder();
     void cleanup();
     void disconnectAll();
+    ViewBuilder* currentBuilder();
 
 public:
     explicit ViewResolver(QVector<ViewBuilder*>* viewBuilders, QObject* parent=0);
@@ -36,7 +37,7 @@ public slots:
     void askViewToResolve(VeeViewInterface* view);
 
 signals:
-    void urlResolved(VeeViewInterface* view);
+    void urlResolved(VeeViewInterface* view, QString viewType);
     void unresolvableUrl(QString & url);
 };
 

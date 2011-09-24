@@ -16,6 +16,11 @@ QDBusPendingReply<> VeeViewInterface::resolve(const QString & url) {
     return asyncCallWithArgumentList(QLatin1String("resolve"), argumentList);
 }
 
+QDBusPendingReply<> VeeViewInterface::embed() {
+    return asyncCall(QLatin1String("embed"));
+}
+
+
 QString VeeViewInterface::title() const {
     return qvariant_cast< QString >(property("title"));
 }

@@ -22,6 +22,7 @@ public:
             objectPath, QObject* parent=0);
     virtual ~ViewBuilder();
     void build(const ulong identifier);
+    QString viewType() const;
 
 private:
     EmbedCommand* mCommand;
