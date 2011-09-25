@@ -8,7 +8,7 @@ WidgetBuilder::WidgetBuilder(const QString & urlOrFile, const ulong windowId, co
 WidgetBuilder::~WidgetBuilder() {
 }
 
-QWidget* WidgetBuilder::build() {
+VeeWebView* WidgetBuilder::build() {
     VeeWebView* view = buildView();
     return view;
 }

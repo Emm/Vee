@@ -7,12 +7,11 @@
 
 #include "constants.h"
 
-VeeWebView::VeeWebView(ulong windowId, QWidget* parent) :
-    QX11EmbedWidget(parent),
+VeeWebView::VeeWebView(ulong windowId, QObject* parent) :
+    QObject(parent),
     mWebView(new QWebView()),
     /*mEmbedWidget(NULL),*/
     mWindowId(windowId) {
-        setVisible(false);
     connect(mWebView, SIGNAL(loadFinished(bool)), this, SLOT(broadcastLoadFinished(bool)));
     connect(mWebView, SIGNAL(iconChanged()), this, SIGNAL(iconChanged()));
     connect(mWebView, SIGNAL(linkClicked(const QUrl &)), this, SIGNAL(linkClicked(const QUrl &)));
@@ -21,16 +20,11 @@ VeeWebView::VeeWebView(ulong windowId, QWidget* parent) :
     connect(mWebView, SIGNAL(selectionChanged()), this, SIGNAL(selectionChanged()));
     connect(mWebView, SIGNAL(titleChanged(const QString &)), this, SIGNAL(titleChanged(const QString &)));
     connect(mWebView, SIGNAL(urlChanged(const QUrl &)), this, SIGNAL(urlChanged(const QUrl &)));
-    setLayout(new QVBoxLayout());
     if (shouldEmbed()) {
         /*mEmbedWidget = new QX11EmbedWidget();
         mEmbedWidget->setLayout(new QVBoxLayout());
         mEmbedWidget->layout()->addWidget(mWebView);
         layout()->addWidget(mEmbedWidget);*/
-        layout()->addWidget(mWebView);
-    }
-    else {
-        layout()->addWidget(mWebView);
     }
 }
 
@@ -43,8 +37,11 @@ bool VeeWebView::shouldEmbed() {
 
 void VeeWebView::embed() {
     if (shouldEmbed()) {
-        embedInto(mWindowId);
-        show();
+        QX11EmbedWidget* widget = new QX11EmbedWidget();
+        widget->setLayout(new QVBoxLayout());
+        widget->layout()->addWidget(mWebView);
+        widget->embedInto(mWindowId);
+        widget->show();
     }
 }
 

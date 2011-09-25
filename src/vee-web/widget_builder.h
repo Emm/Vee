@@ -19,7 +19,7 @@ private:
 public:
     explicit WidgetBuilder(const QString & urlOrFile, const ulong windowId = 0, const DBusManager* dbusManager = NULL);
     virtual ~WidgetBuilder();
-    QWidget* build();
+    VeeWebView* build();
 };
 
 #endif
