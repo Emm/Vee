@@ -2,7 +2,7 @@
 #define DBUS_MANAGER_H
 
 #include <cstdlib>
-#include "vee_web_view.h"
+#include "vee_web_service.h"
 
 class DBusManager {
 private:
@@ -11,7 +11,7 @@ private:
 public:
     explicit DBusManager(const QString & serviceId, const QString & objectPath);
     virtual ~DBusManager();
-    void registerWidget(VeeWebView & widget) const;
+    void registerWidget(VeeWebService & widget) const;
     void unregisterWidget() const;
 };
 

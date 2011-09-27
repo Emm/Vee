@@ -1,20 +1,20 @@
-#include "widget_builder.h"
+#include "vee_web_service_builder.h"
 
 #include <QTextStream>
 
-WidgetBuilder::WidgetBuilder(const QString & urlOrFile, const ulong windowId, const DBusManager* dbusManager) : mUrlOrFile(urlOrFile), mWindowId(windowId), mDBusManager(dbusManager)  {
+VeeWebServiceBuilder::VeeWebServiceBuilder(const QString & urlOrFile, const ulong windowId, const DBusManager* dbusManager) : mUrlOrFile(urlOrFile), mWindowId(windowId), mDBusManager(dbusManager)  {
 }
 
-WidgetBuilder::~WidgetBuilder() {
+VeeWebServiceBuilder::~VeeWebServiceBuilder() {
 }
 
-VeeWebView* WidgetBuilder::build() {
-    VeeWebView* view = buildView();
+VeeWebService* VeeWebServiceBuilder::build() {
+    VeeWebService* view = buildView();
     return view;
 }
 
-VeeWebView* WidgetBuilder::buildView() {
-    VeeWebView* view = new VeeWebView(mWindowId);
+VeeWebService* VeeWebServiceBuilder::buildView() {
+    VeeWebService* view = new VeeWebService(mWindowId);
     if (shouldEmbed())
         mDBusManager->registerWidget(*view);
     if (mUrlOrFile.compare("-") == 0) {
@@ -30,7 +30,7 @@ VeeWebView* WidgetBuilder::buildView() {
 /**
  Builds HTML from the contents of stdin
 */
-const QString & WidgetBuilder::readHtmlFromStdin() const {
+const QString & VeeWebServiceBuilder::readHtmlFromStdin() const {
     QString* html = new QString();
     QTextStream stdinStream(stdin);
     QString line;
@@ -42,6 +42,6 @@ const QString & WidgetBuilder::readHtmlFromStdin() const {
     return *html;
 }
 
-bool WidgetBuilder::shouldEmbed() const {
+bool VeeWebServiceBuilder::shouldEmbed() const {
     return mWindowId != 0 && mDBusManager != NULL;
 }

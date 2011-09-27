@@ -3,16 +3,16 @@
 #include <QTemporaryFile>
 #include <QTextStream>
 
-#include "vee_web_view.h"
+#include "vee_web_service.h"
 
 /**
- * Test VeeWebView objects with local files.
+ * Test VeeWebService objects with local files.
  */
-class TestVeeWebViewFile : public QObject {
+class TestVeeWebServiceFile : public QObject {
 Q_OBJECT
 
 private:
-    VeeWebView* mView;
+    VeeWebService* mView;
     QTemporaryFile* mHtmlFile;
     bool mSuccess;
 
@@ -31,7 +31,7 @@ private slots:
             out << "<html><body>test</body></html>";
         }
         mHtmlFile->close();
-        mView = new VeeWebView();
+        mView = new VeeWebService();
         connect(mView, SIGNAL(loadFinished(bool)), this, SLOT(setSuccess(bool)));
     };
 
@@ -60,4 +60,4 @@ private slots:
     };
 };
 
-QTEST_MAIN(TestVeeWebViewFile)
+QTEST_MAIN(TestVeeWebServiceFile)

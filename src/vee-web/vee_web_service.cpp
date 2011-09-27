@@ -1,16 +1,15 @@
-#include "vee_web_view.h"
+#include "vee_web_service.h"
 
 #include <QFile>
 #include <QFileInfo>
 #include <QVBoxLayout>
-#include <QDebug>
 
 #include "constants.h"
 
-VeeWebView::VeeWebView(ulong windowId, QObject* parent) :
+VeeWebService::VeeWebService(ulong windowId, QObject* parent) :
     QObject(parent),
     mWebView(new QWebView()),
-    /*mEmbedWidget(NULL),*/
+    mEmbedWidget(NULL),
     mWindowId(windowId) {
     connect(mWebView, SIGNAL(loadFinished(bool)), this, SLOT(broadcastLoadFinished(bool)));
     connect(mWebView, SIGNAL(iconChanged()), this, SIGNAL(iconChanged()));
@@ -20,32 +19,28 @@ VeeWebView::VeeWebView(ulong windowId, QObject* parent) :
     connect(mWebView, SIGNAL(selectionChanged()), this, SIGNAL(selectionChanged()));
     connect(mWebView, SIGNAL(titleChanged(const QString &)), this, SIGNAL(titleChanged(const QString &)));
     connect(mWebView, SIGNAL(urlChanged(const QUrl &)), this, SIGNAL(urlChanged(const QUrl &)));
-    if (shouldEmbed()) {
-        /*mEmbedWidget = new QX11EmbedWidget();
-        mEmbedWidget->setLayout(new QVBoxLayout());
-        mEmbedWidget->layout()->addWidget(mWebView);
-        layout()->addWidget(mEmbedWidget);*/
-    }
 }
 
-VeeWebView::~VeeWebView() {
+VeeWebService::~VeeWebService() {
 }
 
-bool VeeWebView::shouldEmbed() {
+bool VeeWebService::shouldEmbed() {
     return mWindowId != NULL_WINDOW_ID;
 }
 
-void VeeWebView::embed() {
+void VeeWebService::embed() {
     if (shouldEmbed()) {
-        QX11EmbedWidget* widget = new QX11EmbedWidget();
-        widget->setLayout(new QVBoxLayout());
-        widget->layout()->addWidget(mWebView);
-        widget->embedInto(mWindowId);
-        widget->show();
+        // Only create the embed widget now, otherwise we're going to run into
+        // odd focus issues if the widget is created earlier
+        mEmbedWidget = new QX11EmbedWidget();
+        mEmbedWidget->setLayout(new QVBoxLayout());
+        mEmbedWidget->layout()->addWidget(mWebView);
+        mEmbedWidget->embedInto(mWindowId);
+        mEmbedWidget->show();
     }
 }
 
-void VeeWebView::resolve(const QString &value) {
+void VeeWebService::resolve(const QString &value) {
     QUrl url;
     QFileInfo fileInfo(value);
     QString fileName = fileInfo.fileName();
@@ -60,30 +55,33 @@ void VeeWebView::resolve(const QString &value) {
     mWebView->load(url);
 }
 
-void VeeWebView::broadcastLoadFinished(bool ok) {
-    qDebug() << "broadcastLoadFinished(" << ok << ")";
+void VeeWebService::broadcastLoadFinished(bool ok) {
     if (ok)
         emit urlResolved();
     else
         emit urlNotResolved();
 }
 
-void VeeWebView::reload() {
+void VeeWebService::reload() {
     mWebView->reload();
 }
 
-void VeeWebView::stop() {
+void VeeWebService::stop() {
     mWebView->stop();
 }
 
-void VeeWebView::setHtml(const QString & html) {
+void VeeWebService::setHtml(const QString & html) {
     mWebView->setHtml(html);
 }
 
-QUrl VeeWebView::url() const {
+QUrl VeeWebService::url() const {
     return mWebView->url();
 }
 
-QString VeeWebView::title() const {
+QString VeeWebService::title() const {
     return mWebView->title();
+}
+
+void VeeWebService::show() {
+    mWebView->show();
 }

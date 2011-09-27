@@ -8,8 +8,8 @@ set(QT_USE_QTWEBKIT TRUE)
 set(QT_USE_QTDBUS TRUE)
 include(${QT_USE_FILE})
 
-include_directories( ${CMAKE_CURRENT_BINARY_DIR} )
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
+include_directories( ${CMAKE_CURRENT_BINARY_DIR} )
 
 # see http://cmake.org/cmake/help/cmake2.6docs.html#module:FindQt4 for a complete list
 
@@ -17,19 +17,20 @@ include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 
 
 set(vee-web_SRCS
-    vee_web_view_adaptor_impl.cpp
-    vee_web_view.cpp
+    vee_web_service_adaptor.cpp
+    vee_web_service.cpp
     command_line_parser.cpp
-    widget_builder.cpp
+    vee_web_service_builder.cpp
     dbus_manager.cpp
 )
 
 set(vee-web_MOC_HDRS
-    vee_web_view.h
-    vee_web_view_adaptor_impl.h
+    vee_web_service.h
+    vee_web_service_adaptor.h
     )
 
-qt4_add_dbus_adaptor(vee-web_SRCS ${VEE_WEB_DBUS_XML} vee_web_view.h VeeWebView vee_web_view_adaptor)
+qt4_add_dbus_adaptor(vee-web_SRCS ${VEE_WEB_DBUS_XML} vee_web_service.h
+    VeeWebService vee_web_view_adaptor)
 
 qt4_wrap_cpp(vee-web_SRCS ${vee-web_MOC_HDRS})
 

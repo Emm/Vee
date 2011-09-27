@@ -1,16 +1,16 @@
-#ifndef VEE_WEB_VIEW_ADAPTOR_IMPL_H
-#define VEE_WEB_VIEW_ADAPTOR_IMPL_H
+#ifndef VEE_WEB_SERVICE_ADAPTOR_H
+#define VEE_WEB_SERVICE_ADAPTOR_H
 
 #include "vee_web_view_adaptor.h"
 
-class VeeWebViewAdaptorImpl : VeeWebViewAdaptor {
+class VeeWebServiceAdaptor : public VeeWebViewAdaptor {
 
 Q_OBJECT
 Q_CLASSINFO("D-Bus Interface", "org.vee.VeeWebView")
 
 public:
-    explicit VeeWebViewAdaptorImpl(VeeWebView * parent);
-    virtual ~VeeWebViewAdaptorImpl() {};
+    explicit VeeWebServiceAdaptor(VeeWebService * parent);
+    virtual ~VeeWebServiceAdaptor() {};
 
 private slots:
     void broadcastUrlChanged(const QUrl & url);

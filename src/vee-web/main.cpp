@@ -10,10 +10,9 @@
 #include "constants.h"
 #include "command_line_parser.h"
 #include "dbus_manager.h"
-#include "widget_builder.h"
-#include <QDebug>
+#include "vee_web_service_builder.h"
 
-QObject* initApp(int argc, char* argv[]) {
+void initApp(int argc, char* argv[]) {
     CommandLineParser parser(APP_NAME, APP_VERSION);
     int success = parser.parse(argc, argv);
 
@@ -23,23 +22,20 @@ QObject* initApp(int argc, char* argv[]) {
     }
     QString urlOrFile = parser.urlOrFile();
     ulong windowId = parser.windowId();
-    QObject* mainWidget;
+    VeeWebService* service;
     if (windowId != NULL_WINDOW_ID) {
         QString serviceId = QString::fromUtf8(SERVICE_ID_TEMPLATE).arg(windowId);
         QString objectPath = QString::fromUtf8(OBJECT_PATH);
         DBusManager dbusManager(serviceId, objectPath);
 
-        WidgetBuilder embeddedWidgetBuilder(urlOrFile, windowId, & dbusManager);
-        qDebug() << "going to build widget";
-        mainWidget = embeddedWidgetBuilder.build();
-        qDebug() << "widget built";
+        VeeWebServiceBuilder embeddedVeeWebServiceBuilder(urlOrFile, windowId, & dbusManager);
+        service = embeddedVeeWebServiceBuilder.build();
     }
-    /*else {
-        WidgetBuilder standaloneWidgetBuilder(urlOrFile);
-        mainWidget = standaloneWidgetBuilder.build();
-        mainWidget->show();
-    }*/
-    return mainWidget;
+    else {
+        VeeWebServiceBuilder standaloneVeeWebServiceBuilder(urlOrFile);
+        service = standaloneVeeWebServiceBuilder.build();
+        service->show();
+    }
 }
 
 int main(int argc, char *argv[]) {

@@ -1,27 +1,28 @@
-#ifndef VEE_WEB_VIEW_H
-#define VEE_WEB_VIEW_H
+#ifndef VEE_WEB_SERVICE_H
+#define VEE_WEB_SERVICE_H
 
 #include <QWebView>
 #include <QX11EmbedWidget>
 
-class VeeWebView : public QObject {
+class VeeWebService : public QObject {
 
     Q_OBJECT
 
 private:
     QWebView* mWebView;
- /*   QX11EmbedWidget* mEmbedWidget;*/
+    QX11EmbedWidget* mEmbedWidget;
     const ulong mWindowId;
 
     bool shouldEmbed();
 public:
-    explicit VeeWebView(ulong windowId = 0, QObject* parent=0);
-    virtual ~VeeWebView();
+    explicit VeeWebService(ulong windowId = 0, QObject* parent=0);
+    virtual ~VeeWebService();
     Q_PROPERTY(QUrl url READ url)
     QUrl url() const;
 
     Q_PROPERTY(QString title READ title)
     QString title() const;
+    void show();
 
 private slots:
     void broadcastLoadFinished(bool ok);

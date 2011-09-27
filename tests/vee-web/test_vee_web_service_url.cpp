@@ -1,14 +1,14 @@
 #include <QtTest/QtTest>
-#include "vee_web_view.h"
+#include "vee_web_service.h"
 
 /**
  * Tests View object with URLs
  */
-class TestVeeWebViewUrl: public QObject {
+class TestVeeWebServiceUrl: public QObject {
 Q_OBJECT
 
 private:
-    VeeWebView* mView;
+    VeeWebService* mView;
     bool mSuccess;
 
 public slots:
@@ -18,7 +18,7 @@ public slots:
 
 private slots:
     void init() {
-        mView = new VeeWebView();
+        mView = new VeeWebService();
         connect(mView, SIGNAL(loadFinished(bool)), this, SLOT(setSuccess(bool)));
     };
 
@@ -41,4 +41,4 @@ private slots:
     };
 };
 
-QTEST_MAIN(TestVeeWebViewUrl)
+QTEST_MAIN(TestVeeWebServiceUrl)
