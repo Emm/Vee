@@ -19,6 +19,7 @@ VeeWebService::VeeWebService(ulong windowId, QObject* parent) :
     connect(mWebView, SIGNAL(selectionChanged()), this, SIGNAL(selectionChanged()));
     connect(mWebView, SIGNAL(titleChanged(const QString &)), this, SIGNAL(titleChanged(const QString &)));
     connect(mWebView, SIGNAL(urlChanged(const QUrl &)), this, SIGNAL(urlChanged(const QUrl &)));
+    connect(mWebView, SIGNAL(urlChanged(const QUrl &)), this, SIGNAL(urlResolved()));
 }
 
 VeeWebService::~VeeWebService() {
@@ -56,9 +57,7 @@ void VeeWebService::resolve(const QString &value) {
 }
 
 void VeeWebService::broadcastLoadFinished(bool ok) {
-    if (ok)
-        emit urlResolved();
-    else
+    if (!ok)
         emit urlNotResolved();
 }
 
