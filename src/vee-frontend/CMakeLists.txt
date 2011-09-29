@@ -8,6 +8,7 @@ include_directories( ${CMAKE_CURRENT_BINARY_DIR} )
 
 set(QT_USE_QTMAIN TRUE)
 set(QT_USE_QTDBUS TRUE)
+set(QT_USE_QTALGORITHMS TRUE)
 include(${QT_USE_FILE})
 # see http://cmake.org/cmake/help/cmake2.6docs.html#module:FindQt4 for a complete list
 

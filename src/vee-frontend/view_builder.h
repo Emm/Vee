@@ -5,6 +5,7 @@
 #include <QProcess>
 #include "embedcommand.h"
 #include "vee_view_interface.h"
+#include "vee_view_command.h"
 
 class ViewBuilder : public QObject {
     Q_OBJECT
@@ -17,18 +18,13 @@ public:
         ProcessCrashed = 3,
         UnknownError = 4
     };
-    explicit ViewBuilder(EmbedCommand* command, const QString &
-            interfaceName, const QString & serviceIdPattern, const QString &
-            objectPath, QObject* parent=0);
+    explicit ViewBuilder(const VeeViewCommand & veeViewCommand, QObject* parent=0);
     virtual ~ViewBuilder();
     void build(const ulong identifier);
-    QString viewType() const;
+    const QString & viewType() const;
 
 private:
-    EmbedCommand* mCommand;
-    QString mInterfaceName;
-    QString mServiceIdPattern;
-    QString mObjectPath;
+    const VeeViewCommand & mVeeViewCommand;
     QString mService;
     QDBusServiceWatcher mWatcher;
     QProcess* mProcess;

@@ -2,20 +2,14 @@
 #include "vee_web_view_interface.h"
 #include <QDebug>
 
-ViewBuilder::ViewBuilder(EmbedCommand* command, const QString &
-        interfaceName, const QString & serviceIdPattern, const QString &
-        objectPath, QObject* parent) :
+ViewBuilder::ViewBuilder(const VeeViewCommand & veeViewCommand, QObject* parent) :
     QObject(parent),
-    mCommand(command),
-    mInterfaceName(interfaceName),
-    mServiceIdPattern(serviceIdPattern),
-    mObjectPath(objectPath),
+    mVeeViewCommand(veeViewCommand),
     mProcess(NULL) {
     mWatcher.setConnection(QDBusConnection::sessionBus());
 }
 
 ViewBuilder::~ViewBuilder() {
-    delete mCommand;
     if (mProcess != NULL) {
         // In this case, the builder is waiting for the view to come up, but is
         // being destroyed before it could hand over control of it
@@ -26,12 +20,13 @@ ViewBuilder::~ViewBuilder() {
 
 void ViewBuilder::build(const ulong identifier) {
     mProcess = new QProcess(this);
-    const QString & executable = mCommand->executable();
-    QStringList * pArguments = mCommand->arguments(identifier);
+    const QString & executable = mVeeViewCommand.embedCommand->executable();
+    QStringList * pArguments = mVeeViewCommand.embedCommand->arguments(identifier);
     const QStringList & arguments = *pArguments; 
     //delete pArguments;
     connect(mProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(processGotAnError(QProcess::ProcessError)));
-    mService = mServiceIdPattern.arg(identifier);
+    qDebug() << "Identifier " << identifier;
+    mService = mVeeViewCommand.serviceIdPattern.arg(identifier);
     qDebug() << "Watching for " << mService;
     mWatcher.addWatchedService(mService);
     connect(& mWatcher, 
@@ -68,12 +63,12 @@ void ViewBuilder::serviceIsUp(const QString & serviceName, const QString & oldOw
 
 VeeViewInterface* ViewBuilder::buildView() {
     VeeViewInterface* view;
-    if (mInterfaceName == "org.vee.VeeWebView")
-        view = new VeeWebViewInterface(mProcess, mService, mObjectPath,
-                mInterfaceName, QDBusConnection::sessionBus(), this); 
-    else if (mInterfaceName == "org.vee.VeeView")
-        view = new VeeViewInterface(mProcess, mService, mObjectPath,
-                mInterfaceName, QDBusConnection::sessionBus(), this); 
+    if (mVeeViewCommand.interfaceName == "org.vee.VeeWebView")
+        view = new VeeWebViewInterface(mProcess, mService, mVeeViewCommand.objectPath,
+                mVeeViewCommand.interfaceName, QDBusConnection::sessionBus(), this); 
+    else if (mVeeViewCommand.interfaceName == "org.vee.VeeView")
+        view = new VeeViewInterface(mProcess, mService, mVeeViewCommand.objectPath,
+                mVeeViewCommand.interfaceName, QDBusConnection::sessionBus(), this); 
     else
         view = NULL;
     return view;
@@ -82,14 +77,14 @@ VeeViewInterface* ViewBuilder::buildView() {
 void ViewBuilder::cleanupAfterSuccess() {
     disconnectAll();
     mWatcher.removeWatchedService(mService);
-    mService = QString();
+    mService.clear();
     mProcess = NULL;
 }
 
 void ViewBuilder::cleanupAfterError() {
     disconnectAll();
     mWatcher.removeWatchedService(mService);
-    mService = QString();
+    mService.clear();
     delete mProcess;
 }
 
@@ -109,6 +104,7 @@ ViewBuilder::BuilderError ViewBuilder::processErrorToBuilderError(QProcess::Proc
     return newError;
 }
 
-QString ViewBuilder::viewType() const {
-    return mInterfaceName;
+const QString & ViewBuilder::viewType() const {
+    qDebug() << "viewType";
+    return mVeeViewCommand.interfaceName;
 }
