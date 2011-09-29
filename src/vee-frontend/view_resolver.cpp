@@ -40,7 +40,8 @@ void ViewResolver::askViewToResolve(VeeViewInterface* view) {
 void ViewResolver::viewResolvedUrl() {
     qDebug() << "ViewResolver::viewResolvedUrl()";
     ViewBuilder* builder = currentBuilder();
-    emit urlResolved(mCurrentView, builder->viewType());
+    QString viewType = builder != NULL ? builder->viewType() : QString();
+    emit urlResolved(mCurrentView, viewType);
     cleanup();
 }
 
