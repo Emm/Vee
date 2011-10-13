@@ -21,7 +21,8 @@ ViewResolver::~ViewResolver() {
 
 void ViewResolver::resolve(const QString & url, VeeViewInterface* currentView) {
     mUrl = url;
-    askViewToResolve(currentView);
+    mTabView = currentView;
+    tryWithNextBuilder();
 }
 
 void ViewResolver::askViewToResolve(VeeViewInterface* view) {
@@ -63,16 +64,22 @@ void ViewResolver::tryWithNextBuilder() {
     mCurrentViewBuilderPos++;
     ViewBuilder* builder = currentBuilder();
     if (builder != NULL) {
-        connect(builder,
-                SIGNAL(viewBuilt(VeeViewInterface*)),
-                this,
-                SLOT(askViewToResolve(VeeViewInterface*)));
-        connect(builder,
-                SIGNAL(error(ViewBuilder::BuilderError)),
-                this,
-                SLOT(viewBuilderError(ViewBuilder::BuilderError)));
-        builder->build(mIdentifier);
-        qDebug() << "After builder->build(" << mIdentifier << ")";
+        if (mTabView && (builder->viewType() == mTabView->interface())) {
+            qDebug() << "Using existing view";
+            askViewToResolve(mTabView);
+        }
+        else {
+            connect(builder,
+                    SIGNAL(viewBuilt(VeeViewInterface*)),
+                    this,
+                    SLOT(askViewToResolve(VeeViewInterface*)));
+            connect(builder,
+                    SIGNAL(error(ViewBuilder::BuilderError)),
+                    this,
+                    SLOT(viewBuilderError(ViewBuilder::BuilderError)));
+            builder->build(mIdentifier);
+            qDebug() << "After builder->build(" << mIdentifier << ")";
+        }
     }
     else {
         emit unresolvableUrl(mUrl);
@@ -83,6 +90,7 @@ void ViewResolver::tryWithNextBuilder() {
 void ViewResolver::cleanup() {
     disconnectAll();
     mCurrentView = NULL;
+    mTabView = NULL;
     mUrl = QString();
     mCurrentViewBuilderPos = -1;
 }

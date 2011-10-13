@@ -15,6 +15,7 @@ private:
     int mCurrentViewBuilderPos;
     ulong mIdentifier;
     QString mUrl;
+    VeeViewInterface* mTabView;
 
     void tryWithNextBuilder();
     void cleanup();
