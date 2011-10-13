@@ -50,14 +50,6 @@ void EmbedContainer::setView(VeeViewInterface* view, QString viewType) {
         connect(mView, SIGNAL(titleChanged(const QString &)), this, SIGNAL(titleChanged(const QString &)));
         connect(mView, SIGNAL(urlChanged(const QString &)), mInputBar, SLOT(setText(const QString &)));
         emit titleChanged(mView->title());
-        if (mViewType == "org.vee.VeeWebView") {
-            VeeWebViewInterface* webViewInt = qobject_cast<VeeWebViewInterface *>(mView);
-            if (webViewInt) {
-                connect(webViewInt, SIGNAL(urlChanged(const QString &)), this,
-                        SIGNAL(urlChanged(const QString &)));
-                emit urlChanged(webViewInt->url());
-            }
-        }
     }
 }
 
