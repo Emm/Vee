@@ -24,3 +24,8 @@ QDBusPendingReply<> VeeViewInterface::embed() {
 QString VeeViewInterface::title() const {
     return qvariant_cast< QString >(property("title"));
 }
+
+QString VeeViewInterface::url() const {
+    return qvariant_cast< QString >(property("url"));
+}
+

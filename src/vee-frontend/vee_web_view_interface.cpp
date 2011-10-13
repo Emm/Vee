@@ -10,10 +10,6 @@ VeeWebViewInterface::~VeeWebViewInterface() {
 }
 
 
-QString VeeWebViewInterface::url() const {
-    return qvariant_cast< QString >(property("url"));
-}
-
 QDBusPendingReply<> VeeWebViewInterface::reload() {
     QList<QVariant> argumentList;
     return asyncCallWithArgumentList(QLatin1String("reload"), argumentList);

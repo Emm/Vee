@@ -24,6 +24,9 @@ public:
     Q_PROPERTY(QString title READ title)
     QString title() const;
 
+    Q_PROPERTY(QString url READ url)
+    QString url() const;
+
 public slots:
     QDBusPendingReply<> resolve(const QString &url);
     QDBusPendingReply<> embed();
@@ -33,5 +36,6 @@ signals:
     void error(int errorType, int errorCode);
     void urlResolved();
     void urlNotResolved();
+    void urlChanged(QString url);
 };
 #endif

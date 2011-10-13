@@ -10,9 +10,6 @@ public:
     explicit VeeWebViewInterface(QProcess* process, const QString &service, const QString &path, const QString & interfaceName, const QDBusConnection &connection, QObject *parent = 0);
     virtual ~VeeWebViewInterface();
 
-    Q_PROPERTY(QString url READ url)
-    QString url() const;
-
 public slots:
     QDBusPendingReply<> reload();
     QDBusPendingReply<> setHtml(const QString &html);
@@ -24,7 +21,6 @@ signals:
     void loadProgress(int progress);
     void loadStarted();
     void selectionChanged();
-    void urlChanged(QString url);
 };
 
 #endif
