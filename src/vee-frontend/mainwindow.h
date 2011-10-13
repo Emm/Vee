@@ -1,7 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QLineEdit>
 #include <QVBoxLayout>
 #include <QWidget>
 #include "embedtabs.h"
@@ -11,7 +10,6 @@ class MainWindow : public QWidget {
     Q_OBJECT
 
 private:
-    QLineEdit* urlBar;
     EmbedTabs *mTabs;
 
 public:
@@ -20,7 +18,6 @@ public:
     void init(const QString& url);
 
 private slots:
-    void urlChanged();
     void setTitle(const QString & title);
 
 signals:

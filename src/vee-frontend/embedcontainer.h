@@ -1,10 +1,12 @@
 #ifndef EMBEDCONTAINER_H
 #define EMBEDCONTAINER_H
 
+#include <QAction>
 #include <QX11EmbedContainer>
 #include <QProcess>
 #include <QLabel>
 #include <QVBoxLayout>
+#include <QLineEdit>
 #include <QDebug>
 
 #include "view_resolver.h"
@@ -16,7 +18,9 @@ private:
     ViewResolver* mViewResolver;
     VeeViewInterface* mView;
     QString mViewType;
+    QLineEdit *mInputBar;
     QX11EmbedContainer *mContainer;
+    QAction* mChangeUrlAction;
 
     void disconnectView();
 public:
@@ -30,6 +34,7 @@ public slots:
     void setView(VeeViewInterface* view, QString viewType);
     void focusContainer();
     void showEmbedError(QX11EmbedContainer::Error error);
+    void resolveUrl();
 
 signals:
     void urlChanged(const QString & title);
