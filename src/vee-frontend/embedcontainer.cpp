@@ -1,6 +1,7 @@
 #include "embedcontainer.h"
 #include <QVBoxLayout>
-#include "vee_web_view_interface.h"
+#include "vee_view_remote_interface.h"
+#include "vee_local_view.h"
 
 EmbedContainer::EmbedContainer(ViewResolver* viewResolver, QWidget* parent):
         QWidget(parent),
@@ -8,6 +9,7 @@ EmbedContainer::EmbedContainer(ViewResolver* viewResolver, QWidget* parent):
         mView(NULL),
         mInputBar(new QLineEdit(this)),
         mContainer(new QX11EmbedContainer(this)),
+        mWidget(NULL),
         mChangeUrlAction(new QAction(this)) {
     setLayout(new QVBoxLayout());
 
@@ -39,14 +41,31 @@ void EmbedContainer::setView(VeeViewInterface* view, QString viewType) {
     if (view != mView) {
         if (mView) {
             disconnect();
-            mContainer->discardClient();
+            if (mWidget != NULL) {
+                layout()->removeWidget(mWidget);
+                mWidget = NULL;
+            }
+            else
+                mContainer->discardClient();
             delete mView;
         }
         mView = view;
         mViewType = viewType;
-        mView->setParent(mContainer);
         mInputBar->setText(view->url());
-        mView->embed();
+        VeeViewRemoteInterface* remoteInt = qobject_cast<VeeViewRemoteInterface *>(mView);
+        if (remoteInt) {
+            mView->setParent(mContainer);
+            mContainer->show();
+            remoteInt->embed();
+        }
+        else {
+            VeeLocalView* localView = qobject_cast<VeeLocalView *>(mView);
+            localView->setParent(this);
+            QWidget* viewWidget = localView->widget();
+            viewWidget->setParent(this);
+            layout()->removeWidget(mContainer);
+            layout()->addWidget(viewWidget);
+        }
         connect(mView, SIGNAL(titleChanged(const QString &)), this, SIGNAL(titleChanged(const QString &)));
         connect(mView, SIGNAL(urlChanged(const QString &)), mInputBar, SLOT(setText(const QString &)));
         emit titleChanged(mView->title());

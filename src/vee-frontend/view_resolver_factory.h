@@ -12,6 +12,8 @@ class ViewResolverFactory : public QObject {
 
 private:
     QVector<VeeViewCommand *>* mViewCommands;
+    void insertLocalBuilders(QVector<ViewBuilder*>* viewBuilders);
+    void insertRemoteBuilders(QVector<ViewBuilder*>* viewBuilders);
 
 public:
     explicit ViewResolverFactory(QObject* parent=0);

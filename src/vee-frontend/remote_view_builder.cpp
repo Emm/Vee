@@ -1,15 +1,15 @@
-#include "view_builder.h"
+#include "remote_view_builder.h"
 #include "vee_web_view_interface.h"
 #include <QDebug>
 
-ViewBuilder::ViewBuilder(const VeeViewCommand & veeViewCommand, QObject* parent) :
-    QObject(parent),
+RemoteViewBuilder::RemoteViewBuilder(const VeeViewCommand & veeViewCommand, QObject* parent) :
+    ViewBuilder(parent),
     mVeeViewCommand(veeViewCommand),
     mProcess(NULL) {
     mWatcher.setConnection(QDBusConnection::sessionBus());
 }
 
-ViewBuilder::~ViewBuilder() {
+RemoteViewBuilder::~RemoteViewBuilder() {
     if (mProcess != NULL) {
         // In this case, the builder is waiting for the view to come up, but is
         // being destroyed before it could hand over control of it
@@ -18,7 +18,7 @@ ViewBuilder::~ViewBuilder() {
     }
 }
 
-void ViewBuilder::build(const ulong identifier) {
+void RemoteViewBuilder::build(const ulong identifier) {
     mProcess = new QProcess(this);
     const QString & executable = mVeeViewCommand.embedCommand->executable();
     QStringList * pArguments = mVeeViewCommand.embedCommand->arguments(identifier);
@@ -37,12 +37,12 @@ void ViewBuilder::build(const ulong identifier) {
     mProcess->start(executable, arguments);
 }
 
-void ViewBuilder::processGotAnError(QProcess::ProcessError processError) {
+void RemoteViewBuilder::processGotAnError(QProcess::ProcessError processError) {
     emit error(processErrorToBuilderError(processError));
     cleanupAfterError();
 }
 
-void ViewBuilder::serviceIsUp(const QString & serviceName, const QString & oldOwner, const QString & newOwner) {
+void RemoteViewBuilder::serviceIsUp(const QString & serviceName, const QString & oldOwner, const QString & newOwner) {
     qDebug() << "Service is up";
     if (serviceName != mService) {
         emit error(ViewBuilder::WrongServiceNameError);
@@ -61,39 +61,36 @@ void ViewBuilder::serviceIsUp(const QString & serviceName, const QString & oldOw
     }
 }
 
-VeeViewInterface* ViewBuilder::buildView() {
+VeeViewInterface* RemoteViewBuilder::buildView() {
     VeeViewInterface* view;
     if (mVeeViewCommand.interfaceName == "org.vee.VeeWebView")
         view = new VeeWebViewInterface(mProcess, mService, mVeeViewCommand.objectPath,
-                mVeeViewCommand.interfaceName, QDBusConnection::sessionBus(), this); 
-    else if (mVeeViewCommand.interfaceName == "org.vee.VeeView")
-        view = new VeeViewInterface(mProcess, mService, mVeeViewCommand.objectPath,
                 mVeeViewCommand.interfaceName, QDBusConnection::sessionBus(), this); 
     else
         view = NULL;
     return view;
 }
 
-void ViewBuilder::cleanupAfterSuccess() {
+void RemoteViewBuilder::cleanupAfterSuccess() {
     disconnectAll();
     mWatcher.removeWatchedService(mService);
     mService.clear();
     mProcess = NULL;
 }
 
-void ViewBuilder::cleanupAfterError() {
+void RemoteViewBuilder::cleanupAfterError() {
     disconnectAll();
     mWatcher.removeWatchedService(mService);
     mService.clear();
     delete mProcess;
 }
 
-void ViewBuilder::disconnectAll() {
+void RemoteViewBuilder::disconnectAll() {
     disconnect(& mWatcher, 0, this, 0);
     disconnect(mProcess, 0, this, 0);
 }
 
-ViewBuilder::BuilderError ViewBuilder::processErrorToBuilderError(QProcess::ProcessError error) const {
+ViewBuilder::BuilderError RemoteViewBuilder::processErrorToBuilderError(QProcess::ProcessError error) const {
     ViewBuilder::BuilderError newError;
     if (error == QProcess::FailedToStart)
         newError = ViewBuilder::ProcessFailedToStart;
@@ -104,7 +101,7 @@ ViewBuilder::BuilderError ViewBuilder::processErrorToBuilderError(QProcess::Proc
     return newError;
 }
 
-const QString & ViewBuilder::viewType() const {
+const QString & RemoteViewBuilder::viewType() const {
     qDebug() << "viewType";
     return mVeeViewCommand.interfaceName;
 }
