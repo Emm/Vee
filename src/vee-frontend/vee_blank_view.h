@@ -11,13 +11,10 @@ private:
     const static QString msInterface;
     const static QString msTitle;
     const static QString msUrl;
-    QWidget* mWidget;
 
 public:
     explicit VeeBlankView(QObject* parent = 0);
     virtual ~VeeBlankView();
-
-    QWidget* widget() const;
 
     Q_PROPERTY(QString title READ title)
     virtual QString title() const;
