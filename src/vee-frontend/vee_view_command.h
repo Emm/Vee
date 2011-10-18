@@ -1,7 +1,7 @@
 #ifndef VEE_VIEW_COMMAND_H
 #define VEE_VIEW_COMMAND_H
 
-#include "embedcommand.h"
+#include "embed_command.h"
 
 struct VeeViewCommand {
     EmbedCommand* embedCommand;

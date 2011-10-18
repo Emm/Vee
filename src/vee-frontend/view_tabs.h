@@ -5,7 +5,7 @@
 #include <QTabWidget>
 
 #include "view_tab.h"
-#include "embedcommand.h"
+#include "embed_command.h"
 #include "view_resolver_factory.h"
 
 class ViewTabs: public QTabWidget {

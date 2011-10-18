@@ -4,7 +4,7 @@
 #include <QDBusServiceWatcher>
 #include <QProcess>
 #include "view_builder.h"
-#include "embedcommand.h"
+#include "embed_command.h"
 #include "vee_view_interface.h"
 #include "vee_view_command.h"
 

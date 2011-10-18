@@ -1,4 +1,4 @@
-#include "embedcommand.h"
+#include "embed_command.h"
 
 EmbedCommand::EmbedCommand(const QString& executable) : mExecutable(executable),
     mArguments(new QStringList()), mWinIdArgPos(-1) {

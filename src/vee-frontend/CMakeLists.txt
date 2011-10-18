@@ -16,7 +16,7 @@ include(${QT_USE_FILE})
 
 
 set(vee-frontend_SRCS
-    embedcommand.cpp
+    embed_command.cpp
     view_tab.cpp
     view_tabs.cpp
     mainwindow.cpp
