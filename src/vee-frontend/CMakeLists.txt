@@ -17,7 +17,7 @@ include(${QT_USE_FILE})
 
 set(vee-frontend_SRCS
     embedcommand.cpp
-    embedcontainer.cpp
+    view_tab.cpp
     embedtabs.cpp
     mainwindow.cpp
     view_resolver.cpp
@@ -34,7 +34,7 @@ set(vee-frontend_SRCS
 #qt4_add_dbus_interface(vee-frontend_SRCS ${VEE_WEB_DBUS_XML} vee_web_view_interface)
 
 set(vee-frontend_MOC_HDRS
-    embedcontainer.h
+    view_tab.h
     embedtabs.h
     view_resolver.h
     vee_view_interface.h

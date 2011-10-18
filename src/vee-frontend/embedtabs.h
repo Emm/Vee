@@ -4,7 +4,7 @@
 #include <QLabel>
 #include <QTabWidget>
 
-#include "embedcontainer.h"
+#include "view_tab.h"
 #include "embedcommand.h"
 #include "view_resolver_factory.h"
 

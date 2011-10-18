@@ -11,7 +11,7 @@
 
 #include "view_resolver.h"
 
-class EmbedContainer: public QWidget {
+class ViewTab: public QWidget {
     Q_OBJECT
 
 private:
@@ -26,8 +26,8 @@ private:
     void disconnectView();
 public:
     
-    explicit EmbedContainer(ViewResolver* viewResolver, QWidget* parent=0);
-    virtual ~EmbedContainer();
+    explicit ViewTab(ViewResolver* viewResolver, QWidget* parent=0);
+    virtual ~ViewTab();
 
 public slots:
     void setUrl(const QString & url);

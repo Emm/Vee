@@ -1,9 +1,9 @@
-#include "embedcontainer.h"
+#include "view_tab.h"
 #include <QVBoxLayout>
 #include "vee_view_remote_interface.h"
 #include "vee_local_view.h"
 
-EmbedContainer::EmbedContainer(ViewResolver* viewResolver, QWidget* parent):
+ViewTab::ViewTab(ViewResolver* viewResolver, QWidget* parent):
         QWidget(parent),
         mViewResolver(viewResolver),
         mView(NULL),
@@ -28,16 +28,16 @@ EmbedContainer::EmbedContainer(ViewResolver* viewResolver, QWidget* parent):
     connect(mContainer, SIGNAL(error(QX11EmbedContainer::Error)), this, SLOT(showEmbedError(QX11EmbedContainer::Error)));
 }
 
-EmbedContainer::~EmbedContainer() {
+ViewTab::~ViewTab() {
     delete mViewResolver;
 }
 
-void EmbedContainer::setUrl(const QString & url) {
+void ViewTab::setUrl(const QString & url) {
     mInputBar->setText(url);
     mChangeUrlAction->trigger();
 }
 
-void EmbedContainer::setView(VeeViewInterface* view, QString viewType) {
+void ViewTab::setView(VeeViewInterface* view, QString viewType) {
     if (view != mView) {
         if (mView) {
             disconnectView();
@@ -72,28 +72,28 @@ void EmbedContainer::setView(VeeViewInterface* view, QString viewType) {
     }
 }
 
-void EmbedContainer::setFailView(QString & url) {
+void ViewTab::setFailView(QString & url) {
     // FIXME display an error message
 }
 
-void EmbedContainer::focusContainer() {
+void ViewTab::focusContainer() {
     qDebug() << "embedded";
     mContainer->setFocus(Qt::OtherFocusReason);
 }
 
-void EmbedContainer::showEmbedError(QX11EmbedContainer::Error error) {
+void ViewTab::showEmbedError(QX11EmbedContainer::Error error) {
     qDebug() << "error while embedding: " << error;
     // FIXME actually handle error
 }
 
-void EmbedContainer::disconnectView() {
+void ViewTab::disconnectView() {
     if (mView != NULL) {
         disconnect(mView, 0, this, 0);
         disconnect(mView, 0, mInputBar, 0);
     }
 }
 
-void EmbedContainer::resolveUrl() {
+void ViewTab::resolveUrl() {
     qDebug() << "resolveUrl";
     const QString & url = mInputBar->text();
     mViewResolver->resolve(url, mView);

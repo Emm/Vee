@@ -6,7 +6,7 @@ EmbedTabs::EmbedTabs(ViewResolverFactory & viewManagerFactory, QWidget* parent)
 
 void EmbedTabs::showUrlInActiveTab(const QString & url) {
     if (count() >0) {
-        EmbedContainer * container = qobject_cast<EmbedContainer *>(currentWidget());
+        ViewTab * container = qobject_cast<ViewTab *>(currentWidget());
         if (container != NULL) {
             container->setUrl(url);
         }
@@ -18,7 +18,7 @@ void EmbedTabs::showUrlInActiveTab(const QString & url) {
 
 void EmbedTabs::showUrlInNewTab(const QString & url) {
     ViewResolver * viewResolver = mViewResolverFactory.buildViewResolver();
-    EmbedContainer* container = new EmbedContainer(viewResolver, this);
+    ViewTab* container = new ViewTab(viewResolver, this);
     int newTabPosition = addTab(container, QString("Loading..."));
     connect(container, SIGNAL(titleChanged(const QString &)), this, SLOT(updateTabTitle(const QString &)));
     connect(container, SIGNAL(urlChanged(const QString &)), this, SLOT(updateTabUrl(const QString &)));
@@ -28,7 +28,7 @@ void EmbedTabs::showUrlInNewTab(const QString & url) {
 
 /*
 void EmbedTabs::embed(EmbedCommand& embedCommand) {
-    EmbedContainer* container = new EmbedContainer(embedCommand);
+    ViewTab* container = new ViewTab(embedCommand);
     int newTabPosition = addTab(container, QString("Loading..."));
     connect(container, SIGNAL(titleChanged(const QString &)), this, SLOT(updateTabTitle(const QString &)));
     connect(container, SIGNAL(urlChanged(const QString &)), this, SLOT(updateTabUrl(const QString &)));
