@@ -3,7 +3,7 @@
 #include "mainwindow.h"
 #include <QFileInfo>
 
-MainWindow::MainWindow(ViewResolverFactory & viewManagerFactory) : mTabs(new EmbedTabs(viewManagerFactory)) {
+MainWindow::MainWindow(ViewResolverFactory & viewManagerFactory) : mTabs(new ViewTabs(viewManagerFactory)) {
     mTabs->setParent(this);
 
     QVBoxLayout* layout = new QVBoxLayout();

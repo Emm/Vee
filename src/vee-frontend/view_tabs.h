@@ -8,7 +8,7 @@
 #include "embedcommand.h"
 #include "view_resolver_factory.h"
 
-class EmbedTabs: public QTabWidget {
+class ViewTabs: public QTabWidget {
     Q_OBJECT
 
 private:
@@ -16,7 +16,7 @@ private:
     int getTabPosition();
 
 public:
-    EmbedTabs(ViewResolverFactory & viewManagerFactory, QWidget* parent=0);
+    ViewTabs(ViewResolverFactory & viewManagerFactory, QWidget* parent=0);
 
 public slots:
     void updateTabTitle(const QString & title);

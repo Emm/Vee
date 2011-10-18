@@ -1,10 +1,10 @@
-#include "embedtabs.h"
+#include "view_tabs.h"
 
-EmbedTabs::EmbedTabs(ViewResolverFactory & viewManagerFactory, QWidget* parent)
+ViewTabs::ViewTabs(ViewResolverFactory & viewManagerFactory, QWidget* parent)
     : QTabWidget(parent), mViewResolverFactory(viewManagerFactory) {
 }
 
-void EmbedTabs::showUrlInActiveTab(const QString & url) {
+void ViewTabs::showUrlInActiveTab(const QString & url) {
     if (count() >0) {
         ViewTab * container = qobject_cast<ViewTab *>(currentWidget());
         if (container != NULL) {
@@ -16,7 +16,7 @@ void EmbedTabs::showUrlInActiveTab(const QString & url) {
     }
 }
 
-void EmbedTabs::showUrlInNewTab(const QString & url) {
+void ViewTabs::showUrlInNewTab(const QString & url) {
     ViewResolver * viewResolver = mViewResolverFactory.buildViewResolver();
     ViewTab* container = new ViewTab(viewResolver, this);
     int newTabPosition = addTab(container, QString("Loading..."));
@@ -27,7 +27,7 @@ void EmbedTabs::showUrlInNewTab(const QString & url) {
 }
 
 /*
-void EmbedTabs::embed(EmbedCommand& embedCommand) {
+void ViewTabs::embed(EmbedCommand& embedCommand) {
     ViewTab* container = new ViewTab(embedCommand);
     int newTabPosition = addTab(container, QString("Loading..."));
     connect(container, SIGNAL(titleChanged(const QString &)), this, SLOT(updateTabTitle(const QString &)));
@@ -38,7 +38,7 @@ void EmbedTabs::embed(EmbedCommand& embedCommand) {
 }
 */
 
-int EmbedTabs::getTabPosition() {
+int ViewTabs::getTabPosition() {
     QObject * senderObj = QObject::sender();
     if (senderObj == NULL) return -1;
     QWidget * sender = qobject_cast<QWidget *>(senderObj);
@@ -48,7 +48,7 @@ int EmbedTabs::getTabPosition() {
     return tabPosition;
 }
 
-void EmbedTabs::updateTabTitle(const QString & title) {
+void ViewTabs::updateTabTitle(const QString & title) {
     int tabPosition = getTabPosition();
     if (tabPosition == -1)
         return;
@@ -58,7 +58,7 @@ void EmbedTabs::updateTabTitle(const QString & title) {
     }
 }
 
-void EmbedTabs::updateTabUrl(const QString & url) {
+void ViewTabs::updateTabUrl(const QString & url) {
     qDebug() << "updateTabUrl(" << url << ")";
     int tabPosition = getTabPosition();
     if (tabPosition == -1)

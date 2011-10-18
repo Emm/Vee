@@ -3,14 +3,14 @@
 
 #include <QVBoxLayout>
 #include <QWidget>
-#include "embedtabs.h"
+#include "view_tabs.h"
 #include "view_resolver_factory.h"
 
 class MainWindow : public QWidget {
     Q_OBJECT
 
 private:
-    EmbedTabs *mTabs;
+    ViewTabs *mTabs;
 
 public:
     explicit MainWindow(ViewResolverFactory & viewManagerFactory);
