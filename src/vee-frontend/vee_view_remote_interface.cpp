@@ -5,7 +5,7 @@ VeeViewRemoteInterface::VeeViewRemoteInterface(QProcess* process, const QString 
         VeeViewInterface(parent),
         mProcess(process),
         mRealInterface(new QDBusInterface(service, path, interfaceName.toLatin1().constData(), connection, this)) {
-    process->setParent(this);
+    mProcess->setParent(this);
     connect(mRealInterface, SIGNAL(urlResolved()), this, SIGNAL(urlResolved()));
     connect(mRealInterface, SIGNAL(urlNotResolved()), this, SIGNAL(urlNotResolved()));
     connect(mRealInterface, SIGNAL(urlChanged(QString)), this, SIGNAL(urlChanged(QString)));
