@@ -40,18 +40,18 @@ void EmbedContainer::setUrl(const QString & url) {
 void EmbedContainer::setView(VeeViewInterface* view, QString viewType) {
     if (view != mView) {
         if (mView) {
-            disconnect();
+            disconnectView();
             if (mWidget != NULL) {
                 layout()->removeWidget(mWidget);
-                mWidget = NULL;
+                delete mWidget;
+                qDebug() << "Removed old widget";
             }
-            else
-                mContainer->discardClient();
             delete mView;
         }
         mView = view;
         mViewType = viewType;
         mInputBar->setText(view->url());
+        qDebug() << "New view type: " << mView->interface();
         VeeViewRemoteInterface* remoteInt = qobject_cast<VeeViewRemoteInterface *>(mView);
         if (remoteInt) {
             mView->setParent(mContainer);
@@ -61,10 +61,10 @@ void EmbedContainer::setView(VeeViewInterface* view, QString viewType) {
         else {
             VeeLocalView* localView = qobject_cast<VeeLocalView *>(mView);
             localView->setParent(this);
-            QWidget* viewWidget = localView->widget();
-            viewWidget->setParent(this);
-            layout()->removeWidget(mContainer);
-            layout()->addWidget(viewWidget);
+            mWidget = localView->widget();
+            mWidget->setParent(this);
+            mContainer->hide();
+            layout()->addWidget(mWidget);
         }
         connect(mView, SIGNAL(titleChanged(const QString &)), this, SIGNAL(titleChanged(const QString &)));
         connect(mView, SIGNAL(urlChanged(const QString &)), mInputBar, SLOT(setText(const QString &)));
