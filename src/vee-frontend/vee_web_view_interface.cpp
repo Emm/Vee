@@ -1,27 +1,23 @@
 #include "vee_web_view_interface.h"
+#include <QDBusPendingCall>
 
-VeeWebViewInterface::VeeWebViewInterface(QProcess* process, const QString
-        &service, const QString &path, const QString & interfaceName, const
-        QDBusConnection &connection, QObject *parent) :
-    VeeViewInterface(process, service, path, interfaceName, connection, parent) {
+VeeWebViewInterface::VeeWebViewInterface(QProcess* process, const QString &service, const QString &path, const QString & interfaceName, const QDBusConnection &connection, QObject *parent) :
+    VeeViewRemoteInterface(process, service, path, interfaceName, connection, parent) {
 }
 
 VeeWebViewInterface::~VeeWebViewInterface() {
 }
 
-
-QDBusPendingReply<> VeeWebViewInterface::reload() {
-    QList<QVariant> argumentList;
-    return asyncCallWithArgumentList(QLatin1String("reload"), argumentList);
+void VeeWebViewInterface::reload() {
+    mRealInterface->asyncCall(QLatin1String("reload"));
 }
 
-QDBusPendingReply<> VeeWebViewInterface::setHtml(const QString &html) {
+void VeeWebViewInterface::setHtml(const QString &html) {
     QList<QVariant> argumentList;
     argumentList << qVariantFromValue(html);
-    return asyncCallWithArgumentList(QLatin1String("setHtml"), argumentList);
+    mRealInterface->asyncCallWithArgumentList(QLatin1String("setHtml"), argumentList);
 }
 
-QDBusPendingReply<> VeeWebViewInterface::stop() {
-    QList<QVariant> argumentList;
-    return asyncCallWithArgumentList(QLatin1String("stop"), argumentList);
+void VeeWebViewInterface::stop() {
+    mRealInterface->asyncCall(QLatin1String("stop"));
 }

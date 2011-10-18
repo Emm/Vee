@@ -18,26 +18,10 @@ public:
         ProcessCrashed = 3,
         UnknownError = 4
     };
-    explicit ViewBuilder(const VeeViewCommand & veeViewCommand, QObject* parent=0);
-    virtual ~ViewBuilder();
-    void build(const ulong identifier);
-    const QString & viewType() const;
-
-private:
-    const VeeViewCommand & mVeeViewCommand;
-    QString mService;
-    QDBusServiceWatcher mWatcher;
-    QProcess* mProcess;
-
-    VeeViewInterface* buildView();
-    void cleanupAfterSuccess();
-    void cleanupAfterError();
-    void disconnectAll();
-    BuilderError processErrorToBuilderError(QProcess::ProcessError error) const;
-
-private slots:
-    void processGotAnError(QProcess::ProcessError processError);
-    void serviceIsUp(const QString & serviceName, const QString & oldOwner, const QString & newOwner);
+    explicit ViewBuilder(QObject* parent=0) : QObject(parent) {};
+    virtual ~ViewBuilder() {};
+    virtual void build(const ulong identifier) = 0;
+    virtual const QString & viewType() const = 0;
 
 signals:
     void error(ViewBuilder::BuilderError error);

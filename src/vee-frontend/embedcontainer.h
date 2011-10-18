@@ -20,6 +20,7 @@ private:
     QString mViewType;
     QLineEdit *mInputBar;
     QX11EmbedContainer *mContainer;
+    QWidget* mWidget;
     QAction* mChangeUrlAction;
 
     void disconnectView();

@@ -1,6 +1,7 @@
 #include "embedcontainer.h"
 #include <QVBoxLayout>
-#include "vee_web_view_interface.h"
+#include "vee_view_remote_interface.h"
+#include "vee_local_view.h"
 
 EmbedContainer::EmbedContainer(ViewResolver* viewResolver, QWidget* parent):
         QWidget(parent),
@@ -8,6 +9,7 @@ EmbedContainer::EmbedContainer(ViewResolver* viewResolver, QWidget* parent):
         mView(NULL),
         mInputBar(new QLineEdit(this)),
         mContainer(new QX11EmbedContainer(this)),
+        mWidget(NULL),
         mChangeUrlAction(new QAction(this)) {
     setLayout(new QVBoxLayout());
 
@@ -38,15 +40,32 @@ void EmbedContainer::setUrl(const QString & url) {
 void EmbedContainer::setView(VeeViewInterface* view, QString viewType) {
     if (view != mView) {
         if (mView) {
-            disconnect();
-            mContainer->discardClient();
+            disconnectView();
+            if (mWidget != NULL) {
+                layout()->removeWidget(mWidget);
+                delete mWidget;
+                qDebug() << "Removed old widget";
+            }
             delete mView;
         }
         mView = view;
         mViewType = viewType;
-        mView->setParent(mContainer);
         mInputBar->setText(view->url());
-        mView->embed();
+        qDebug() << "New view type: " << mView->interface();
+        VeeViewRemoteInterface* remoteInt = qobject_cast<VeeViewRemoteInterface *>(mView);
+        if (remoteInt) {
+            mView->setParent(mContainer);
+            mContainer->show();
+            remoteInt->embed();
+        }
+        else {
+            VeeLocalView* localView = qobject_cast<VeeLocalView *>(mView);
+            localView->setParent(this);
+            mWidget = localView->widget();
+            mWidget->setParent(this);
+            mContainer->hide();
+            layout()->addWidget(mWidget);
+        }
         connect(mView, SIGNAL(titleChanged(const QString &)), this, SIGNAL(titleChanged(const QString &)));
         connect(mView, SIGNAL(urlChanged(const QString &)), mInputBar, SLOT(setText(const QString &)));
         emit titleChanged(mView->title());

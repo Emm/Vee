@@ -1,9 +1,9 @@
 #ifndef VEE_WEB_VIEW_INTERFACE_H
 #define VEE_WEB_VIEW_INTERFACE_H
 
-#include "vee_view_interface.h"
+#include "vee_view_remote_interface.h"
 
-class VeeWebViewInterface : public VeeViewInterface {
+class VeeWebViewInterface : public VeeViewRemoteInterface {
     Q_OBJECT
 
 public:
@@ -11,9 +11,9 @@ public:
     virtual ~VeeWebViewInterface();
 
 public slots:
-    QDBusPendingReply<> reload();
-    QDBusPendingReply<> setHtml(const QString &html);
-    QDBusPendingReply<> stop();
+    void reload();
+    void setHtml(const QString &html);
+    void stop();
 
 signals:
     void iconChanged();
