@@ -6,6 +6,8 @@
 class BlankViewBuilder : public ViewBuilder {
     Q_OBJECT
 
+private:
+    const static QString* msViewType;
 public:
     explicit BlankViewBuilder(QObject* parent=0);
     virtual ~BlankViewBuilder();
