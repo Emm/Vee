@@ -3,9 +3,9 @@
 #include "view_types.h"
 #include <QDebug>
 
-RemoteViewBuilder::RemoteViewBuilder(const ViewCommand & veeViewCommand, QObject* parent) :
+RemoteViewBuilder::RemoteViewBuilder(const ViewCommand & viewCommand, QObject* parent) :
     ViewBuilder(parent),
-    mViewCommand(veeViewCommand),
+    mViewCommand(viewCommand),
     mProcess(NULL) {
     mWatcher.setConnection(QDBusConnection::sessionBus());
 }

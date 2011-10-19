@@ -12,7 +12,7 @@ class RemoteViewBuilder : public ViewBuilder {
     Q_OBJECT
 
 public:
-    explicit RemoteViewBuilder(const ViewCommand & veeViewCommand, QObject* parent=0);
+    explicit RemoteViewBuilder(const ViewCommand & viewCommand, QObject* parent=0);
     virtual ~RemoteViewBuilder();
     virtual void build(const ulong identifier);
     const virtual QString & viewType() const;

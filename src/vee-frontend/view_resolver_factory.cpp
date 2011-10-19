@@ -8,12 +8,12 @@ ViewResolverFactory::ViewResolverFactory(QObject* parent) : QObject(parent), mVi
     EmbedCommand* command = new EmbedCommand(QString("src/vee-web/vee-web"));
     command->addArgument("-w");
     command->addWinId();
-    ViewCommand* veeViewCommand = new ViewCommand;
-    veeViewCommand->embedCommand = command;
-    veeViewCommand->interfaceName += WEB_VIEW_TYPE;
-    veeViewCommand->serviceIdPattern += "org.vee.WebView_%1";
-    veeViewCommand->objectPath += "/WebView";
-    mViewCommands->append(veeViewCommand);
+    ViewCommand* viewCommand = new ViewCommand;
+    viewCommand->embedCommand = command;
+    viewCommand->interfaceName += WEB_VIEW_TYPE;
+    viewCommand->serviceIdPattern += "org.vee.WebView_%1";
+    viewCommand->objectPath += "/WebView";
+    mViewCommands->append(viewCommand);
 }
 
 ViewResolverFactory::~ViewResolverFactory() {
