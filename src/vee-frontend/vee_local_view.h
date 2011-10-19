@@ -1,13 +1,13 @@
 #ifndef VEE_LOCAL_VIEW_H
 #define VEE_LOCAL_VIEW_H
 
-#include "vee_view_interface.h"
+#include "view.h"
 
-class VeeLocalView : public VeeViewInterface {
+class VeeLocalView : public View {
     Q_OBJECT
 
 public:
-    explicit VeeLocalView(QObject* parent=0): VeeViewInterface(parent) {};
+    explicit VeeLocalView(QObject* parent=0): View(parent) {};
     virtual ~VeeLocalView() {};
     virtual QWidget* widget() = 0;
 };

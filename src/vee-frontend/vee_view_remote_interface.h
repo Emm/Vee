@@ -12,9 +12,9 @@
 
 #include <QDBusInterface>
 #include <QProcess>
-#include "vee_view_interface.h"
+#include "view.h"
 
-class VeeViewRemoteInterface : public VeeViewInterface {
+class VeeViewRemoteInterface : public View {
     Q_OBJECT
 
 protected:

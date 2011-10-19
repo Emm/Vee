@@ -49,7 +49,7 @@ void RemoteViewBuilder::serviceIsUp(const QString & serviceName, const QString &
         cleanupAfterError();
     }
     else {
-        VeeViewInterface* view = buildView();
+        View* view = buildView();
         if (view == NULL) {
             emit error(ViewBuilder::WrongInterfaceNameError);
             cleanupAfterError();
@@ -61,8 +61,8 @@ void RemoteViewBuilder::serviceIsUp(const QString & serviceName, const QString &
     }
 }
 
-VeeViewInterface* RemoteViewBuilder::buildView() {
-    VeeViewInterface* view;
+View* RemoteViewBuilder::buildView() {
+    View* view;
     if (mViewCommand.interfaceName == "org.vee.VeeWebView")
         view = new VeeWebViewInterface(mProcess, mService, mViewCommand.objectPath,
                 mViewCommand.interfaceName, QDBusConnection::sessionBus(), this); 

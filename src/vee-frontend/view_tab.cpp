@@ -22,7 +22,7 @@ ViewTab::ViewTab(ViewResolver* viewResolver, QWidget* parent):
 
     connect(mInputBar, SIGNAL(returnPressed()), mChangeUrlAction, SLOT(trigger()));
     connect(mChangeUrlAction, SIGNAL(triggered()), this, SLOT(resolveUrl()));
-    connect(mViewResolver, SIGNAL(urlResolved(VeeViewInterface*, QString)), this, SLOT(setView(VeeViewInterface*, QString)));
+    connect(mViewResolver, SIGNAL(urlResolved(View*, QString)), this, SLOT(setView(View*, QString)));
     connect(mViewResolver, SIGNAL(unresolvableUrl(QString &)), this, SLOT(setFailView(QString &)));
     connect(mContainer, SIGNAL(clientIsEmbedded()), this, SLOT(focusContainer()));
     connect(mContainer, SIGNAL(error(QX11EmbedContainer::Error)), this, SLOT(showEmbedError(QX11EmbedContainer::Error)));
@@ -37,7 +37,7 @@ void ViewTab::setUrl(const QString & url) {
     mChangeUrlAction->trigger();
 }
 
-void ViewTab::setView(VeeViewInterface* view, QString viewType) {
+void ViewTab::setView(View* view, QString viewType) {
     if (view != mView) {
         if (mView) {
             disconnectView();

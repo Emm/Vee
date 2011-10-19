@@ -5,7 +5,7 @@
 #include <QProcess>
 #include "view_builder.h"
 #include "embed_command.h"
-#include "vee_view_interface.h"
+#include "view.h"
 #include "view_command.h"
 
 class RemoteViewBuilder : public ViewBuilder {
@@ -23,7 +23,7 @@ private:
     QDBusServiceWatcher mWatcher;
     QProcess* mProcess;
 
-    VeeViewInterface* buildView();
+    View* buildView();
     void cleanupAfterSuccess();
     void cleanupAfterError();
     void disconnectAll();

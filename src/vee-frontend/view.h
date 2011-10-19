@@ -3,7 +3,7 @@
 
 #include <QtCore/QObject>
 
-class VeeViewInterface : public QObject {
+class View : public QObject {
     Q_OBJECT
 
 public:
@@ -16,9 +16,9 @@ public:
     Q_PROPERTY(QString interface READ interface)
     virtual QString interface() const = 0;
 
-    explicit VeeViewInterface(QObject* parent = 0);
+    explicit View(QObject* parent = 0);
 
-    virtual ~VeeViewInterface();
+    virtual ~View();
 
 public slots:
     virtual void resolve(const QString &url) = 0;

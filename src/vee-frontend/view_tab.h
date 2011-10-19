@@ -16,7 +16,7 @@ class ViewTab: public QWidget {
 
 private:
     ViewResolver* mViewResolver;
-    VeeViewInterface* mView;
+    View* mView;
     QString mViewType;
     QLineEdit *mInputBar;
     QX11EmbedContainer *mContainer;
@@ -32,7 +32,7 @@ public:
 public slots:
     void setUrl(const QString & url);
     void setFailView(QString & url);
-    void setView(VeeViewInterface* view, QString viewType);
+    void setView(View* view, QString viewType);
     void focusContainer();
     void showEmbedError(QX11EmbedContainer::Error error);
     void resolveUrl();

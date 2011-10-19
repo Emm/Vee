@@ -11,11 +11,11 @@ class ViewResolver : public QObject {
 
 private:
     QVector<ViewBuilder*>* mViewBuilders;
-    VeeViewInterface* mCurrentView;
+    View* mCurrentView;
     int mCurrentViewBuilderPos;
     ulong mIdentifier;
     QString mUrl;
-    VeeViewInterface* mTabView;
+    View* mTabView;
 
     void tryWithNextBuilder();
     void cleanup();
@@ -25,7 +25,7 @@ private:
 public:
     explicit ViewResolver(QVector<ViewBuilder*>* viewBuilders, QObject* parent=0);
     virtual ~ViewResolver();
-    void resolve(const QString & url, VeeViewInterface* currentView = 0);
+    void resolve(const QString & url, View* currentView = 0);
     void setIdentifier(ulong identifier);
     ulong identifier() const;
 
@@ -35,10 +35,10 @@ private slots:
     void viewBuilderError(ViewBuilder::BuilderError error);
 
 public slots:
-    void askViewToResolve(VeeViewInterface* view);
+    void askViewToResolve(View* view);
 
 signals:
-    void urlResolved(VeeViewInterface* view, QString viewType);
+    void urlResolved(View* view, QString viewType);
     void unresolvableUrl(QString & url);
 };
 

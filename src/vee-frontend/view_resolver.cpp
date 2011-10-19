@@ -19,13 +19,13 @@ ViewResolver::~ViewResolver() {
 }
 
 
-void ViewResolver::resolve(const QString & url, VeeViewInterface* currentView) {
+void ViewResolver::resolve(const QString & url, View* currentView) {
     mUrl = url;
     mTabView = currentView;
     tryWithNextBuilder();
 }
 
-void ViewResolver::askViewToResolve(VeeViewInterface* view) {
+void ViewResolver::askViewToResolve(View* view) {
     if (view != NULL) {
         qDebug() << "askViewToResolve()";
         mCurrentView = view;
@@ -70,9 +70,9 @@ void ViewResolver::tryWithNextBuilder() {
         }
         else {
             connect(builder,
-                    SIGNAL(viewBuilt(VeeViewInterface*)),
+                    SIGNAL(viewBuilt(View*)),
                     this,
-                    SLOT(askViewToResolve(VeeViewInterface*)));
+                    SLOT(askViewToResolve(View*)));
             connect(builder,
                     SIGNAL(error(ViewBuilder::BuilderError)),
                     this,

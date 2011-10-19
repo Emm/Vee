@@ -4,7 +4,7 @@
 #include <QDBusServiceWatcher>
 #include <QProcess>
 #include "embed_command.h"
-#include "vee_view_interface.h"
+#include "view.h"
 #include "view_command.h"
 
 class ViewBuilder : public QObject {
@@ -25,7 +25,7 @@ public:
 
 signals:
     void error(ViewBuilder::BuilderError error);
-    void viewBuilt(VeeViewInterface* view);
+    void viewBuilt(View* view);
 };
 
 #endif
