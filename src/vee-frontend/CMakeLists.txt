@@ -24,14 +24,14 @@ set(vee-frontend_SRCS
     view.cpp
     remote_view.cpp
     blank_view.cpp
-    vee_web_view_interface.cpp
+    web_view.cpp
     remote_view_builder.cpp
     blank_view_builder.cpp
     view_resolver_factory.cpp
     main.cpp
 )
 
-#qt4_add_dbus_interface(vee-frontend_SRCS ${VEE_WEB_DBUS_XML} vee_web_view_interface)
+#qt4_add_dbus_interface(vee-frontend_SRCS ${VEE_WEB_DBUS_XML} web_view)
 
 set(vee-frontend_MOC_HDRS
     view_tab.h
@@ -41,7 +41,7 @@ set(vee-frontend_MOC_HDRS
     remote_view.h
     local_view.h
     blank_view.h
-    vee_web_view_interface.h
+    web_view.h
     view_builder.h
     remote_view_builder.h
     blank_view_builder.h

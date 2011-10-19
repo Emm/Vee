@@ -3,12 +3,12 @@
 
 #include "remote_view.h"
 
-class VeeWebViewInterface : public RemoteView {
+class WebView : public RemoteView {
     Q_OBJECT
 
 public:
-    explicit VeeWebViewInterface(QProcess* process, const QString &service, const QString &path, const QString & interfaceName, const QDBusConnection &connection, QObject *parent = 0);
-    virtual ~VeeWebViewInterface();
+    explicit WebView(QProcess* process, const QString &service, const QString &path, const QString & interfaceName, const QDBusConnection &connection, QObject *parent = 0);
+    virtual ~WebView();
 
 public slots:
     void reload();

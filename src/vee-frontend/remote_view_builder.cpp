@@ -1,5 +1,5 @@
 #include "remote_view_builder.h"
-#include "vee_web_view_interface.h"
+#include "web_view.h"
 #include <QDebug>
 
 RemoteViewBuilder::RemoteViewBuilder(const ViewCommand & veeViewCommand, QObject* parent) :
@@ -64,7 +64,7 @@ void RemoteViewBuilder::serviceIsUp(const QString & serviceName, const QString &
 View* RemoteViewBuilder::buildView() {
     View* view;
     if (mViewCommand.interfaceName == "org.vee.VeeWebView")
-        view = new VeeWebViewInterface(mProcess, mService, mViewCommand.objectPath,
+        view = new WebView(mProcess, mService, mViewCommand.objectPath,
                 mViewCommand.interfaceName, QDBusConnection::sessionBus(), this); 
     else
         view = NULL;
