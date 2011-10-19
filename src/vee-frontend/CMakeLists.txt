@@ -39,7 +39,7 @@ set(vee-frontend_MOC_HDRS
     view_resolver.h
     view.h
     remote_view.h
-    vee_local_view.h
+    local_view.h
     vee_blank_view.h
     vee_web_view_interface.h
     view_builder.h

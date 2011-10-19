@@ -1,7 +1,7 @@
 #include "view_tab.h"
 #include <QVBoxLayout>
 #include "remote_view.h"
-#include "vee_local_view.h"
+#include "local_view.h"
 
 ViewTab::ViewTab(ViewResolver* viewResolver, QWidget* parent):
         QWidget(parent),
@@ -59,7 +59,7 @@ void ViewTab::setView(View* view, QString viewType) {
             remoteInt->embed();
         }
         else {
-            VeeLocalView* localView = qobject_cast<VeeLocalView *>(mView);
+            LocalView* localView = qobject_cast<LocalView *>(mView);
             localView->setParent(this);
             mWidget = localView->widget();
             mWidget->setParent(this);

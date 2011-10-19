@@ -2,9 +2,9 @@
 #define VEE_BLANK_VIEW_H
 
 #include <QWidget>
-#include "vee_local_view.h"
+#include "local_view.h"
 
-class VeeBlankView : public VeeLocalView {
+class VeeBlankView : public LocalView {
     Q_OBJECT
 
 private:

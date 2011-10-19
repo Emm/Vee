@@ -8,7 +8,7 @@ const QString VeeBlankView::msTitle = "";
 const QString VeeBlankView::msUrl = "about:blank";
 
 VeeBlankView::VeeBlankView(QObject* parent):
-    VeeLocalView(parent) {
+    LocalView(parent) {
 }
 
 VeeBlankView::~VeeBlankView() {

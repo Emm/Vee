@@ -3,12 +3,12 @@
 
 #include "view.h"
 
-class VeeLocalView : public View {
+class LocalView : public View {
     Q_OBJECT
 
 public:
-    explicit VeeLocalView(QObject* parent=0): View(parent) {};
-    virtual ~VeeLocalView() {};
+    explicit LocalView(QObject* parent=0): View(parent) {};
+    virtual ~LocalView() {};
     virtual QWidget* widget() = 0;
 };
 
