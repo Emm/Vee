@@ -1,7 +1,7 @@
 #ifndef VEE_WEB_SERVICE_ADAPTOR_H
 #define VEE_WEB_SERVICE_ADAPTOR_H
 
-#include "vee_web_view_adaptor.h"
+#include "web_view_adaptor.h"
 
 class WebViewProxyAdaptor : public WebViewAdaptor {
 
