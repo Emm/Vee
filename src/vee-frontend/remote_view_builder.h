@@ -6,19 +6,19 @@
 #include "view_builder.h"
 #include "embed_command.h"
 #include "vee_view_interface.h"
-#include "vee_view_command.h"
+#include "view_command.h"
 
 class RemoteViewBuilder : public ViewBuilder {
     Q_OBJECT
 
 public:
-    explicit RemoteViewBuilder(const VeeViewCommand & veeViewCommand, QObject* parent=0);
+    explicit RemoteViewBuilder(const ViewCommand & veeViewCommand, QObject* parent=0);
     virtual ~RemoteViewBuilder();
     virtual void build(const ulong identifier);
     const virtual QString & viewType() const;
 
 private:
-    const VeeViewCommand & mVeeViewCommand;
+    const ViewCommand & mViewCommand;
     QString mService;
     QDBusServiceWatcher mWatcher;
     QProcess* mProcess;

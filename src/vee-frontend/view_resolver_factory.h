@@ -3,7 +3,7 @@
 
 #include <QX11EmbedContainer>
 #include <QVector>
-#include "vee_view_command.h"
+#include "view_command.h"
 #include "view_resolver.h"
 
 class ViewResolverFactory : public QObject {
@@ -11,7 +11,7 @@ class ViewResolverFactory : public QObject {
     Q_OBJECT
 
 private:
-    QVector<VeeViewCommand *>* mViewCommands;
+    QVector<ViewCommand *>* mViewCommands;
     void insertLocalBuilders(QVector<ViewBuilder*>* viewBuilders);
     void insertRemoteBuilders(QVector<ViewBuilder*>* viewBuilders);
 

@@ -5,7 +5,7 @@
 #include <QProcess>
 #include "embed_command.h"
 #include "vee_view_interface.h"
-#include "vee_view_command.h"
+#include "view_command.h"
 
 class ViewBuilder : public QObject {
     Q_OBJECT

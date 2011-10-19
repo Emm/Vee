@@ -2,9 +2,9 @@
 #include "vee_web_view_interface.h"
 #include <QDebug>
 
-RemoteViewBuilder::RemoteViewBuilder(const VeeViewCommand & veeViewCommand, QObject* parent) :
+RemoteViewBuilder::RemoteViewBuilder(const ViewCommand & veeViewCommand, QObject* parent) :
     ViewBuilder(parent),
-    mVeeViewCommand(veeViewCommand),
+    mViewCommand(veeViewCommand),
     mProcess(NULL) {
     mWatcher.setConnection(QDBusConnection::sessionBus());
 }
@@ -20,13 +20,13 @@ RemoteViewBuilder::~RemoteViewBuilder() {
 
 void RemoteViewBuilder::build(const ulong identifier) {
     mProcess = new QProcess(this);
-    const QString & executable = mVeeViewCommand.embedCommand->executable();
-    QStringList * pArguments = mVeeViewCommand.embedCommand->arguments(identifier);
+    const QString & executable = mViewCommand.embedCommand->executable();
+    QStringList * pArguments = mViewCommand.embedCommand->arguments(identifier);
     const QStringList & arguments = *pArguments; 
     //delete pArguments;
     connect(mProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(processGotAnError(QProcess::ProcessError)));
     qDebug() << "Identifier " << identifier;
-    mService = mVeeViewCommand.serviceIdPattern.arg(identifier);
+    mService = mViewCommand.serviceIdPattern.arg(identifier);
     qDebug() << "Watching for " << mService;
     mWatcher.addWatchedService(mService);
     connect(& mWatcher, 
@@ -63,9 +63,9 @@ void RemoteViewBuilder::serviceIsUp(const QString & serviceName, const QString &
 
 VeeViewInterface* RemoteViewBuilder::buildView() {
     VeeViewInterface* view;
-    if (mVeeViewCommand.interfaceName == "org.vee.VeeWebView")
-        view = new VeeWebViewInterface(mProcess, mService, mVeeViewCommand.objectPath,
-                mVeeViewCommand.interfaceName, QDBusConnection::sessionBus(), this); 
+    if (mViewCommand.interfaceName == "org.vee.VeeWebView")
+        view = new VeeWebViewInterface(mProcess, mService, mViewCommand.objectPath,
+                mViewCommand.interfaceName, QDBusConnection::sessionBus(), this); 
     else
         view = NULL;
     return view;
@@ -103,5 +103,5 @@ ViewBuilder::BuilderError RemoteViewBuilder::processErrorToBuilderError(QProcess
 
 const QString & RemoteViewBuilder::viewType() const {
     qDebug() << "viewType";
-    return mVeeViewCommand.interfaceName;
+    return mViewCommand.interfaceName;
 }

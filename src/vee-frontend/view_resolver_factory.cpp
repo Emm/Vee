@@ -4,11 +4,11 @@
 #include <QtAlgorithms>
 #include "view_types.h"
 
-ViewResolverFactory::ViewResolverFactory(QObject* parent) : QObject(parent), mViewCommands(new QVector<VeeViewCommand *>()) {
+ViewResolverFactory::ViewResolverFactory(QObject* parent) : QObject(parent), mViewCommands(new QVector<ViewCommand *>()) {
     EmbedCommand* command = new EmbedCommand(QString("src/vee-web/vee-web"));
     command->addArgument("-w");
     command->addWinId();
-    VeeViewCommand* veeViewCommand = new VeeViewCommand;
+    ViewCommand* veeViewCommand = new ViewCommand;
     veeViewCommand->embedCommand = command;
     veeViewCommand->interfaceName += WEB_VIEW_TYPE;
     veeViewCommand->serviceIdPattern += "org.vee.VeeWebView_%1";
@@ -36,7 +36,7 @@ void ViewResolverFactory::insertLocalBuilders(QVector<ViewBuilder*>* viewBuilder
 
 void ViewResolverFactory::insertRemoteBuilders(QVector<ViewBuilder*>* viewBuilders) {
     for (int i = 0 ; i < mViewCommands->size() ; i++) {
-        const VeeViewCommand & command = *( mViewCommands->at(i) );
+        const ViewCommand & command = *( mViewCommands->at(i) );
         viewBuilders->append(new RemoteViewBuilder(command));
     }
 }

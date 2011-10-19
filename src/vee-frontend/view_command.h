@@ -3,7 +3,7 @@
 
 #include "embed_command.h"
 
-struct VeeViewCommand {
+struct ViewCommand {
     EmbedCommand* embedCommand;
     QString interfaceName;
     QString serviceIdPattern;
