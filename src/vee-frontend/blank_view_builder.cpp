@@ -1,5 +1,5 @@
 #include "blank_view_builder.h"
-#include "vee_blank_view.h"
+#include "blank_view.h"
 #include "view_types.h"
 
 const QString* BlankViewBuilder::msViewType = new QString(BLANK_VIEW_TYPE);
@@ -11,7 +11,7 @@ BlankViewBuilder::~BlankViewBuilder() {
 }
 
 void BlankViewBuilder::build(const ulong identifier) {
-    VeeBlankView* view = new VeeBlankView();
+    BlankView* view = new BlankView();
     emit viewBuilt(view);
 }
 

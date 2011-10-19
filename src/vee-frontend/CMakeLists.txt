@@ -23,7 +23,7 @@ set(vee-frontend_SRCS
     view_resolver.cpp
     view.cpp
     remote_view.cpp
-    vee_blank_view.cpp
+    blank_view.cpp
     vee_web_view_interface.cpp
     remote_view_builder.cpp
     blank_view_builder.cpp
@@ -40,7 +40,7 @@ set(vee-frontend_MOC_HDRS
     view.h
     remote_view.h
     local_view.h
-    vee_blank_view.h
+    blank_view.h
     vee_web_view_interface.h
     view_builder.h
     remote_view_builder.h

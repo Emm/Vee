@@ -4,7 +4,7 @@
 #include <QWidget>
 #include "local_view.h"
 
-class VeeBlankView : public LocalView {
+class BlankView : public LocalView {
     Q_OBJECT
 
 private:
@@ -13,8 +13,8 @@ private:
     const static QString msUrl;
 
 public:
-    explicit VeeBlankView(QObject* parent = 0);
-    virtual ~VeeBlankView();
+    explicit BlankView(QObject* parent = 0);
+    virtual ~BlankView();
 
     Q_PROPERTY(QString title READ title)
     virtual QString title() const;
