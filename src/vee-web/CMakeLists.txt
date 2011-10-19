@@ -17,7 +17,7 @@ include_directories( ${CMAKE_CURRENT_BINARY_DIR} )
 
 
 set(vee-web_SRCS
-    vee_web_service_adaptor.cpp
+    web_view_proxy_adaptor.cpp
     web_view_proxy.cpp
     command_line_parser.cpp
     vee_web_service_builder.cpp
@@ -26,7 +26,7 @@ set(vee-web_SRCS
 
 set(vee-web_MOC_HDRS
     web_view_proxy.h
-    vee_web_service_adaptor.h
+    web_view_proxy_adaptor.h
     )
 
 qt4_add_dbus_adaptor(vee-web_SRCS ${WEB_VIEW_XML} web_view_proxy.h

@@ -10,5 +10,5 @@ include_directories(
 
 test(vee-web test_web_view_proxy_url)
 test(vee-web test_web_view_proxy_file)
-test(vee-web test_vee_web_service_adaptor)
+test(vee-web test_web_view_proxy_adaptor)
 test(vee-web test_command_line_parser)

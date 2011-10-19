@@ -1,9 +1,9 @@
 #include <QtTest/QTest>
 #include <QDBusConnection>
-#include "vee_web_service_adaptor.h"
+#include "web_view_proxy_adaptor.h"
 
-#define TEST_SERVICE_ID "org.vee.TestVeeWebServiceAdaptor"
-#define TEST_SERVICE_PATH "/TestVeeWebServiceAdaptor"
+#define TEST_SERVICE_ID "org.vee.TestWebViewProxyAdaptor"
+#define TEST_SERVICE_PATH "/TestWebViewProxyAdaptor"
 #define WEB_VIEW_INTERFACE "org.vee.VeeWebView"
 
 /**
@@ -26,7 +26,7 @@ signals:
 /**
  * Tests ViewAdaptor. 
  */
-class TestVeeWebServiceAdaptor : public QObject {
+class TestWebViewProxyAdaptor : public QObject {
 Q_OBJECT
 private:
     WebViewProxy* mProxy;
@@ -42,7 +42,7 @@ private slots:
 
     void init() {
         mProxy = new WebViewProxy();
-        new VeeWebServiceAdaptor(mProxy);
+        new WebViewProxyAdaptor(mProxy);
         mUrl = NULL;
         QDBusConnection dbus = QDBusConnection::sessionBus();
         dbus.registerService(TEST_SERVICE_ID);
@@ -73,4 +73,4 @@ private slots:
     };
 };
 
-QTEST_MAIN(TestVeeWebServiceAdaptor)
+QTEST_MAIN(TestWebViewProxyAdaptor)
