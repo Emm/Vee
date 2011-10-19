@@ -20,7 +20,7 @@ set(vee-web_SRCS
     web_view_proxy_adaptor.cpp
     web_view_proxy.cpp
     command_line_parser.cpp
-    vee_web_service_builder.cpp
+    web_view_proxy_builder.cpp
     dbus_manager.cpp
 )
 

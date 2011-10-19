@@ -10,7 +10,7 @@
 #include "constants.h"
 #include "command_line_parser.h"
 #include "dbus_manager.h"
-#include "vee_web_service_builder.h"
+#include "web_view_proxy_builder.h"
 
 void initApp(int argc, char* argv[]) {
     CommandLineParser parser(APP_NAME, APP_VERSION);
@@ -28,12 +28,12 @@ void initApp(int argc, char* argv[]) {
         QString objectPath = QString::fromUtf8(OBJECT_PATH);
         DBusManager dbusManager(serviceId, objectPath);
 
-        VeeWebServiceBuilder embeddedVeeWebServiceBuilder(urlOrFile, windowId, & dbusManager);
-        service = embeddedVeeWebServiceBuilder.build();
+        WebViewProxyBuilder embeddedWebViewProxyBuilder(urlOrFile, windowId, & dbusManager);
+        service = embeddedWebViewProxyBuilder.build();
     }
     else {
-        VeeWebServiceBuilder standaloneVeeWebServiceBuilder(urlOrFile);
-        service = standaloneVeeWebServiceBuilder.build();
+        WebViewProxyBuilder standaloneWebViewProxyBuilder(urlOrFile);
+        service = standaloneWebViewProxyBuilder.build();
         service->show();
     }
 }

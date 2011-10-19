@@ -1,19 +1,19 @@
-#include "vee_web_service_builder.h"
+#include "web_view_proxy_builder.h"
 
 #include <QTextStream>
 
-VeeWebServiceBuilder::VeeWebServiceBuilder(const QString & urlOrFile, const ulong windowId, const DBusManager* dbusManager) : mUrlOrFile(urlOrFile), mWindowId(windowId), mDBusManager(dbusManager)  {
+WebViewProxyBuilder::WebViewProxyBuilder(const QString & urlOrFile, const ulong windowId, const DBusManager* dbusManager) : mUrlOrFile(urlOrFile), mWindowId(windowId), mDBusManager(dbusManager)  {
 }
 
-VeeWebServiceBuilder::~VeeWebServiceBuilder() {
+WebViewProxyBuilder::~WebViewProxyBuilder() {
 }
 
-WebViewProxy* VeeWebServiceBuilder::build() {
+WebViewProxy* WebViewProxyBuilder::build() {
     WebViewProxy* view = buildView();
     return view;
 }
 
-WebViewProxy* VeeWebServiceBuilder::buildView() {
+WebViewProxy* WebViewProxyBuilder::buildView() {
     WebViewProxy* view = new WebViewProxy(mWindowId);
     if (shouldEmbed())
         mDBusManager->registerWidget(*view);
@@ -30,7 +30,7 @@ WebViewProxy* VeeWebServiceBuilder::buildView() {
 /**
  Builds HTML from the contents of stdin
 */
-const QString & VeeWebServiceBuilder::readHtmlFromStdin() const {
+const QString & WebViewProxyBuilder::readHtmlFromStdin() const {
     QString* html = new QString();
     QTextStream stdinStream(stdin);
     QString line;
@@ -42,6 +42,6 @@ const QString & VeeWebServiceBuilder::readHtmlFromStdin() const {
     return *html;
 }
 
-bool VeeWebServiceBuilder::shouldEmbed() const {
+bool WebViewProxyBuilder::shouldEmbed() const {
     return mWindowId != 0 && mDBusManager != NULL;
 }

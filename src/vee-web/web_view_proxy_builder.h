@@ -6,7 +6,7 @@
 #include "web_view_proxy.h"
 #include "dbus_manager.h"
 
-class VeeWebServiceBuilder {
+class WebViewProxyBuilder {
 private:
     const QString& mUrlOrFile;
     const ulong mWindowId;
@@ -17,8 +17,8 @@ private:
     const QString & readHtmlFromStdin() const;
 
 public:
-    explicit VeeWebServiceBuilder(const QString & urlOrFile, const ulong windowId = 0, const DBusManager* dbusManager = NULL);
-    virtual ~VeeWebServiceBuilder();
+    explicit WebViewProxyBuilder(const QString & urlOrFile, const ulong windowId = 0, const DBusManager* dbusManager = NULL);
+    virtual ~WebViewProxyBuilder();
     WebViewProxy* build();
 };
 
