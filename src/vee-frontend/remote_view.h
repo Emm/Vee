@@ -1,5 +1,5 @@
-#ifndef VEE_VIEW_REMOTE_INTERFACE_H
-#define VEE_VIEW_REMOTE_INTERFACE_H
+#ifndef REMOTE_VIEW_H
+#define REMOTE_VIEW_H
 /*
 #include <QtCore/QByteArray>
 #include <QtCore/QList>

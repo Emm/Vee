@@ -1,5 +1,5 @@
-#ifndef EMBEDTABS_H
-#define EMBEDTABS_H
+#ifndef VIEW_TABS_H
+#define VIEW_TABS_H
 
 #include <QLabel>
 #include <QTabWidget>

@@ -1,5 +1,5 @@
-#ifndef VEE_WEB_VIEW_INTERFACE_H
-#define VEE_WEB_VIEW_INTERFACE_H
+#ifndef WEB_VIEW_H
+#define WEB_VIEW_H
 
 #include "remote_view.h"
 

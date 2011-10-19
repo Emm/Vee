@@ -1,5 +1,5 @@
-#ifndef VEE_VIEW_COMMAND_H
-#define VEE_VIEW_COMMAND_H
+#ifndef VIEW_COMMAND_H
+#define VIEW_COMMAND_H
 
 #include "embed_command.h"
 

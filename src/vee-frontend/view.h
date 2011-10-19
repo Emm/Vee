@@ -1,5 +1,5 @@
-#ifndef VEE_VIEW_INTERFACE_H
-#define VEE_VIEW_INTERFACE_H
+#ifndef VIEW_H
+#define VIEW_H
 
 #include <QtCore/QObject>
 

@@ -1,5 +1,5 @@
-#ifndef VEE_BLANK_VIEW_H
-#define VEE_BLANK_VIEW_H
+#ifndef BLANK_VIEW_H
+#define BLANK_VIEW_H
 
 #include <QWidget>
 #include "local_view.h"

@@ -1,5 +1,5 @@
-#ifndef EMBEDCONTAINER_H
-#define EMBEDCONTAINER_H
+#ifndef VIEW_TAB_H
+#define VIEW_TAB_H
 
 #include <QAction>
 #include <QX11EmbedContainer>

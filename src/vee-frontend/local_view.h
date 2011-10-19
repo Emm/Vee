@@ -1,5 +1,5 @@
-#ifndef VEE_LOCAL_VIEW_H
-#define VEE_LOCAL_VIEW_H
+#ifndef LOCAL_VIEW_H
+#define LOCAL_VIEW_H
 
 #include "view.h"
 

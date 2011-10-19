@@ -1,5 +1,5 @@
-#ifndef VIEW_MANAGER_H
-#define VIEW_MANAGER_H
+#ifndef VIEW_RESOLVER_FACTORY_H
+#define VIEW_RESOLVER_FACTORY_H
 
 #include <QX11EmbedContainer>
 #include <QVector>

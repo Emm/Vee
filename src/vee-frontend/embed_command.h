@@ -1,5 +1,5 @@
-#ifndef EMBEDCOMMAND_H
-#define EMBEDCOMMAND_H
+#ifndef EMBED_COMMAND_H
+#define EMBED_COMMAND_H
 
 #include <QString>
 #include <QStringList>
