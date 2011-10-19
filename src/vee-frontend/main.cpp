@@ -1,6 +1,6 @@
 #include <QApplication>
 #include "view_resolver_factory.h"
-#include "mainwindow.h"
+#include "main_window.h"
 
 #include <QApplication>
 #include <QProcess>

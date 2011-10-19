@@ -19,7 +19,7 @@ set(vee-frontend_SRCS
     embed_command.cpp
     view_tab.cpp
     view_tabs.cpp
-    mainwindow.cpp
+    main_window.cpp
     view_resolver.cpp
     view.cpp
     remote_view.cpp
@@ -46,7 +46,7 @@ set(vee-frontend_MOC_HDRS
     remote_view_builder.h
     blank_view_builder.h
     view_resolver_factory.h
-    mainwindow.h
+    main_window.h
 )
 
 qt4_wrap_cpp(vee-frontend_MOC_SRCS ${vee-frontend_MOC_HDRS})

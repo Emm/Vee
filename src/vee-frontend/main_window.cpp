@@ -1,6 +1,6 @@
 #include <QDebug>
 
-#include "mainwindow.h"
+#include "main_window.h"
 #include <QFileInfo>
 
 MainWindow::MainWindow(ViewResolverFactory & viewManagerFactory) : mTabs(new ViewTabs(viewManagerFactory)) {
