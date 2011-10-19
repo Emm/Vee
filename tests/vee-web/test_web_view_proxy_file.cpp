@@ -17,8 +17,12 @@ private:
     bool mSuccess;
 
 public slots:
-    void setSuccess(bool success) {
-        mSuccess = success;
+    void succeeded() {
+        mSuccess = true;
+    };
+
+    void failed() {
+        mSuccess = false;
     };
 
 private slots:
@@ -32,7 +36,8 @@ private slots:
         }
         mHtmlFile->close();
         mProxy = new WebViewProxy();
-        connect(mProxy, SIGNAL(loadFinished(bool)), this, SLOT(setSuccess(bool)));
+        connect(mProxy, SIGNAL(urlResolved()), this, SLOT(succeeded()));
+        connect(mProxy, SIGNAL(urlNotResolved()), this, SLOT(failed()));
     };
 
     void cleanup() {
