@@ -3,16 +3,16 @@
 #include <QTemporaryFile>
 #include <QTextStream>
 
-#include "vee_web_service.h"
+#include "web_view_proxy.h"
 
 /**
- * Test VeeWebService objects with local files.
+ * Test WebViewProxy objects with local files.
  */
-class TestVeeWebServiceFile : public QObject {
+class TestWebViewProxyFile : public QObject {
 Q_OBJECT
 
 private:
-    VeeWebService* mView;
+    WebViewProxy* mProxy;
     QTemporaryFile* mHtmlFile;
     bool mSuccess;
 
@@ -25,18 +25,18 @@ private slots:
     void init() {
         // Relative filename (otherwise we can't test relative path), with html
         // extension (otherwise QWebView won't load the file)
-        mHtmlFile = new QTemporaryFile("test_vee_web_view_file_XXXXXX.HTML");
+        mHtmlFile = new QTemporaryFile("test_web_view_proxy_XXXXXX.HTML");
         if (mHtmlFile->open()) {
             QTextStream out(mHtmlFile);
             out << "<html><body>test</body></html>";
         }
         mHtmlFile->close();
-        mView = new VeeWebService();
-        connect(mView, SIGNAL(loadFinished(bool)), this, SLOT(setSuccess(bool)));
+        mProxy = new WebViewProxy();
+        connect(mProxy, SIGNAL(loadFinished(bool)), this, SLOT(setSuccess(bool)));
     };
 
     void cleanup() {
-        delete mView;
+        delete mProxy;
         delete mHtmlFile;
     };
 
@@ -44,7 +44,7 @@ private slots:
         QFileInfo fileInfo(*mHtmlFile);
         QString absPath = fileInfo.absoluteFilePath();
         mSuccess = false;
-        mView->resolve(absPath);
+        mProxy->resolve(absPath);
         QTest::qWait(1000);
         QCOMPARE(mSuccess, true);
     };
@@ -54,10 +54,10 @@ private slots:
         QVERIFY(fileInfo.isRelative() == true);
         QString relPath = fileInfo.filePath();
         mSuccess = false;
-        mView->resolve(relPath);
+        mProxy->resolve(relPath);
         QTest::qWait(1000);
         QCOMPARE(mSuccess, true);
     };
 };
 
-QTEST_MAIN(TestVeeWebServiceFile)
+QTEST_MAIN(TestWebViewProxyFile)

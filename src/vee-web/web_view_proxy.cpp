@@ -1,4 +1,4 @@
-#include "vee_web_service.h"
+#include "web_view_proxy.h"
 
 #include <QFile>
 #include <QFileInfo>
@@ -6,7 +6,7 @@
 
 #include "constants.h"
 
-VeeWebService::VeeWebService(ulong windowId, QObject* parent) :
+WebViewProxy::WebViewProxy(ulong windowId, QObject* parent) :
     QObject(parent),
     mWebView(new QWebView()),
     mEmbedWidget(NULL),
@@ -22,14 +22,14 @@ VeeWebService::VeeWebService(ulong windowId, QObject* parent) :
     connect(mWebView, SIGNAL(urlChanged(const QUrl &)), this, SIGNAL(urlResolved()));
 }
 
-VeeWebService::~VeeWebService() {
+WebViewProxy::~WebViewProxy() {
 }
 
-bool VeeWebService::shouldEmbed() {
+bool WebViewProxy::shouldEmbed() {
     return mWindowId != NULL_WINDOW_ID;
 }
 
-void VeeWebService::embed() {
+void WebViewProxy::embed() {
     if (shouldEmbed()) {
         // Only create the embed widget now, otherwise we're going to run into
         // odd focus issues if the widget is created earlier
@@ -41,7 +41,7 @@ void VeeWebService::embed() {
     }
 }
 
-void VeeWebService::resolve(const QString &value) {
+void WebViewProxy::resolve(const QString &value) {
     QUrl url;
     QFileInfo fileInfo(value);
     QString fileName = fileInfo.fileName();
@@ -56,31 +56,31 @@ void VeeWebService::resolve(const QString &value) {
     mWebView->load(url);
 }
 
-void VeeWebService::broadcastLoadFinished(bool ok) {
+void WebViewProxy::broadcastLoadFinished(bool ok) {
     if (!ok)
         emit urlNotResolved();
 }
 
-void VeeWebService::reload() {
+void WebViewProxy::reload() {
     mWebView->reload();
 }
 
-void VeeWebService::stop() {
+void WebViewProxy::stop() {
     mWebView->stop();
 }
 
-void VeeWebService::setHtml(const QString & html) {
+void WebViewProxy::setHtml(const QString & html) {
     mWebView->setHtml(html);
 }
 
-QUrl VeeWebService::url() const {
+QUrl WebViewProxy::url() const {
     return mWebView->url();
 }
 
-QString VeeWebService::title() const {
+QString WebViewProxy::title() const {
     return mWebView->title();
 }
 
-void VeeWebService::show() {
+void WebViewProxy::show() {
     mWebView->show();
 }

@@ -9,7 +9,7 @@ Q_OBJECT
 Q_CLASSINFO("D-Bus Interface", "org.vee.WebView")
 
 public:
-    explicit VeeWebServiceAdaptor(VeeWebService * parent);
+    explicit VeeWebServiceAdaptor(WebViewProxy * parent);
     virtual ~VeeWebServiceAdaptor() {};
 
 private slots:

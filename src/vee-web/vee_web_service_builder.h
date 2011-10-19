@@ -3,7 +3,7 @@
 
 #include <cstdlib>
 
-#include "vee_web_service.h"
+#include "web_view_proxy.h"
 #include "dbus_manager.h"
 
 class VeeWebServiceBuilder {
@@ -12,14 +12,14 @@ private:
     const ulong mWindowId;
     const DBusManager* mDBusManager;
 
-    VeeWebService* buildView();
+    WebViewProxy* buildView();
     inline bool shouldEmbed() const;
     const QString & readHtmlFromStdin() const;
 
 public:
     explicit VeeWebServiceBuilder(const QString & urlOrFile, const ulong windowId = 0, const DBusManager* dbusManager = NULL);
     virtual ~VeeWebServiceBuilder();
-    VeeWebService* build();
+    WebViewProxy* build();
 };
 
 #endif

@@ -22,7 +22,7 @@ void initApp(int argc, char* argv[]) {
     }
     QString urlOrFile = parser.urlOrFile();
     ulong windowId = parser.windowId();
-    VeeWebService* service;
+    WebViewProxy* service;
     if (windowId != NULL_WINDOW_ID) {
         QString serviceId = QString::fromUtf8(SERVICE_ID_TEMPLATE).arg(windowId);
         QString objectPath = QString::fromUtf8(OBJECT_PATH);

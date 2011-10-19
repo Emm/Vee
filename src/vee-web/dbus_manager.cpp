@@ -7,7 +7,7 @@ DBusManager::DBusManager(const QString & serviceId, const QString & objectPath) 
 DBusManager::~DBusManager() {
 }
 
-void DBusManager::registerWidget(VeeWebService & view) const {
+void DBusManager::registerWidget(WebViewProxy & view) const {
     new VeeWebServiceAdaptor(& view);
     QDBusConnection dbus = QDBusConnection::sessionBus();
     dbus.registerObject(mObjectPath, & view);

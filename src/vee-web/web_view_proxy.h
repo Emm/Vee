@@ -4,7 +4,7 @@
 #include <QWebView>
 #include <QX11EmbedWidget>
 
-class VeeWebService : public QObject {
+class WebViewProxy : public QObject {
 
     Q_OBJECT
 
@@ -15,8 +15,8 @@ private:
 
     bool shouldEmbed();
 public:
-    explicit VeeWebService(ulong windowId = 0, QObject* parent=0);
-    virtual ~VeeWebService();
+    explicit WebViewProxy(ulong windowId = 0, QObject* parent=0);
+    virtual ~WebViewProxy();
     Q_PROPERTY(QUrl url READ url)
     QUrl url() const;
 

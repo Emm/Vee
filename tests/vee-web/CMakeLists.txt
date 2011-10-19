@@ -8,7 +8,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/../../src/vee-web
 )
 
-test(vee-web test_vee_web_service_url)
-test(vee-web test_vee_web_service_file)
+test(vee-web test_web_view_proxy_url)
+test(vee-web test_web_view_proxy_file)
 test(vee-web test_vee_web_service_adaptor)
 test(vee-web test_command_line_parser)

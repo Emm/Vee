@@ -7,7 +7,7 @@
 #define WEB_VIEW_INTERFACE "org.vee.VeeWebView"
 
 /**
- * DBus interface to VeeWebService, for testing purposes.
+ * DBus interface to WebViewProxy, for testing purposes.
  */
 class VeeWebServiceInterface : public QDBusAbstractInterface {
 
@@ -29,7 +29,7 @@ signals:
 class TestVeeWebServiceAdaptor : public QObject {
 Q_OBJECT
 private:
-    VeeWebService* mService;
+    WebViewProxy* mProxy;
     VeeWebServiceInterface* mInterface;
     QString* mUrl;
 
@@ -41,12 +41,12 @@ public slots:
 private slots:
 
     void init() {
-        mService = new VeeWebService();
-        new VeeWebServiceAdaptor(mService);
+        mProxy = new WebViewProxy();
+        new VeeWebServiceAdaptor(mProxy);
         mUrl = NULL;
         QDBusConnection dbus = QDBusConnection::sessionBus();
         dbus.registerService(TEST_SERVICE_ID);
-        dbus.registerObject(TEST_SERVICE_PATH, mService);
+        dbus.registerObject(TEST_SERVICE_PATH, mProxy);
         QTest::qWait(10);
         mInterface = new VeeWebServiceInterface(TEST_SERVICE_ID, TEST_SERVICE_PATH, WEB_VIEW_INTERFACE, QDBusConnection::sessionBus(), this); 
     };
@@ -55,7 +55,7 @@ private slots:
         QDBusConnection dbus = QDBusConnection::sessionBus();
         connect(mInterface, SIGNAL(urlChanged(const QString &)), this, SLOT(setUrl(const QString &)));
         QString url("about:blank");
-        mService->resolve(url);
+        mProxy->resolve(url);
         QTest::qWait(10);
         if (mUrl == NULL)
             QFAIL("The broadcastUrl signal wasn't received by the interface");
@@ -67,7 +67,7 @@ private slots:
         QDBusConnection dbus = QDBusConnection::sessionBus();
         dbus.unregisterObject(TEST_SERVICE_PATH);
         dbus.unregisterService(TEST_SERVICE_ID);
-        delete mService;
+        delete mProxy;
         if (mUrl != NULL)
             delete mUrl;
     };

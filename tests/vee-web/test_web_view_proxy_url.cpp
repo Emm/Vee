@@ -1,14 +1,14 @@
 #include <QtTest/QtTest>
-#include "vee_web_service.h"
+#include "web_view_proxy.h"
 
 /**
  * Tests View object with URLs
  */
-class TestVeeWebServiceUrl: public QObject {
+class TestWebViewProxyUrl: public QObject {
 Q_OBJECT
 
 private:
-    VeeWebService* mView;
+    WebViewProxy* mProxy;
     bool mSuccess;
 
 public slots:
@@ -18,27 +18,27 @@ public slots:
 
 private slots:
     void init() {
-        mView = new VeeWebService();
-        connect(mView, SIGNAL(loadFinished(bool)), this, SLOT(setSuccess(bool)));
+        mProxy = new WebViewProxy();
+        connect(mProxy, SIGNAL(loadFinished(bool)), this, SLOT(setSuccess(bool)));
     };
 
     void testCorrectUrl() {
         mSuccess = false;
-        mView->resolve(QString("about:blank"));
+        mProxy->resolve(QString("about:blank"));
         QTest::qWait(10);
         QCOMPARE(mSuccess, true);
     };
  
     void testWrongUrl() {
         mSuccess = true;
-        mView->resolve(QString("abut:wrongurl"));
+        mProxy->resolve(QString("abut:wrongurl"));
         QTest::qWait(10);
         QCOMPARE(mSuccess, false);
     };
 
     void cleanup() {
-        delete mView;
+        delete mProxy;
     };
 };
 
-QTEST_MAIN(TestVeeWebServiceUrl)
+QTEST_MAIN(TestWebViewProxyUrl)

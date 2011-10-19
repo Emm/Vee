@@ -8,13 +8,13 @@ VeeWebServiceBuilder::VeeWebServiceBuilder(const QString & urlOrFile, const ulon
 VeeWebServiceBuilder::~VeeWebServiceBuilder() {
 }
 
-VeeWebService* VeeWebServiceBuilder::build() {
-    VeeWebService* view = buildView();
+WebViewProxy* VeeWebServiceBuilder::build() {
+    WebViewProxy* view = buildView();
     return view;
 }
 
-VeeWebService* VeeWebServiceBuilder::buildView() {
-    VeeWebService* view = new VeeWebService(mWindowId);
+WebViewProxy* VeeWebServiceBuilder::buildView() {
+    WebViewProxy* view = new WebViewProxy(mWindowId);
     if (shouldEmbed())
         mDBusManager->registerWidget(*view);
     if (mUrlOrFile.compare("-") == 0) {
