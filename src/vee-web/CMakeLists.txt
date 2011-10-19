@@ -29,7 +29,7 @@ set(vee-web_MOC_HDRS
     vee_web_service_adaptor.h
     )
 
-qt4_add_dbus_adaptor(vee-web_SRCS ${VEE_WEB_DBUS_XML} vee_web_service.h
+qt4_add_dbus_adaptor(vee-web_SRCS ${WEB_VIEW_XML} vee_web_service.h
     VeeWebService vee_web_view_adaptor)
 
 qt4_wrap_cpp(vee-web_SRCS ${vee-web_MOC_HDRS})

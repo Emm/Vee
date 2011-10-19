@@ -11,8 +11,8 @@ ViewResolverFactory::ViewResolverFactory(QObject* parent) : QObject(parent), mVi
     ViewCommand* veeViewCommand = new ViewCommand;
     veeViewCommand->embedCommand = command;
     veeViewCommand->interfaceName += WEB_VIEW_TYPE;
-    veeViewCommand->serviceIdPattern += "org.vee.VeeWebView_%1";
-    veeViewCommand->objectPath += "/VeeWebView";
+    veeViewCommand->serviceIdPattern += "org.vee.WebView_%1";
+    veeViewCommand->objectPath += "/WebView";
     mViewCommands->append(veeViewCommand);
 }
 

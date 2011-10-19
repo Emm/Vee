@@ -2,7 +2,7 @@
 
 #include <QtCore/QByteArray>
 
-VeeWebServiceAdaptor::VeeWebServiceAdaptor(VeeWebService * parent) : VeeWebViewAdaptor(parent) {
+VeeWebServiceAdaptor::VeeWebServiceAdaptor(VeeWebService * parent) : WebViewAdaptor(parent) {
     connect(parent, SIGNAL(urlChanged(const QUrl &)), SLOT(broadcastUrlChanged(const QUrl &)));
     connect(parent, SIGNAL(linkClicked(const QUrl &)), SLOT(broadcastLinkClicked(const QUrl &)));
 }

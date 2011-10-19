@@ -3,10 +3,10 @@
 
 #include "vee_web_view_adaptor.h"
 
-class VeeWebServiceAdaptor : public VeeWebViewAdaptor {
+class VeeWebServiceAdaptor : public WebViewAdaptor {
 
 Q_OBJECT
-Q_CLASSINFO("D-Bus Interface", "org.vee.VeeWebView")
+Q_CLASSINFO("D-Bus Interface", "org.vee.WebView")
 
 public:
     explicit VeeWebServiceAdaptor(VeeWebService * parent);

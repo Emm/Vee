@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.4.0)
 project(vee)
 
 find_package(Qt4 REQUIRED)
-set(VEE_WEB_DBUS_XML ${CMAKE_SOURCE_DIR}/interfaces/org.vee.VeeWebView.xml)
+set(WEB_VIEW_XML ${CMAKE_SOURCE_DIR}/interfaces/org.vee.WebView.xml)
 
 enable_testing()
 add_subdirectory(./src/vee-frontend)
