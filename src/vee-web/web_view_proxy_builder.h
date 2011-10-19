@@ -1,5 +1,5 @@
-#ifndef WIDGET_FACTORY_H
-#define WIDGET_FACTORY_H
+#ifndef WEB_VIEW_PROXY_BUILDER_H
+#define WEB_VIEW_PROXY_BUILDER_H
 
 #include <cstdlib>
 

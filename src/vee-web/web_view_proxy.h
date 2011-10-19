@@ -1,5 +1,5 @@
-#ifndef VEE_WEB_SERVICE_H
-#define VEE_WEB_SERVICE_H
+#ifndef WEB_VIEW_PROXY_H
+#define WEB_VIEW_PROXY_H
 
 #include <QWebView>
 #include <QX11EmbedWidget>

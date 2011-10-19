@@ -1,5 +1,5 @@
-#ifndef VEE_WEB_SERVICE_ADAPTOR_H
-#define VEE_WEB_SERVICE_ADAPTOR_H
+#ifndef WEB_VIEW_PROXY_ADAPTOR_H
+#define WEB_VIEW_PROXY_ADAPTOR_H
 
 #include "web_view_adaptor.h"
 
