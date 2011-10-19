@@ -14,7 +14,7 @@
 #include <QProcess>
 #include "view.h"
 
-class VeeViewRemoteInterface : public View {
+class RemoteView : public View {
     Q_OBJECT
 
 protected:
@@ -22,8 +22,8 @@ protected:
     QDBusInterface* mRealInterface;
 
 public:
-    explicit VeeViewRemoteInterface(QProcess* process, const QString &service, const QString &path, const QString & interfaceName, const QDBusConnection &connection, QObject *parent = 0);
-    virtual ~VeeViewRemoteInterface();
+    explicit RemoteView(QProcess* process, const QString &service, const QString &path, const QString & interfaceName, const QDBusConnection &connection, QObject *parent = 0);
+    virtual ~RemoteView();
 
     Q_PROPERTY(QString title READ title)
     QString title() const;

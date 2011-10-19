@@ -1,9 +1,9 @@
 #ifndef VEE_WEB_VIEW_INTERFACE_H
 #define VEE_WEB_VIEW_INTERFACE_H
 
-#include "vee_view_remote_interface.h"
+#include "remote_view.h"
 
-class VeeWebViewInterface : public VeeViewRemoteInterface {
+class VeeWebViewInterface : public RemoteView {
     Q_OBJECT
 
 public:

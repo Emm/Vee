@@ -1,7 +1,7 @@
-#include "vee_view_remote_interface.h"
+#include "remote_view.h"
 #include <QDBusPendingCall>
 
-VeeViewRemoteInterface::VeeViewRemoteInterface(QProcess* process, const QString &service, const QString &path, const QString & interfaceName, const QDBusConnection &connection, QObject *parent) :
+RemoteView::RemoteView(QProcess* process, const QString &service, const QString &path, const QString & interfaceName, const QDBusConnection &connection, QObject *parent) :
         View(parent),
         mProcess(process),
         mRealInterface(new QDBusInterface(service, path, interfaceName.toLatin1().constData(), connection, this)) {
@@ -13,28 +13,28 @@ VeeViewRemoteInterface::VeeViewRemoteInterface(QProcess* process, const QString 
     connect(mRealInterface, SIGNAL(error(int, int)), this, SIGNAL(error(int, int)));
 }
 
-VeeViewRemoteInterface::~VeeViewRemoteInterface() {
+RemoteView::~RemoteView() {
 }
 
-void VeeViewRemoteInterface::embed() {
+void RemoteView::embed() {
     mRealInterface->asyncCall(QLatin1String("embed"));
 }
 
-void VeeViewRemoteInterface::resolve(const QString & url) {
+void RemoteView::resolve(const QString & url) {
     QList<QVariant> argumentList;
     argumentList << qVariantFromValue(url);
     mRealInterface->asyncCallWithArgumentList(QLatin1String("resolve"), argumentList);
 }
 
 
-QString VeeViewRemoteInterface::interface() const {
+QString RemoteView::interface() const {
     return mRealInterface->interface();
 }
 
-QString VeeViewRemoteInterface::title() const {
+QString RemoteView::title() const {
     return qvariant_cast< QString >(mRealInterface->property("title"));
 }
 
-QString VeeViewRemoteInterface::url() const {
+QString RemoteView::url() const {
     return qvariant_cast< QString >(mRealInterface->property("url"));
 }

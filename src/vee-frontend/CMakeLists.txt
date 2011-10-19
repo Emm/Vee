@@ -22,7 +22,7 @@ set(vee-frontend_SRCS
     mainwindow.cpp
     view_resolver.cpp
     view.cpp
-    vee_view_remote_interface.cpp
+    remote_view.cpp
     vee_blank_view.cpp
     vee_web_view_interface.cpp
     remote_view_builder.cpp
@@ -38,7 +38,7 @@ set(vee-frontend_MOC_HDRS
     view_tabs.h
     view_resolver.h
     view.h
-    vee_view_remote_interface.h
+    remote_view.h
     vee_local_view.h
     vee_blank_view.h
     vee_web_view_interface.h

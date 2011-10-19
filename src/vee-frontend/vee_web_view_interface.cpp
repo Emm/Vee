@@ -2,7 +2,7 @@
 #include <QDBusPendingCall>
 
 VeeWebViewInterface::VeeWebViewInterface(QProcess* process, const QString &service, const QString &path, const QString & interfaceName, const QDBusConnection &connection, QObject *parent) :
-    VeeViewRemoteInterface(process, service, path, interfaceName, connection, parent) {
+    RemoteView(process, service, path, interfaceName, connection, parent) {
 }
 
 VeeWebViewInterface::~VeeWebViewInterface() {

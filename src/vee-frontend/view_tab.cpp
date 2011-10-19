@@ -1,6 +1,6 @@
 #include "view_tab.h"
 #include <QVBoxLayout>
-#include "vee_view_remote_interface.h"
+#include "remote_view.h"
 #include "vee_local_view.h"
 
 ViewTab::ViewTab(ViewResolver* viewResolver, QWidget* parent):
@@ -52,7 +52,7 @@ void ViewTab::setView(View* view, QString viewType) {
         mViewType = viewType;
         mInputBar->setText(view->url());
         qDebug() << "New view type: " << mView->interface();
-        VeeViewRemoteInterface* remoteInt = qobject_cast<VeeViewRemoteInterface *>(mView);
+        RemoteView* remoteInt = qobject_cast<RemoteView *>(mView);
         if (remoteInt) {
             mView->setParent(mContainer);
             mContainer->show();
