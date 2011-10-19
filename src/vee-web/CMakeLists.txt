@@ -30,7 +30,7 @@ set(vee-web_MOC_HDRS
     )
 
 qt4_add_dbus_adaptor(vee-web_SRCS ${WEB_VIEW_XML} web_view_proxy.h
-    WebViewProxy vee_web_view_adaptor)
+    WebViewProxy web_view_adaptor)
 
 qt4_wrap_cpp(vee-web_SRCS ${vee-web_MOC_HDRS})
 
