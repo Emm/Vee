@@ -4,7 +4,7 @@
 
 #define TEST_SERVICE_ID "org.vee.TestWebViewProxyAdaptor"
 #define TEST_SERVICE_PATH "/TestWebViewProxyAdaptor"
-#define WEB_VIEW_INTERFACE "org.vee.VeeWebView"
+#define WEB_VIEW_INTERFACE "org.vee.WebView"
 
 /**
  * DBus interface to WebViewProxy, for testing purposes.
