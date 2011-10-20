@@ -1,30 +1,25 @@
 #include "command_line_parser.h"
 #include "constants.h"
 
-CommandLineParser::CommandLineParser(const QString & appName, const QString & appVersion) {
-    mParser = new TCLAP::CmdLine(appName.toUtf8().data(), ' ',
-            appVersion.toUtf8().data());
-    mWinIdArg = new TCLAP::ValueArg<ulong>("w", "window-id", "X server window ID, for embedding", false, NULL_WINDOW_ID, "integer");
+CommandLineParser::CommandLineParser(const QString & appName, const QString & appVersion):
+    mParser(new TCLAP::CmdLine(appName.toUtf8().data(), ' ',
+            appVersion.toUtf8().data())),
+    mWinIdArg(new TCLAP::ValueArg<ulong>("w", "window-id", "X server window ID, for embedding", false, NULL_WINDOW_ID, "integer")),
+    mUrlArg(new TCLAP::UnlabeledValueArg<std::string>("url", "URL or filename", false, "", "url")),
+    mWindowId(NULL_WINDOW_ID),
+    mUrlOrFile(NULL),
+    mErrorMessage(NULL)
+{
     mParser->add(*mWinIdArg);
-
-    mUrlArg = new TCLAP::UnlabeledValueArg<std::string>("url", "URL or filename", false, "", "url");
     mParser->add(*mUrlArg);
-    mWindowId = NULL_WINDOW_ID;
-    mUrlOrFile = NULL;
-    mErrorMessage = NULL;
 }
 
 CommandLineParser::~CommandLineParser() {
-    if (mParser != NULL)
-        delete mParser;
-    if (mWinIdArg != NULL)
-        delete mWinIdArg;
-    if (mUrlArg != NULL)
-        delete mUrlArg;
-    if (mUrlOrFile != NULL)
-        delete mUrlOrFile;
-    if (mErrorMessage != NULL)
-        delete mErrorMessage;
+    delete mParser;
+    delete mWinIdArg;
+    delete mUrlArg;
+    delete mUrlOrFile;
+    delete mErrorMessage;
 }
 
 int CommandLineParser::parse(int argc, char** argv) {
@@ -49,10 +44,6 @@ int CommandLineParser::parse(int argc, char** argv) {
 
 void CommandLineParser::reset() {
     mParser->reset();
-    if (mUrlOrFile != NULL)
-        delete mUrlOrFile;
-    if (mErrorMessage != NULL)
-        delete mErrorMessage;
 }
 
 QString CommandLineParser::urlOrFile() {
