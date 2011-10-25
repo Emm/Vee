@@ -4,6 +4,10 @@
 #include <cstdlib>
 #include "web_view_proxy.h"
 
+/*! The DBusManager registers and unregisters a WebViewProxy with DBus.
+ *
+ */
+
 class DBusManager {
 private:
     const QString mServiceId;

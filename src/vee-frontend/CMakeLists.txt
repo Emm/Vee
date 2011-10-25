@@ -57,7 +57,10 @@ qt4_automoc(${vee-frontend_SRCS})
 
 
 # create an executable file named "vee" from the source files in the variable "vee-frontend_SRCS".
-add_executable(vee ${vee-frontend_SRCS} ${vee-frontend_MOC_SRCS})
+add_library(libvee-frontend ${vee-frontend_SRCS} ${vee-frontend_MOC_SRCS})
+set_target_properties(libvee-frontend PROPERTIES OUTPUT_NAME vee)
+add_executable(vee main.cpp)
 
 # link the "vee-frontend" target against the Qt libraries. which libraries exactly, is defined by the "include(${QT_USE_FILE})" line above, which sets up this variable.
-target_link_libraries(vee ${QT_LIBRARIES})
+target_link_libraries(libvee-frontend ${QT_LIBRARIES})
+target_link_libraries(vee libvee-frontend)

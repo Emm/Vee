@@ -10,3 +10,4 @@ macro(test module test_file)
 endmacro(test)
 
 add_subdirectory(./vee-web)
+add_subdirectory(./vee-frontend)
