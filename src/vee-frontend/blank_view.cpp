@@ -23,7 +23,7 @@ QString BlankView::interface() const {
 }
 
 QString BlankView::url() const {
-    return msTitle;
+    return msUrl;
 }
 
 QWidget* BlankView::widget() {
