@@ -8,3 +8,4 @@ include_directories(
 )
 
 test(vee-frontend test_embed_command)
+test(vee-frontend test_blank_view)
