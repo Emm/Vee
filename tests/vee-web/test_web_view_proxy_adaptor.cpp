@@ -52,7 +52,6 @@ private slots:
     };
 
     void testBroadcastUrl() {
-        QDBusConnection dbus = QDBusConnection::sessionBus();
         connect(mInterface, SIGNAL(urlChanged(const QString &)), this, SLOT(setUrl(const QString &)));
         QString url("about:blank");
         mProxy->resolve(url);
