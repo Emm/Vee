@@ -44,6 +44,7 @@ void ViewTab::setView(View* view, QString viewType) {
             if (mWidget != NULL) {
                 layout()->removeWidget(mWidget);
                 delete mWidget;
+                mWidget = NULL;
                 qDebug() << "Removed old widget";
             }
             delete mView;
