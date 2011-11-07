@@ -2,7 +2,6 @@
 #define VIEW_BULDER_H
 
 #include <QDBusServiceWatcher>
-#include <QProcess>
 #include "embed_command.h"
 #include "view.h"
 #include "view_command.h"
