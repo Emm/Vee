@@ -1,6 +1,7 @@
 #include "remote_view_builder.h"
 #include "web_view.h"
 #include "view_types.h"
+#include "view_process.h"
 #include <QDebug>
 
 RemoteViewBuilder::RemoteViewBuilder(const ViewCommand & viewCommand, QObject* parent) :
@@ -20,7 +21,7 @@ RemoteViewBuilder::~RemoteViewBuilder() {
 }
 
 void RemoteViewBuilder::build(const ulong identifier) {
-    mProcess = new QProcess(this);
+    mProcess = new ViewProcess(this);
     const QString & executable = mViewCommand.embedCommand->executable();
     QStringList * pArguments = mViewCommand.embedCommand->arguments(identifier);
     const QStringList & arguments = *pArguments; 

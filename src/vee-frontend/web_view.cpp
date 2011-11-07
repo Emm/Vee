@@ -1,7 +1,7 @@
 #include "web_view.h"
 #include <QDBusPendingCall>
 
-WebView::WebView(QProcess* process, const QString &service, const QString &path, const QString & interfaceName, const QDBusConnection &connection, QObject *parent) :
+WebView::WebView(Process* process, const QString &service, const QString &path, const QString & interfaceName, const QDBusConnection &connection, QObject *parent) :
     RemoteView(process, service, path, interfaceName, connection, parent) {
 }
 

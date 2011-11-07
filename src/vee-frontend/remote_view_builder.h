@@ -2,7 +2,7 @@
 #define REMOTE_VIEW_BULDER_H
 
 #include <QDBusServiceWatcher>
-#include <QProcess>
+#include "process.h"
 #include "view_builder.h"
 #include "embed_command.h"
 #include "view.h"
@@ -21,7 +21,7 @@ private:
     const ViewCommand & mViewCommand;
     QString mService;
     QDBusServiceWatcher mWatcher;
-    QProcess* mProcess;
+    Process* mProcess;
 
     View* buildView();
     void cleanupAfterSuccess();

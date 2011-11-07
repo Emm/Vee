@@ -3,6 +3,7 @@
 #include <QDBusAbstractAdaptor>
 #include <QDebug>
 #include "web_view.h"
+#include "view_process.h"
 #define TEST_SERVICE_ID "org.vee.TestWebView"
 #define TEST_SERVICE_PATH "/TestWebView"
 #define WEB_VIEW_INTERFACE "org.vee.WebView"
@@ -186,7 +187,7 @@ Q_OBJECT
 private:
 
     WebView* mView;
-    QProcess* mProcess;
+    Process* mProcess;
     TestRemoteWebView* mRemoteView;
     QString* mService;
     QString* mPath;
@@ -223,7 +224,7 @@ public slots:
 private slots:
 
     void init() {
-        mProcess = new QProcess();
+        mProcess = new ViewProcess();
         mService = new QString(TEST_SERVICE_ID);
         mPath = new QString(TEST_SERVICE_PATH);
         mInterfaceName = new QString(WEB_VIEW_INTERFACE);

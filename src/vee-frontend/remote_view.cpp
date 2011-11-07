@@ -1,7 +1,7 @@
 #include "remote_view.h"
 #include <QDBusPendingCall>
 
-RemoteView::RemoteView(QProcess* process, const QString &service, const QString &path, const QString & interfaceName, const QDBusConnection &connection, QObject *parent) :
+RemoteView::RemoteView(Process* process, const QString &service, const QString &path, const QString & interfaceName, const QDBusConnection &connection, QObject *parent) :
         View(parent),
         mProcess(process),
         mRealInterface(new QDBusInterface(service, path, interfaceName.toLatin1().constData(), connection, this)) {

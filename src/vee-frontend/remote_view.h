@@ -11,18 +11,18 @@
 */
 
 #include <QDBusInterface>
-#include <QProcess>
+#include "process.h"
 #include "view.h"
 
 class RemoteView : public View {
     Q_OBJECT
 
 protected:
-    QProcess* mProcess;
+    Process* mProcess;
     QDBusInterface* mRealInterface;
 
 public:
-    explicit RemoteView(QProcess* process, const QString &service, const QString &path, const QString & interfaceName, const QDBusConnection &connection, QObject *parent = 0);
+    explicit RemoteView(Process* process, const QString &service, const QString &path, const QString & interfaceName, const QDBusConnection &connection, QObject *parent = 0);
     virtual ~RemoteView();
 
     Q_PROPERTY(QString title READ title)
