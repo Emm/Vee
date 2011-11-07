@@ -1,14 +1,5 @@
 #ifndef REMOTE_VIEW_H
 #define REMOTE_VIEW_H
-/*
-#include <QtCore/QByteArray>
-#include <QtCore/QList>
-#include <QtCore/QMap>
-#include <QtCore/QString>
-#include <QtCore/QStringList>
-#include <QtCore/QVariant>
-#include <QtDBus/QtDBus>
-*/
 
 #include <QDBusInterface>
 #include "process.h"
