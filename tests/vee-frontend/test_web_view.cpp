@@ -1,12 +1,33 @@
 #include <QTest>
 #include <QDBusConnection>
 #include <QDBusAbstractAdaptor>
-#include <QDebug>
 #include "web_view.h"
-#include "view_process.h"
+#include "process.h"
 #define TEST_SERVICE_ID "org.vee.TestWebView"
 #define TEST_SERVICE_PATH "/TestWebView"
 #define WEB_VIEW_INTERFACE "org.vee.WebView"
+
+class TestProcess : public Process {
+
+Q_OBJECT
+
+public:
+
+    explicit TestProcess() : Process() {}
+
+    virtual ~TestProcess() {}
+
+    virtual void start(const QString & program, const QStringList & arguments) {
+    }
+
+public slots:
+
+    virtual void terminate() {};
+
+    virtual QProcess::ProcessState state() const {
+        return QProcess::NotRunning;
+    }
+};
 
 class TestRemoteWebView: public QObject {
 Q_OBJECT
@@ -187,11 +208,8 @@ Q_OBJECT
 private:
 
     WebView* mView;
-    Process* mProcess;
+    ViewCommand* mViewCommand;
     TestRemoteWebView* mRemoteView;
-    QString* mService;
-    QString* mPath;
-    QString* mInterfaceName;
     QString* mNewUrl;
     QString* mNewTitle;
     int mUrlResolved;
@@ -224,23 +242,28 @@ public slots:
 private slots:
 
     void init() {
-        mProcess = new ViewProcess();
-        mService = new QString(TEST_SERVICE_ID);
-        mPath = new QString(TEST_SERVICE_PATH);
-        mInterfaceName = new QString(WEB_VIEW_INTERFACE);
 
+        EmbedCommand* command = new EmbedCommand(QString("dummy_embed_command"));
+        command->addWinId();
+
+        mViewCommand = new ViewCommand;
+        mViewCommand->embedCommand = command;
+        mViewCommand->interfaceName += WEB_VIEW_INTERFACE;
+        mViewCommand->serviceIdPattern += TEST_SERVICE_ID;
+        mViewCommand->objectPath += TEST_SERVICE_PATH;
+        mNewUrl = NULL;
+        mUrlResolved = -1;
+        mErrorType = -1;
+        mErrorCode = -1;
+
+        mView = new WebView(*mViewCommand, new TestProcess(), this);
+        mView->init(0ul);
         mRemoteView = new TestRemoteWebView();
         new TestRemoteWebViewAdaptor(mRemoteView);
         QDBusConnection dbus = QDBusConnection::sessionBus();
         dbus.registerService(TEST_SERVICE_ID);
         dbus.registerObject(TEST_SERVICE_PATH, mRemoteView);
         QTest::qWait(1000);
-        mView = new WebView(mProcess, *mService, *mPath, *mInterfaceName,
-                dbus, this);
-        mNewUrl = NULL;
-        mUrlResolved = -1;
-        mErrorType = -1;
-        mErrorCode = -1;
     }
 
     void testInterface() {
@@ -338,13 +361,12 @@ private slots:
         QDBusConnection dbus = QDBusConnection::sessionBus();
         dbus.unregisterObject(TEST_SERVICE_PATH);
         dbus.unregisterService(TEST_SERVICE_ID);
+        QTest::qWait(500);
         disconnect(mView);
+        delete mViewCommand->embedCommand;
+        delete mViewCommand;
         delete mView;
-        mProcess = NULL;
         delete mRemoteView;
-        delete mService;
-        delete mPath;
-        delete mInterfaceName;
     }
 };
 

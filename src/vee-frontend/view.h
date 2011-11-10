@@ -18,6 +18,8 @@ public:
 
     explicit View(QObject* parent = 0);
 
+    virtual void init(const ulong identifier);
+
     virtual ~View();
 
 public slots:
@@ -29,5 +31,6 @@ signals:
     void urlResolved();
     void urlNotResolved();
     void urlChanged(QString url);
+    void initialized();
 };
 #endif

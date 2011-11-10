@@ -32,7 +32,7 @@ public:
 private slots:
     void viewResolvedUrl();
     void viewDidntResolveUrl();
-    void viewBuilderError(ViewBuilder::BuilderError error);
+    void viewBuilderError(int errorCode, int errorType);
 
 public slots:
     void askViewToResolve(View* view);

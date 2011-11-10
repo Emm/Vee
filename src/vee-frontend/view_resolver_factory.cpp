@@ -1,10 +1,13 @@
 #include "view_resolver_factory.h"
-#include "remote_view_builder.h"
+#include "web_view_builder.h"
 #include "blank_view_builder.h"
 #include <QtAlgorithms>
 #include "view_types.h"
 
-ViewResolverFactory::ViewResolverFactory(QObject* parent) : QObject(parent), mViewCommands(new QVector<ViewCommand *>()) {
+ViewResolverFactory::ViewResolverFactory(const ProcessBuilder & processBuilder, QObject* parent) :
+    QObject(parent),
+    mViewCommands(new QVector<ViewCommand *>()),
+    mProcessBuilder(processBuilder) {
     EmbedCommand* command = new EmbedCommand(QString("src/vee-web/vee-web"));
     command->addArgument("-w");
     command->addWinId();
@@ -37,6 +40,6 @@ void ViewResolverFactory::insertLocalBuilders(QVector<ViewBuilder*>* viewBuilder
 void ViewResolverFactory::insertRemoteBuilders(QVector<ViewBuilder*>* viewBuilders) {
     for (int i = 0 ; i < mViewCommands->size() ; i++) {
         const ViewCommand & command = *( mViewCommands->at(i) );
-        viewBuilders->append(new RemoteViewBuilder(command));
+        viewBuilders->append(new WebViewBuilder(command, mProcessBuilder));
     }
 }

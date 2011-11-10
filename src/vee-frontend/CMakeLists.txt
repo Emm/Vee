@@ -25,9 +25,12 @@ set(vee-frontend_SRCS
     remote_view.cpp
     blank_view.cpp
     web_view.cpp
+    view_builder.cpp
     remote_view_builder.cpp
     blank_view_builder.cpp
+    web_view_builder.cpp
     view_resolver_factory.cpp
+    view_process_builder.cpp
     view_process.cpp
     main.cpp
 )
@@ -44,7 +47,10 @@ set(vee-frontend_MOC_HDRS
     blank_view.h
     web_view.h
     view_builder.h
+    web_view_builder.h
+    process_builder.h
     remote_view_builder.h
+    blank_view_builder.h
     blank_view_builder.h
     view_resolver_factory.h
     process.h

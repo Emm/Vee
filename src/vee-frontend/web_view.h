@@ -7,7 +7,7 @@ class WebView : public RemoteView {
     Q_OBJECT
 
 public:
-    explicit WebView(Process* process, const QString &service, const QString &path, const QString & interfaceName, const QDBusConnection &connection, QObject *parent = 0);
+    explicit WebView(const ViewCommand & viewCommmand, Process* process, QObject* parent=0);
     virtual ~WebView();
 
 public slots:

@@ -1,5 +1,6 @@
 #include <QApplication>
 #include "view_resolver_factory.h"
+#include "view_process_builder.h"
 #include "main_window.h"
 
 #include <QApplication>
@@ -12,7 +13,8 @@
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
 
-    ViewResolverFactory viewManagerFactory;
+    const ViewProcessBuilder processBuilder;
+    ViewResolverFactory viewManagerFactory(processBuilder);
     MainWindow mainWindow(viewManagerFactory);
 
     mainWindow.init("reddit.com");

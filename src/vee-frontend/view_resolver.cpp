@@ -74,9 +74,9 @@ void ViewResolver::tryWithNextBuilder() {
                     this,
                     SLOT(askViewToResolve(View*)));
             connect(builder,
-                    SIGNAL(error(ViewBuilder::BuilderError)),
+                    SIGNAL(error(int, int)),
                     this,
-                    SLOT(viewBuilderError(ViewBuilder::BuilderError)));
+                    SLOT(viewBuilderError(int, int)));
             builder->build(mIdentifier);
             qDebug() << "After builder->build(" << mIdentifier << ")";
         }
@@ -105,7 +105,7 @@ void ViewResolver::disconnectAll() {
         disconnect(builder, 0, this, 0);
 }
 
-void ViewResolver::viewBuilderError(ViewBuilder::BuilderError error) {
+void ViewResolver::viewBuilderError(int errorType, int errorCode) {
     disconnectAll();
     // FIXME implement some error reporting here
     tryWithNextBuilder();

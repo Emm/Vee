@@ -2,19 +2,28 @@
 #define REMOTE_VIEW_H
 
 #include <QDBusInterface>
-#include "process.h"
+#include <QDBusServiceWatcher>
+
+#include "process_builder.h"
+#include "view_command.h"
 #include "view.h"
 
 class RemoteView : public View {
     Q_OBJECT
 
 protected:
+    const ViewCommand & mViewCommand;
     Process* mProcess;
     QDBusInterface* mRealInterface;
+    QString* mService;
+    QDBusServiceWatcher* mWatcher;
 
 public:
-    explicit RemoteView(Process* process, const QString &service, const QString &path, const QString & interfaceName, const QDBusConnection &connection, QObject *parent = 0);
+    explicit RemoteView(const ViewCommand & viewCommand, Process* process,
+            QObject* parent = 0);
     virtual ~RemoteView();
+
+    virtual void init(const ulong identifier);
 
     Q_PROPERTY(QString title READ title)
     QString title() const;
@@ -27,6 +36,7 @@ public:
 public slots:
     void embed();
     virtual void resolve(const QString &url);
+    void serviceIsUp();
 };
 
 #endif

@@ -1,19 +1,51 @@
 #include "remote_view.h"
 #include <QDBusPendingCall>
+#include <QStringList>
 
-RemoteView::RemoteView(Process* process, const QString &service, const QString &path, const QString & interfaceName, const QDBusConnection &connection, QObject *parent) :
+RemoteView::RemoteView(const ViewCommand & viewCommand, Process* process, QObject *parent) :
         View(parent),
+        mViewCommand(viewCommand),
         mProcess(process),
-        mRealInterface(new QDBusInterface(service, path, interfaceName.toLatin1().constData(), connection, this)) {
+        mRealInterface(NULL),
+        mService(NULL),
+        mWatcher(NULL) {
     mProcess->setParent(this);
+}
+
+
+RemoteView::~RemoteView() {
+    delete mService;
+}
+
+void RemoteView::init(const ulong identifier) {
+    const QString & executable = mViewCommand.embedCommand->executable();
+    QStringList* pArguments = mViewCommand.embedCommand->arguments(identifier);
+    const QStringList & arguments = *pArguments;
+    connect(mProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(processGotAnError(QProcess::ProcessError)));
+    mService = new QString(mViewCommand.serviceIdPattern.arg(identifier));
+
+    mWatcher = new QDBusServiceWatcher();
+    mWatcher->setConnection(QDBusConnection::sessionBus());
+    mWatcher->addWatchedService(*mService);
+    connect(mWatcher,
+            SIGNAL(serviceOwnerChanged(const QString &, const QString &, const QString)),
+            this,
+            SLOT(serviceIsUp()));
+    mProcess->start(executable, arguments);
+}
+
+void RemoteView::serviceIsUp() {
+    delete mWatcher;
+
+    mRealInterface = new QDBusInterface(*mService, mViewCommand.objectPath,
+                mViewCommand.interfaceName.toLatin1().constData(),
+                QDBusConnection::sessionBus(), this);
     connect(mRealInterface, SIGNAL(urlResolved()), this, SIGNAL(urlResolved()));
     connect(mRealInterface, SIGNAL(urlNotResolved()), this, SIGNAL(urlNotResolved()));
     connect(mRealInterface, SIGNAL(urlChanged(QString)), this, SIGNAL(urlChanged(QString)));
     connect(mRealInterface, SIGNAL(titleChanged(QString)), this, SIGNAL(titleChanged(QString)));
     connect(mRealInterface, SIGNAL(error(int, int)), this, SIGNAL(error(int, int)));
-}
-
-RemoteView::~RemoteView() {
+    emit initialized();
 }
 
 void RemoteView::embed() {
@@ -25,7 +57,6 @@ void RemoteView::resolve(const QString & url) {
     argumentList << qVariantFromValue(url);
     mRealInterface->asyncCallWithArgumentList(QLatin1String("resolve"), argumentList);
 }
-
 
 QString RemoteView::interface() const {
     return mRealInterface->interface();

@@ -1,8 +1,8 @@
 #ifndef MAIN_WINDOW_H
 #define MAIN_WINDOW_H
 
-#include <QVBoxLayout>
 #include <QWidget>
+
 #include "view_tabs.h"
 #include "view_resolver_factory.h"
 

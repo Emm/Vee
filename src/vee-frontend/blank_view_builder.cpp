@@ -10,9 +10,9 @@ BlankViewBuilder::BlankViewBuilder(QObject* parent) : ViewBuilder(parent) {
 BlankViewBuilder::~BlankViewBuilder() {
 }
 
-void BlankViewBuilder::build(const ulong identifier) {
+View* BlankViewBuilder::buildView() {
     BlankView* view = new BlankView();
-    emit viewBuilt(view);
+    return view;
 }
 
 const QString & BlankViewBuilder::viewType() const {
