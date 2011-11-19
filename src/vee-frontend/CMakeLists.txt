@@ -5,6 +5,7 @@
 
 include_directories(/usr/include/tclap)
 include_directories( ${CMAKE_CURRENT_BINARY_DIR} )
+include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/../../src/vee-common )
 
 set(QT_USE_QTMAIN TRUE)
 set(QT_USE_QTDBUS TRUE)
@@ -16,6 +17,7 @@ include(${QT_USE_FILE})
 
 
 set(vee-frontend_SRCS
+    command_line_parser.cpp
     embed_command.cpp
     view_tab.cpp
     view_tabs.cpp

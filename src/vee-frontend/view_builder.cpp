@@ -14,7 +14,7 @@ void ViewBuilder::build(const ulong identifier) {
     cleanup();
     mView = buildView();
     connect(mView, SIGNAL(initialized()), this, SLOT(viewInitialized()));
-    connect(mView, SIGNAL(error(int, int)), this, SIGNAL(error(int, int)));
+    connect(mView, SIGNAL(error(View::ErrorType, int)), this, SLOT(viewGotAnError(View::ErrorType, int)));
     mView->init(identifier);
 }
 
@@ -24,7 +24,7 @@ void ViewBuilder::viewInitialized() {
     mView = NULL;
 }
 
-void ViewBuilder::viewGotAnError(int errorType, int errorCode) {
+void ViewBuilder::viewGotAnError(View::ErrorType errorType, int errorCode) {
     cleanup();
     emit error(errorType, errorCode);
 }

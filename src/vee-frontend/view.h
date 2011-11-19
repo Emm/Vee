@@ -7,6 +7,9 @@ class View : public QObject {
     Q_OBJECT
 
 public:
+
+    enum ErrorType { ProcessError, UnknownError };
+
     Q_PROPERTY(QString title READ title)
     virtual QString title() const = 0;
 
@@ -27,10 +30,11 @@ public slots:
 
 signals:
     void titleChanged(QString title);
-    void error(int errorType, int errorCode);
+    void error(View::ErrorType errorType, int errorCode);
     void urlResolved();
     void urlNotResolved();
     void urlChanged(QString url);
     void initialized();
 };
+
 #endif

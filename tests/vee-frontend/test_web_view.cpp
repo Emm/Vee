@@ -231,7 +231,7 @@ private:
     QString* mNewUrl;
     QString* mNewTitle;
     int mUrlResolved;
-    int mErrorType;
+    View::ErrorType mErrorType;
     int mErrorCode;
 
 public slots:
@@ -252,7 +252,7 @@ public slots:
         mNewTitle = new QString(title);
     }
 
-    void error(int errorType, int errorCode) {
+    void error(View::ErrorType errorType, int errorCode) {
         mErrorType = errorType;
         mErrorCode = errorCode;
     }
@@ -272,7 +272,7 @@ private slots:
         mViewCommand->objectPath += TEST_SERVICE_PATH;
         mNewUrl = NULL;
         mUrlResolved = -1;
-        mErrorType = -1;
+        mErrorType = View::ProcessError;
         mErrorCode = -1;
 
         mProcess = new TestProcess();
@@ -372,13 +372,13 @@ private slots:
     }
 
     void testError() {
-        connect(mView, SIGNAL(error(int, int)), this, SLOT(error(int, int)));
+        connect(mView, SIGNAL(error(View::ErrorType, int)), this, SLOT(error(View::ErrorType, int)));
         int errorType = 256;
         int errorCode = 42;
         mRemoteView->emitError(errorType, errorCode);
         QTest::qWait(1000);
         QDBusConnection dbus = QDBusConnection::sessionBus();
-        QVERIFY(mErrorType == errorType);
+        QVERIFY(mErrorType == View::UnknownError);
         QVERIFY(mErrorCode == errorCode);
     }
 

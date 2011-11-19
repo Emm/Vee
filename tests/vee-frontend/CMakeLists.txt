@@ -8,6 +8,7 @@ include_directories(
 )
 
 test(vee-frontend test_embed_command)
+test(vee-frontend test_command_line_parser)
 test(vee-frontend test_blank_view)
 test(vee-frontend test_blank_view_builder)
 test(vee-frontend test_web_view)

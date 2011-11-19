@@ -32,12 +32,12 @@ signals:
 
     void viewBuilt(View* view);
 
-    void error(int errorType, int errorCode);
+    void error(View::ErrorType errorType, int errorCode);
 
 
 private slots:
 
-    void viewGotAnError(int errorCode, int errorType);
+    void viewGotAnError(View::ErrorType errorCode, int errorType);
 
     void viewInitialized();
 };
