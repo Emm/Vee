@@ -34,6 +34,7 @@ set(vee-frontend_SRCS
     view_resolver_factory.cpp
     view_process_builder.cpp
     view_process.cpp
+    vim.cpp
     main.cpp
 )
 
@@ -57,6 +58,7 @@ set(vee-frontend_MOC_HDRS
     view_resolver_factory.h
     process.h
     view_process.h
+    vim.h
     main_window.h
 )
 

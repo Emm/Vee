@@ -1,4 +1,5 @@
 #include "view_tabs.h"
+#include "vim.h"
 
 ViewTabs::ViewTabs(ViewResolverFactory & viewManagerFactory, QWidget* parent)
     : QTabWidget(parent), mViewResolverFactory(viewManagerFactory) {
@@ -17,8 +18,9 @@ void ViewTabs::showUrlInActiveTab(const QString & url) {
 }
 
 void ViewTabs::showUrlInNewTab(const QString & url) {
+    Vim* vim = new Vim();
     ViewResolver * viewResolver = mViewResolverFactory.buildViewResolver();
-    ViewTab* container = new ViewTab(viewResolver, this);
+    ViewTab* container = new ViewTab(vim, viewResolver, this);
     int newTabPosition = addTab(container, QString("Loading..."));
     connect(container, SIGNAL(titleChanged(const QString &)), this, SLOT(updateTabTitle(const QString &)));
     connect(container, SIGNAL(urlChanged(const QString &)), this, SLOT(updateTabUrl(const QString &)));

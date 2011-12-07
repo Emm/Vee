@@ -9,25 +9,33 @@
 #include <QLineEdit>
 #include <QDebug>
 
+#include "vim.h"
 #include "view_resolver.h"
 
 class ViewTab: public QWidget {
     Q_OBJECT
 
 private:
+    Vim* mVim;
     ViewResolver* mViewResolver;
     View* mView;
     QString mViewType;
+    QString mOldLineEditValue;
     QLineEdit *mInputBar;
     QX11EmbedContainer *mContainer;
     QWidget* mWidget;
     QAction* mChangeUrlAction;
+    QAction* mSwitchCommandAndNormalModeAction;
 
     void disconnectView();
 public:
     
-    explicit ViewTab(ViewResolver* viewResolver, QWidget* parent=0);
+    explicit ViewTab(Vim* mVim, ViewResolver* viewResolver, QWidget* parent=0);
     virtual ~ViewTab();
+
+private slots:
+    void switchCommandAndNormalModes(bool switchToCommandMode);
+    void triggerVimParsing();
 
 public slots:
     void setUrl(const QString & url);
