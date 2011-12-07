@@ -37,6 +37,7 @@ void RemoteView::init(const ulong identifier) {
 }
 
 void RemoteView::serviceIsUp() {
+    mWatcher->disconnect();
     delete mWatcher;
     qDebug() << "Remote view is reachable through DBus";
     mRealInterface = new QDBusInterface(*mService, mViewCommand.objectPath,
