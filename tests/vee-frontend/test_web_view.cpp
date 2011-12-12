@@ -3,7 +3,6 @@
 #include <QDBusAbstractAdaptor>
 #include "web_view.h"
 #include "process.h"
-#include <QDebug>
 
 #define TEST_SERVICE_ID "org.vee.TestWebView"
 #define TEST_SERVICE_PATH "/TestWebView"
@@ -283,7 +282,7 @@ private slots:
         QDBusConnection dbus = QDBusConnection::sessionBus();
         dbus.registerService(TEST_SERVICE_ID);
         dbus.registerObject(TEST_SERVICE_PATH, mRemoteView);
-        QTest::qWait(1000);
+        QTest::qWait(100);
     }
 
     void testProcessStarted() {
@@ -305,20 +304,20 @@ private slots:
 
     void testEmbed() {
         mView->embed();
-        QTest::qWait(1000);
+        QTest::qWait(100);
         QVERIFY(mRemoteView->embedded() == true);
     }
 
     void testReload() {
         mView->reload();
-        QTest::qWait(1000);
+        QTest::qWait(100);
         QVERIFY(mRemoteView->reloaded() == true);
     }
 
     void testResolve() {
         QString* urlToResolve = new QString("url to resolve");
         mView->resolve(*urlToResolve);
-        QTest::qWait(1000);
+        QTest::qWait(100);
         QVERIFY(*mRemoteView->resolvedUrl() == *urlToResolve);
         delete urlToResolve;
     }
@@ -326,28 +325,28 @@ private slots:
     void testSetHtml() {
         QString* html = new QString("<html/>");
         mView->setHtml(*html);
-        QTest::qWait(1000);
+        QTest::qWait(100);
         QVERIFY(*mRemoteView->html() == *html);
         delete html;
     }
 
     void testStop() {
         mView->stop();
-        QTest::qWait(1000);
+        QTest::qWait(100);
         QVERIFY(mRemoteView->stopped() == true);
     }
 
     void testUrlResolved() {
         connect(mView, SIGNAL(urlResolved()), this, SLOT(urlResolved()));
         mRemoteView->emitUrlResolved();
-        QTest::qWait(1000);
+        QTest::qWait(100);
         QVERIFY(mUrlResolved == 1);
     }
 
     void testUrlNotResolved() {
         connect(mView, SIGNAL(urlNotResolved()), this, SLOT(urlNotResolved()));
         mRemoteView->emitUrlNotResolved();
-        QTest::qWait(1000);
+        QTest::qWait(100);
         QVERIFY(mUrlResolved == 0);
     }
 
@@ -355,8 +354,9 @@ private slots:
         connect(mView, SIGNAL(urlChanged(const QString &)), this, SLOT(urlChanged(const QString &)));
         QString* newUrl = new QString("new url");
         mRemoteView->emitUrlChanged(*newUrl);
-        QTest::qWait(1000);
+        QTest::qWait(100);
         QDBusConnection dbus = QDBusConnection::sessionBus();
+        QVERIFY(mNewUrl != NULL);
         QVERIFY(*mNewUrl == *newUrl);
         delete newUrl;
     }
@@ -365,8 +365,9 @@ private slots:
         connect(mView, SIGNAL(titleChanged(const QString &)), this, SLOT(titleChanged(const QString &)));
         QString* newTitle = new QString("new title");
         mRemoteView->emitTitleChanged(*newTitle);
-        QTest::qWait(1000);
+        QTest::qWait(100);
         QDBusConnection dbus = QDBusConnection::sessionBus();
+        QVERIFY(mNewTitle != NULL);
         QVERIFY(*mNewTitle == *newTitle);
         delete newTitle;
     }
@@ -376,23 +377,24 @@ private slots:
         int errorType = 256;
         int errorCode = 42;
         mRemoteView->emitError(errorType, errorCode);
-        QTest::qWait(1000);
+        QTest::qWait(100);
         QDBusConnection dbus = QDBusConnection::sessionBus();
         QVERIFY(mErrorType == View::UnknownError);
         QVERIFY(mErrorCode == errorCode);
     }
 
     void cleanup() {
+        disconnect(mView);
+        disconnect(mRemoteView);
         QDBusConnection dbus = QDBusConnection::sessionBus();
         dbus.unregisterObject(TEST_SERVICE_PATH);
         dbus.unregisterService(TEST_SERVICE_ID);
-        QTest::qWait(500);
-        disconnect(mView);
         delete mViewCommand->embedCommand;
         delete mViewCommand;
-        delete mView;
         delete mRemoteView;
+        delete mView;
         mProcess = NULL;
+        QTest::qWait(100);
     }
 };
 

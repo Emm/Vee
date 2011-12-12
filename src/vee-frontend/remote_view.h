@@ -11,6 +11,10 @@
 class RemoteView : public View {
     Q_OBJECT
 
+private:
+
+    void destroyWatcher();
+
 protected:
     const ViewCommand & mViewCommand;
     Process* mProcess;
