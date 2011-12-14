@@ -35,6 +35,8 @@ ViewTab::ViewTab(Vim* vim, ViewResolver* viewResolver, QWidget* parent):
     connect(mViewResolver, SIGNAL(unresolvableUrl(QString &)), this, SLOT(setFailView(QString &)));
     connect(mContainer, SIGNAL(clientIsEmbedded()), this, SLOT(focusContainer()));
     connect(mContainer, SIGNAL(error(QX11EmbedContainer::Error)), this, SLOT(showEmbedError(QX11EmbedContainer::Error)));
+
+    connect(mVim, SIGNAL(openCommand(QString)), this, SLOT(setUrl(const QString &)));
 }
 
 ViewTab::~ViewTab() {
@@ -116,7 +118,6 @@ void ViewTab::switchCommandAndNormalModes(bool switchToCommandMode) {
         disconnect(mInputBar, SIGNAL(returnPressed()), mChangeUrlAction, SLOT(trigger()));
         connect(mInputBar, SIGNAL(returnPressed()), this, SLOT(triggerVimParsing()));
 
-        connect(mVim, SIGNAL(openCommand(QString)), this, SLOT(setUrl(const QString &)));
 
         qDebug() << "Switch to command mode";
     }
