@@ -3,7 +3,7 @@
 CommandLineParser::CommandLineParser(const QString & appName, const QString & appVersion):
     mParser(new TCLAP::CmdLine(appName.toUtf8().data(), ' ',
             appVersion.toUtf8().data())),
-    mUrlArg(new TCLAP::UnlabeledValueArg<std::string>("url", "URL or filename", true, "", "url")),
+    mUrlArg(new TCLAP::UnlabeledValueArg<std::string>("url", "URL or filename", false, "", "url")),
     mUrlOrFile(NULL),
     mErrorMessage(NULL)
 {
