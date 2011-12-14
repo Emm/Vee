@@ -21,7 +21,8 @@ void ViewTabs::showUrlInNewTab(const QString & url) {
     Vim* vim = new Vim();
     ViewResolver * viewResolver = mViewResolverFactory.buildViewResolver();
     ViewTab* container = new ViewTab(vim, viewResolver, this);
-    int newTabPosition = addTab(container, QString("Loading..."));
+    int activeTabPosition = currentIndex();
+    int newTabPosition = insertTab(activeTabPosition+1, container, QString("Loading..."));
     connect(container, SIGNAL(titleChanged(const QString &)), this, SLOT(updateTabTitle(const QString &)));
     connect(container, SIGNAL(urlChanged(const QString &)), this, SLOT(updateTabUrl(const QString &)));
     connect(container, SIGNAL(openInNewTab(const QString &)), this, SLOT(showUrlInNewTab(const QString &)));
