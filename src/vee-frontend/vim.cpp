@@ -25,6 +25,10 @@ bool Vim::parse(const QString& command) {
         emit openCommand(command.section(' ', 1));
         result = true;
     }
+    else if (command.startsWith("tab ") || command.startsWith("t ")) {
+        emit openInNewTabCommand(command.section(' ', 1));
+        result = true;
+    }
     else {
         result = false;
     }

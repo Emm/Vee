@@ -37,6 +37,7 @@ ViewTab::ViewTab(Vim* vim, ViewResolver* viewResolver, QWidget* parent):
     connect(mContainer, SIGNAL(error(QX11EmbedContainer::Error)), this, SLOT(showEmbedError(QX11EmbedContainer::Error)));
 
     connect(mVim, SIGNAL(openCommand(QString)), this, SLOT(setUrl(const QString &)));
+    connect(mVim, SIGNAL(openInNewTabCommand(QString)), this, SIGNAL(openInNewTab(const QString &)));
 }
 
 ViewTab::~ViewTab() {

@@ -24,6 +24,7 @@ void ViewTabs::showUrlInNewTab(const QString & url) {
     int newTabPosition = addTab(container, QString("Loading..."));
     connect(container, SIGNAL(titleChanged(const QString &)), this, SLOT(updateTabTitle(const QString &)));
     connect(container, SIGNAL(urlChanged(const QString &)), this, SLOT(updateTabUrl(const QString &)));
+    connect(container, SIGNAL(openInNewTab(const QString &)), this, SLOT(showUrlInNewTab(const QString &)));
     setCurrentIndex(newTabPosition);
     container->setUrl(url);
 }
