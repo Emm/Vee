@@ -27,7 +27,6 @@ private:
     QAction* mChangeUrlAction;
     QAction* mSwitchCommandAndNormalModeAction;
 
-    void disconnectView();
 public:
     
     explicit ViewTab(Vim* mVim, ViewResolver* viewResolver, QWidget* parent=0);

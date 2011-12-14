@@ -53,7 +53,7 @@ void ViewTab::setUrl(const QString & url) {
 void ViewTab::setView(View* view, QString viewType) {
     if (view != mView) {
         if (mView) {
-            disconnectView();
+            mView->disconnect();
             if (mWidget != NULL) {
                 layout()->removeWidget(mWidget);
                 delete mWidget;
@@ -98,13 +98,6 @@ void ViewTab::focusContainer() {
 void ViewTab::showEmbedError(QX11EmbedContainer::Error error) {
     qDebug() << "error while embedding: " << error;
     // FIXME actually handle error
-}
-
-void ViewTab::disconnectView() {
-    if (mView != NULL) {
-        disconnect(mView, 0, this, 0);
-        disconnect(mView, 0, mInputBar, 0);
-    }
 }
 
 void ViewTab::resolveUrl() {
