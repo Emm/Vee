@@ -28,18 +28,6 @@ void ViewTabs::showUrlInNewTab(const QString & url) {
     container->setUrl(url);
 }
 
-/*
-void ViewTabs::embed(EmbedCommand& embedCommand) {
-    ViewTab* container = new ViewTab(embedCommand);
-    int newTabPosition = addTab(container, QString("Loading..."));
-    connect(container, SIGNAL(titleChanged(const QString &)), this, SLOT(updateTabTitle(const QString &)));
-    connect(container, SIGNAL(urlChanged(const QString &)), this, SLOT(updateTabUrl(const QString &)));
-    setCurrentIndex(newTabPosition);
-    container->embed();
-    container->show();
-}
-*/
-
 int ViewTabs::getTabPosition() {
     QObject * senderObj = QObject::sender();
     if (senderObj == NULL) return -1;
