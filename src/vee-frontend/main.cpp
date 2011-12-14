@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
     }
     QString urlOrFile = parser.urlOrFile();
     MainWindow mainWindow(viewManagerFactory);
-    mainWindow.init("reddit.com");
+    mainWindow.init(urlOrFile);
     mainWindow.show();
 
     return app.exec(); 
