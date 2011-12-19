@@ -14,6 +14,7 @@ private:
     QX11EmbedWidget* mEmbedWidget;
     QAction* mScrollDownAction;
     QAction* mScrollUpAction;
+    QAction* mScrollLeftAction;
     const ulong mWindowId;
     int mScrollIncrement;
 
@@ -35,6 +36,7 @@ private slots:
     void broadcastLoadFinished(bool ok);
     void scrollDown();
     void scrollUp();
+    void scrollLeft();
 
 public slots:
     void resolve(const QString & value);
