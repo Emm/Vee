@@ -3,6 +3,7 @@
 
 #include <QWebView>
 #include <QX11EmbedWidget>
+#include <QAction>
 
 class WebViewProxy : public QObject {
 
@@ -11,11 +12,16 @@ class WebViewProxy : public QObject {
 private:
     QWebView* mWebView;
     QX11EmbedWidget* mEmbedWidget;
+    QAction* mScrollDownAction;
     const ulong mWindowId;
+    int mScrollIncrement;
 
     bool shouldEmbed();
+    void scroll(int dx, int dy);
+
+
 public:
-    explicit WebViewProxy(ulong windowId = 0, QObject* parent=0);
+    explicit WebViewProxy(ulong windowId = 0, int scrollIncrement = 10, QObject* parent=0);
     virtual ~WebViewProxy();
     Q_PROPERTY(QUrl url READ url)
     QUrl url() const;
@@ -26,6 +32,7 @@ public:
 
 private slots:
     void broadcastLoadFinished(bool ok);
+    void scrollDown();
 
 public slots:
     void resolve(const QString & value);

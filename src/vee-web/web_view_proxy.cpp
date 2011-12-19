@@ -3,14 +3,22 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QVBoxLayout>
+#include <QWebFrame>
 
 #include "constants.h"
 
-WebViewProxy::WebViewProxy(ulong windowId, QObject* parent) :
+WebViewProxy::WebViewProxy(ulong windowId, int scrollIncrement, QObject* parent) :
     QObject(parent),
     mWebView(new QWebView()),
     mEmbedWidget(NULL),
-    mWindowId(windowId) {
+    mScrollDownAction(new QAction(mWebView)),
+    mWindowId(windowId),
+    mScrollIncrement(scrollIncrement) {
+    mWebView->addAction(mScrollDownAction);
+
+    mScrollDownAction->setShortcut(QKeySequence(Qt::Key_J));
+
+    connect(mScrollDownAction, SIGNAL(triggered()), this, SLOT(scrollDown()));
     connect(mWebView, SIGNAL(loadFinished(bool)), this, SLOT(broadcastLoadFinished(bool)));
     connect(mWebView, SIGNAL(iconChanged()), this, SIGNAL(iconChanged()));
     connect(mWebView, SIGNAL(linkClicked(const QUrl &)), this, SIGNAL(linkClicked(const QUrl &)));
@@ -27,6 +35,18 @@ WebViewProxy::~WebViewProxy() {
 
 bool WebViewProxy::shouldEmbed() {
     return mWindowId != NULL_WINDOW_ID;
+}
+
+void WebViewProxy::scrollDown() {
+    scroll(0, mScrollIncrement);
+}
+
+void WebViewProxy::scroll(int dx, int dy) {
+    QWebPage* webPage = mWebView->page();
+    if (webPage == NULL) return;
+    QWebFrame* frame = webPage->currentFrame();
+    if (frame == NULL) return;
+    frame->scroll(dx, dy);
 }
 
 void WebViewProxy::embed() {
