@@ -2,48 +2,11 @@
 #include <QDBusConnection>
 #include <QDBusAbstractAdaptor>
 #include "web_view.h"
-#include "process.h"
+#include "dummy_process.cpp"
 
 #define TEST_SERVICE_ID "org.vee.TestWebView"
 #define TEST_SERVICE_PATH "/TestWebView"
 #define WEB_VIEW_INTERFACE "org.vee.WebView"
-
-class TestProcess : public Process {
-
-Q_OBJECT
-
-private:
-
-    const QString* mExecutable;
-    const QStringList* mArguments;
-
-public:
-
-    explicit TestProcess() : Process() {}
-
-    virtual ~TestProcess() {}
-
-    virtual void start(const QString & executable, const QStringList & arguments) {
-        mExecutable = &executable;
-        mArguments = &arguments;
-    }
-
-    const QString* executable() {
-        return mExecutable;
-    }
-
-    const QStringList* arguments() {
-        return mArguments;
-    }
-
-public slots:
-
-    virtual void terminate() {};
-
-    virtual QProcess::ProcessState state() const {
-        return QProcess::NotRunning;
-    }
-};
 
 class TestRemoteWebView: public QObject {
 Q_OBJECT
@@ -226,7 +189,7 @@ private:
     WebView* mView;
     ViewCommand* mViewCommand;
     TestRemoteWebView* mRemoteView;
-    TestProcess* mProcess;
+    DummyProcess* mProcess;
     QString* mNewUrl;
     QString* mNewTitle;
     int mUrlResolved;
@@ -274,7 +237,7 @@ private slots:
         mErrorType = View::ProcessError;
         mErrorCode = -1;
 
-        mProcess = new TestProcess();
+        mProcess = new DummyProcess();
         mView = new WebView(*mViewCommand, mProcess, this);
         mView->init(0ul);
         mRemoteView = new TestRemoteWebView();
