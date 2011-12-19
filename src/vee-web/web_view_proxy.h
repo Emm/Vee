@@ -15,6 +15,7 @@ private:
     QAction* mScrollDownAction;
     QAction* mScrollUpAction;
     QAction* mScrollLeftAction;
+    QAction* mScrollRightAction;
     const ulong mWindowId;
     int mScrollIncrement;
 
@@ -37,6 +38,7 @@ private slots:
     void scrollDown();
     void scrollUp();
     void scrollLeft();
+    void scrollRight();
 
 public slots:
     void resolve(const QString & value);

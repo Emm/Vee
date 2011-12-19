@@ -14,19 +14,23 @@ WebViewProxy::WebViewProxy(ulong windowId, int scrollIncrement, QObject* parent)
     mScrollDownAction(new QAction(mWebView)),
     mScrollUpAction(new QAction(mWebView)),
     mScrollLeftAction(new QAction(mWebView)),
+    mScrollRightAction(new QAction(mWebView)),
     mWindowId(windowId),
     mScrollIncrement(scrollIncrement) {
     mWebView->addAction(mScrollDownAction);
     mWebView->addAction(mScrollUpAction);
     mWebView->addAction(mScrollLeftAction);
+    mWebView->addAction(mScrollRightAction);
 
     mScrollDownAction->setShortcut(QKeySequence(Qt::Key_J));
     mScrollUpAction->setShortcut(QKeySequence(Qt::Key_K));
     mScrollLeftAction->setShortcut(QKeySequence(Qt::Key_L));
+    mScrollRightAction->setShortcut(QKeySequence(Qt::Key_H));
 
     connect(mScrollDownAction, SIGNAL(triggered()), this, SLOT(scrollDown()));
     connect(mScrollUpAction, SIGNAL(triggered()), this, SLOT(scrollUp()));
     connect(mScrollLeftAction, SIGNAL(triggered()), this, SLOT(scrollLeft()));
+    connect(mScrollRightAction, SIGNAL(triggered()), this, SLOT(scrollRight()));
 
     connect(mWebView, SIGNAL(loadFinished(bool)), this, SLOT(broadcastLoadFinished(bool)));
     connect(mWebView, SIGNAL(iconChanged()), this, SIGNAL(iconChanged()));
@@ -56,6 +60,10 @@ void WebViewProxy::scrollUp() {
 
 void WebViewProxy::scrollLeft() {
     scroll(mScrollIncrement, 0);
+}
+
+void WebViewProxy::scrollRight() {
+    scroll(-1 * mScrollIncrement, 0);
 }
 
 void WebViewProxy::scroll(int dx, int dy) {
