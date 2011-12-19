@@ -7,8 +7,7 @@ What is Vee?
 ------------
 
 Vee is a toy browser, written in Qt4. It uses WebKit as a rendering engine, like Chrome and Safari. Vee has several differences with the major browsers in the market:
-- it's immature and will eat your children. In fact, it doesn't even do "make
-  install" (yet)
+- it's immature and will eat your children. In fact, it doesn't even do "make install" (yet)
 - it uses one process per tab (using xembed and DBUS for IPC)
 - it has a built-in basic vim input bar and vim shortcuts
 Also, this is probably horrible C++ (I'm not particularly fluent in it).
