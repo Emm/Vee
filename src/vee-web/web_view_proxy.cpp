@@ -12,13 +12,18 @@ WebViewProxy::WebViewProxy(ulong windowId, int scrollIncrement, QObject* parent)
     mWebView(new QWebView()),
     mEmbedWidget(NULL),
     mScrollDownAction(new QAction(mWebView)),
+    mScrollUpAction(new QAction(mWebView)),
     mWindowId(windowId),
     mScrollIncrement(scrollIncrement) {
     mWebView->addAction(mScrollDownAction);
+    mWebView->addAction(mScrollUpAction);
 
     mScrollDownAction->setShortcut(QKeySequence(Qt::Key_J));
+    mScrollUpAction->setShortcut(QKeySequence(Qt::Key_K));
 
     connect(mScrollDownAction, SIGNAL(triggered()), this, SLOT(scrollDown()));
+    connect(mScrollUpAction, SIGNAL(triggered()), this, SLOT(scrollUp()));
+
     connect(mWebView, SIGNAL(loadFinished(bool)), this, SLOT(broadcastLoadFinished(bool)));
     connect(mWebView, SIGNAL(iconChanged()), this, SIGNAL(iconChanged()));
     connect(mWebView, SIGNAL(linkClicked(const QUrl &)), this, SIGNAL(linkClicked(const QUrl &)));
@@ -39,6 +44,10 @@ bool WebViewProxy::shouldEmbed() {
 
 void WebViewProxy::scrollDown() {
     scroll(0, mScrollIncrement);
+}
+
+void WebViewProxy::scrollUp() {
+    scroll(0, -1 * mScrollIncrement);
 }
 
 void WebViewProxy::scroll(int dx, int dy) {
