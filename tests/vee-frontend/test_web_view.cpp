@@ -1,184 +1,13 @@
 #include <QTest>
 #include <QDBusConnection>
-#include <QDBusAbstractAdaptor>
 #include "web_view.h"
-#include "dummy_process.cpp"
+#include "dummy_process.h"
+#include "dummy_remote_web_view.h"
+#include "dummy_remote_web_view_adaptor.h"
 
 #define TEST_SERVICE_ID "org.vee.TestWebView"
 #define TEST_SERVICE_PATH "/TestWebView"
 #define WEB_VIEW_INTERFACE "org.vee.WebView"
-
-class TestRemoteWebView: public QObject {
-Q_OBJECT
-
-private:
-    bool mEmbedded;
-    bool mReloaded;
-    bool mStopped;
-    QString * mResolvedUrl;
-    QString * mHtml;
-
-public:
-    explicit TestRemoteWebView(QObject* parent = 0) :
-        QObject(parent),
-        mEmbedded(false),
-        mReloaded(false),
-        mStopped(false),
-        mResolvedUrl(NULL),
-        mHtml(NULL) {
-    };
-
-    virtual ~TestRemoteWebView() {
-        delete mResolvedUrl;
-    };
-
-    Q_PROPERTY(QString title READ title)
-    QString title() const {
-        return QString("myTitle");
-    }
-
-    Q_PROPERTY(QString url READ url)
-    QString url() const {
-        return QString("myUrl");
-    }
-
-    void emitUrlResolved() {
-        emit urlResolved();
-    }
-
-    void emitUrlNotResolved() {
-        emit urlNotResolved();
-    }
-
-    void emitUrlChanged(const QString & url) {
-        emit urlChanged(url);
-    }
-
-    void emitTitleChanged(const QString & title) {
-        emit titleChanged(title);
-    }
-
-    void emitError(int errorType, int errorCode) {
-        emit error(errorType, errorCode);
-    }
-
-    bool embedded() const {
-        return mEmbedded;
-    }
-
-    bool reloaded() const {
-        return mReloaded;
-    }
-
-    bool stopped() const {
-        return mStopped;
-    }
-
-    QString * resolvedUrl() const {
-        return mResolvedUrl;
-    }
-
-    QString * html() const {
-        return mHtml;
-    }
-
-public slots:
-
-    void embed() {
-        mEmbedded = true;
-    }
-
-    void resolve(const QString & url) {
-        mResolvedUrl = new QString(url);
-    }
-
-    void reload() {
-        mReloaded = true;
-    }
-
-    void setHtml(const QString & html) {
-        mHtml = new QString(html);
-    }
-
-    void stop() {
-        mStopped = true;
-    }
-
-signals:
-
-    void error(int errorType, int errorCode);
-    void iconChanged();
-    void linkClicked(const QString &url);
-    void loadProgress(int progress);
-    void loadStarted();
-    void selectionChanged();
-    void titleChanged(const QString &title);
-    void urlChanged(const QString &url);
-    void urlNotResolved();
-    void urlResolved();
-};
-
-class TestRemoteWebViewAdaptor : public QDBusAbstractAdaptor {
-
-Q_OBJECT
-Q_CLASSINFO("D-Bus Interface", "org.vee.WebView")
-
-public:
-
-    explicit TestRemoteWebViewAdaptor(TestRemoteWebView* parent) : QDBusAbstractAdaptor(parent) {
-        setAutoRelaySignals(true);
-    }
-
-    virtual ~TestRemoteWebViewAdaptor() {}
-
-    inline TestRemoteWebView *parent() const {
-        return static_cast<TestRemoteWebView *>(QObject::parent());
-    }
-
-    Q_PROPERTY(QString title READ title)
-    QString title() const {
-        return qvariant_cast< QString >(parent()->property("title"));
-    }
-
-    Q_PROPERTY(QString url READ url)
-    QString url() const {
-        return qvariant_cast< QString >(parent()->property("url"));
-    }
-
-public slots:
-    void embed() {
-        parent()->embed();
-    }
-
-    void resolve(const QString & url) {
-        parent()->resolve(url);
-    }
-
-    void reload() {
-        parent()->reload();
-    }
-
-    void setHtml(const QString & html) {
-        parent()->setHtml(html);
-    }
-
-    void stop() {
-        parent()->stop();
-    }
-
-signals:
-
-    void error(int errorType, int errorCode);
-    void iconChanged();
-    void linkClicked(const QString &url);
-    void loadProgress(int progress);
-    void loadStarted();
-    void selectionChanged();
-    void titleChanged(const QString &title);
-    void urlChanged(const QString &url);
-    void urlNotResolved();
-    void urlResolved();
-};
 
 class TestWebView : public QObject {
 
@@ -188,7 +17,7 @@ private:
 
     WebView* mView;
     ViewCommand* mViewCommand;
-    TestRemoteWebView* mRemoteView;
+    DummyRemoteWebView* mRemoteView;
     DummyProcess* mProcess;
     QString* mNewUrl;
     QString* mNewTitle;
@@ -240,8 +69,8 @@ private slots:
         mProcess = new DummyProcess();
         mView = new WebView(*mViewCommand, mProcess, this);
         mView->init(0ul);
-        mRemoteView = new TestRemoteWebView();
-        new TestRemoteWebViewAdaptor(mRemoteView);
+        mRemoteView = new DummyRemoteWebView();
+        new DummyRemoteWebViewAdaptor(mRemoteView);
         QDBusConnection dbus = QDBusConnection::sessionBus();
         dbus.registerService(TEST_SERVICE_ID);
         dbus.registerObject(TEST_SERVICE_PATH, mRemoteView);
