@@ -9,12 +9,14 @@ include_directories(
 
 set(test_vee-frontend_SRCS
     dummy_process.cpp
+    dummy_process_builder.cpp
     dummy_remote_web_view.cpp
     dummy_remote_web_view_adaptor.cpp
     )
 
 set(test_vee-frontend_MOC_HDRS
     dummy_process.h
+    dummy_process_builder.h
     dummy_remote_web_view.h
     dummy_remote_web_view_adaptor.h
     )
@@ -31,3 +33,5 @@ test(vee-frontend test_blank_view)
 test(vee-frontend test_blank_view_builder)
 test(vee-frontend test_web_view)
 target_link_libraries(vee-frontend-test_web_view libvee-tests)
+test(vee-frontend test_web_view_builder)
+target_link_libraries(vee-frontend-test_web_view_builder libvee-tests)
