@@ -12,6 +12,8 @@ set(test_vee-frontend_SRCS
     dummy_process_builder.cpp
     dummy_remote_web_view.cpp
     dummy_remote_web_view_adaptor.cpp
+    dummy_view_builder.cpp
+    dummy_view.cpp
     )
 
 set(test_vee-frontend_MOC_HDRS
@@ -19,6 +21,8 @@ set(test_vee-frontend_MOC_HDRS
     dummy_process_builder.h
     dummy_remote_web_view.h
     dummy_remote_web_view_adaptor.h
+    dummy_view_builder.h
+    dummy_view.h
     )
 
 qt4_wrap_cpp(test_vee-frontend_MOC_SRCS ${test_vee-frontend_MOC_HDRS})
@@ -36,3 +40,5 @@ target_link_libraries(vee-frontend-test_web_view libvee-tests)
 test(vee-frontend test_web_view_builder)
 target_link_libraries(vee-frontend-test_web_view_builder libvee-tests)
 test(vee-frontend test_vim)
+test(vee-frontend test_view_resolver)
+target_link_libraries(vee-frontend-test_view_resolver libvee-tests)
