@@ -16,6 +16,7 @@ ViewTab::ViewTab(Vim* vim, ViewResolver* viewResolver, QWidget* parent):
     setLayout(new QVBoxLayout());
 
     mVim->setParent(this);
+    mViewResolver->setParent(this);
 
     layout()->addWidget(mInputBar);
     layout()->addWidget(mContainer);
@@ -41,7 +42,6 @@ ViewTab::ViewTab(Vim* vim, ViewResolver* viewResolver, QWidget* parent):
 }
 
 ViewTab::~ViewTab() {
-    delete mViewResolver;
 }
 
 void ViewTab::setUrl(const QString & url) {
