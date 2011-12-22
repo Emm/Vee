@@ -1,7 +1,4 @@
 #include "blank_view.h"
-#include <QVBoxLayout>
-#include <QLineEdit>
-#include <QDebug>
 
 const QString BlankView::msInterface = "org.vee.BlankView";
 const QString BlankView::msTitle = "";
