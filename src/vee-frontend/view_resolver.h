@@ -38,7 +38,7 @@ public slots:
     void askViewToResolve(View* view);
 
 signals:
-    void urlResolved(View* view, QString viewType);
+    void urlResolved(View* view);
     void unresolvableUrl(QString & url);
 };
 

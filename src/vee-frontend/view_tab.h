@@ -19,7 +19,6 @@ private:
     Vim* mVim;
     ViewResolver* mViewResolver;
     View* mView;
-    QString mViewType;
     QString mOldLineEditValue;
     QLineEdit *mInputBar;
     QX11EmbedContainer *mContainer;
@@ -39,7 +38,7 @@ private slots:
 public slots:
     void setUrl(const QString & url);
     void setFailView(QString & url);
-    void setView(View* view, QString viewType);
+    void setView(View* view);
     void focusContainer();
     void showEmbedError(QX11EmbedContainer::Error error);
     void resolveUrl();

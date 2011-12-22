@@ -32,7 +32,7 @@ ViewTab::ViewTab(Vim* vim, ViewResolver* viewResolver, QWidget* parent):
     connect(mInputBar, SIGNAL(returnPressed()), mChangeUrlAction, SLOT(trigger()));
     connect(mChangeUrlAction, SIGNAL(triggered()), this, SLOT(resolveUrl()));
     connect(mSwitchCommandAndNormalModeAction, SIGNAL(toggled(bool)), this, SLOT(switchCommandAndNormalModes(bool)));
-    connect(mViewResolver, SIGNAL(urlResolved(View*, QString)), this, SLOT(setView(View*, QString)));
+    connect(mViewResolver, SIGNAL(urlResolved(View*)), this, SLOT(setView(View*)));
     connect(mViewResolver, SIGNAL(unresolvableUrl(QString &)), this, SLOT(setFailView(QString &)));
     connect(mContainer, SIGNAL(clientIsEmbedded()), this, SLOT(focusContainer()));
     connect(mContainer, SIGNAL(error(QX11EmbedContainer::Error)), this, SLOT(showEmbedError(QX11EmbedContainer::Error)));
@@ -53,7 +53,7 @@ void ViewTab::setUrl(const QString & url) {
     mChangeUrlAction->trigger();
 }
 
-void ViewTab::setView(View* view, QString viewType) {
+void ViewTab::setView(View* view) {
     if (view != mView) {
         if (mView) {
             mView->disconnect();
@@ -66,7 +66,6 @@ void ViewTab::setView(View* view, QString viewType) {
             delete mView;
         }
         mView = view;
-        mViewType = viewType;
         mInputBar->setText(view->url());
         qDebug() << "New view type: " << mView->interface();
         RemoteView* remoteInt = qobject_cast<RemoteView *>(mView);

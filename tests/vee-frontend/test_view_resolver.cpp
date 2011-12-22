@@ -13,14 +13,12 @@ private:
     ViewResolver* mViewResolver;
     View* mView;
     View* mCurrentView;
-    QString* mViewType;
     QString* mUnresolvableUrl;
 
 public slots:
 
-    void setView(View* view, QString viewType) {
+    void setView(View* view) {
         mView = view;
-        mViewType = new QString(viewType);
     }
 
     void setUnresolvableUrl(QString & url) {
@@ -31,7 +29,6 @@ private slots:
 
     void init() {
         mView = NULL;
-        mViewType = NULL;
         mUnresolvableUrl = NULL;
 
         mCurrentView = new BlankView();
@@ -41,7 +38,7 @@ private slots:
         BlankViewBuilder* blankBuilder = new BlankViewBuilder();
         viewBuilders->append(blankBuilder);
         mViewResolver = new ViewResolver(viewBuilders);
-        connect(mViewResolver, SIGNAL(urlResolved(View*, QString)), this, SLOT(setView(View*, QString)));
+        connect(mViewResolver, SIGNAL(urlResolved(View*)), this, SLOT(setView(View*)));
         connect(mViewResolver, SIGNAL(unresolvableUrl(QString &)), this, SLOT(setUnresolvableUrl(QString &)));
     }
 
@@ -57,16 +54,14 @@ private slots:
         QVERIFY(mView != NULL);
         BlankView* blankView = dynamic_cast<BlankView*>(mView);
         QVERIFY(blankView != NULL);
-        QVERIFY(mViewType != NULL);
-        QVERIFY(*mViewType == QString("org.vee.BlankView"));
     }
 
     void testResolutionWithCurrentView() {
         QString url("about:blank");
         mViewResolver->resolve(url, mCurrentView);
         QVERIFY(mView == mCurrentView);
-        QVERIFY(mViewType != NULL);
-        QVERIFY(*mViewType == QString("org.vee.BlankView"));
+        BlankView* blankView = dynamic_cast<BlankView*>(mView);
+        QVERIFY(blankView != NULL);
     }
 
     void testFailedResolution() {
@@ -82,7 +77,6 @@ private slots:
         if (mView != mCurrentView)
             delete mCurrentView;
         delete mView;
-        delete mViewType;
         delete mUnresolvableUrl;
     }
 };

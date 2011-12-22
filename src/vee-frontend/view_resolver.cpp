@@ -41,8 +41,7 @@ void ViewResolver::askViewToResolve(View* view) {
 void ViewResolver::viewResolvedUrl() {
     qDebug() << "ViewResolver::viewResolvedUrl()";
     ViewBuilder* builder = currentBuilder();
-    QString viewType = builder != NULL ? builder->viewType() : QString();
-    emit urlResolved(mCurrentView, viewType);
+    emit urlResolved(mCurrentView);
     cleanup();
 }
 
