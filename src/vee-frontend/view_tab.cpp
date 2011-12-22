@@ -88,6 +88,10 @@ void ViewTab::setView(View* view) {
     }
 }
 
+const View * ViewTab::view() {
+    return mView;
+}
+
 void ViewTab::setFailView(QString & url) {
     // FIXME display an error message
 }

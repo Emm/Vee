@@ -31,6 +31,8 @@ public:
     explicit ViewTab(Vim* mVim, ViewResolver* viewResolver, QWidget* parent=0);
     virtual ~ViewTab();
 
+    const View* view();
+
 private slots:
     void switchCommandAndNormalModes(bool switchToCommandMode);
     void triggerVimParsing();
