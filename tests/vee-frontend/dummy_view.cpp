@@ -1,6 +1,10 @@
 #include "dummy_view.h"
 #include <QWidget>
 
+const QString DummyView::msInterface = "org.vee.DummyView";
+const QString DummyView::msTitle = "DummyView";
+const QString DummyView::msUrl = "dummy url";
+
 DummyView::DummyView(QObject* parent):
     LocalView(parent) {
 }
@@ -9,15 +13,15 @@ DummyView::~DummyView() {
 }
 
 QString DummyView::title() const {
-    return "DummyView";
+    return msTitle;
 }
 
 QString DummyView::interface() const {
-    return "org.vee.DummyView";
+    return msInterface;
 }
 
 QString DummyView::url() const {
-    return "dummy url";
+    return msUrl;
 }
 
 QWidget* DummyView::widget() {
@@ -27,7 +31,7 @@ QWidget* DummyView::widget() {
 }
 
 void DummyView::resolve(const QString & url) {
-    if (url == "dummy url" || url == "")
+    if (url == msUrl || url == "")
         emit urlResolved();
     else
         emit urlNotResolved();

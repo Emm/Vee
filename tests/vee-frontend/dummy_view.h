@@ -6,6 +6,11 @@
 class DummyView : public LocalView {
     Q_OBJECT
 
+private:
+    const static QString msInterface;
+    const static QString msTitle;
+    const static QString msUrl;
+
 public:
     explicit DummyView(QObject* parent = 0);
     virtual ~DummyView();
