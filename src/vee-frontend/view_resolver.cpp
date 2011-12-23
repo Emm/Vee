@@ -48,6 +48,11 @@ void ViewResolver::viewResolvedUrl() {
 void ViewResolver::viewDidntResolveUrl() {
     qDebug() << "ViewResolver::viewDidntResolveUrl()";
     disconnectAll();
+    // destroy the view only if we own it
+    if (mCurrentView != mTabView) {
+        delete mCurrentView;
+        mCurrentView = NULL;
+    }
     tryWithNextBuilder();
 }
 
