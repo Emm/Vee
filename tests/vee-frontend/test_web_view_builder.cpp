@@ -38,9 +38,9 @@ private slots:
 
         mViewCommand = new ViewCommand;
         mViewCommand->embedCommand = command;
-        mViewCommand->interfaceName = QString("org.vee.WebView");
-        mViewCommand->serviceIdPattern += "org.vee.WebView_%1";
-        mViewCommand->objectPath += "/WebView";
+        mViewCommand->interfaceName = new QString("org.vee.WebView");
+        mViewCommand->serviceIdPattern = new QString("org.vee.WebView_%1");
+        mViewCommand->objectPath = new QString("/WebView");
 
         mProcessBuilder = new DummyProcessBuilder();
 
@@ -76,6 +76,9 @@ private slots:
         dbus.unregisterObject(TEST_SERVICE_PATH);
         dbus.unregisterService(TEST_SERVICE_ID);
         delete mViewCommand->embedCommand;
+        delete mViewCommand->interfaceName;
+        delete mViewCommand->serviceIdPattern;
+        delete mViewCommand->objectPath;
         delete mViewCommand;
         delete mView;
         delete mBuilder;

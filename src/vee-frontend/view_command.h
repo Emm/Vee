@@ -5,8 +5,8 @@
 
 struct ViewCommand {
     EmbedCommand* embedCommand;
-    QString interfaceName;
-    QString serviceIdPattern;
-    QString objectPath;
+    QString* interfaceName;
+    QString* serviceIdPattern;
+    QString* objectPath;
 };
 #endif

@@ -33,7 +33,7 @@ void RemoteView::init(const ulong identifier) {
     QStringList* pArguments = mViewCommand.embedCommand->arguments(identifier);
     const QStringList & arguments = *pArguments;
     connect(mProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(processGotAnError(QProcess::ProcessError)));
-    mService = new QString(mViewCommand.serviceIdPattern.arg(identifier));
+    mService = new QString(mViewCommand.serviceIdPattern->arg(identifier));
 
     mWatcher = new QDBusServiceWatcher(this);
     mWatcher->setConnection(QDBusConnection::sessionBus());
@@ -49,8 +49,8 @@ void RemoteView::init(const ulong identifier) {
 void RemoteView::serviceIsUp() {
     destroyWatcher();
     qDebug() << "Remote view is reachable through DBus";
-    mRealInterface = new QDBusInterface(*mService, mViewCommand.objectPath,
-                mViewCommand.interfaceName.toLatin1().constData(),
+    mRealInterface = new QDBusInterface(*mService, *mViewCommand.objectPath,
+                mViewCommand.interfaceName->toLatin1().constData(),
                 QDBusConnection::sessionBus(), this);
     connect(mRealInterface, SIGNAL(urlResolved()), this, SIGNAL(urlResolved()));
     connect(mRealInterface, SIGNAL(urlNotResolved()), this, SIGNAL(urlNotResolved()));

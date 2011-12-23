@@ -1,7 +1,6 @@
 #include "view_resolver_factory.h"
 #include "web_view_builder.h"
 #include "blank_view_builder.h"
-#include <QtAlgorithms>
 #include "view_types.h"
 
 ViewResolverFactory::ViewResolverFactory(const ProcessBuilder & processBuilder, QObject* parent) :
@@ -13,14 +12,21 @@ ViewResolverFactory::ViewResolverFactory(const ProcessBuilder & processBuilder, 
     command->addWinId();
     ViewCommand* viewCommand = new ViewCommand;
     viewCommand->embedCommand = command;
-    viewCommand->interfaceName += WEB_VIEW_TYPE;
-    viewCommand->serviceIdPattern += "org.vee.WebView_%1";
-    viewCommand->objectPath += "/WebView";
+    viewCommand->interfaceName = new QString(WEB_VIEW_TYPE);
+    viewCommand->serviceIdPattern = new QString("org.vee.WebView_%1");
+    viewCommand->objectPath = new QString("/WebView");
     mViewCommands->append(viewCommand);
 }
 
 ViewResolverFactory::~ViewResolverFactory() {
-    qDeleteAll(*mViewCommands);
+    for (int i = 0 ; i < mViewCommands->size() ; i++) {
+        ViewCommand* command = mViewCommands->at(i);
+        delete command->embedCommand;
+        delete command->interfaceName;
+        delete command->serviceIdPattern;
+        delete command->objectPath;
+        delete command;
+    }
     delete mViewCommands;
 }
 
