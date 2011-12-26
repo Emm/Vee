@@ -2,6 +2,7 @@
 #include <QVBoxLayout>
 #include "remote_view.h"
 #include "local_view.h"
+#include "error_view.h"
 
 ViewTab::ViewTab(Vim* vim, ViewResolver* viewResolver, QWidget* parent):
         QWidget(parent),
@@ -92,8 +93,10 @@ const View * ViewTab::view() {
     return mView;
 }
 
-void ViewTab::setFailView(QString & url) {
-    // FIXME display an error message
+void ViewTab::setFailView(QString url) {
+    QString msg = QString("The URL '%1' is not valid and cannot be loaded").arg(url);
+    ErrorView* errorView = new ErrorView(msg);
+    setView(errorView);
 }
 
 void ViewTab::focusContainer() {
