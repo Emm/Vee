@@ -39,7 +39,7 @@ public slots:
 
 signals:
     void urlResolved(View* view);
-    void unresolvableUrl(QString & url);
+    void unresolvableUrl(QString url);
 };
 
 #endif

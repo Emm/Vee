@@ -33,7 +33,7 @@ ViewTab::ViewTab(Vim* vim, ViewResolver* viewResolver, QWidget* parent):
     connect(mChangeUrlAction, SIGNAL(triggered()), this, SLOT(resolveUrl()));
     connect(mSwitchCommandAndNormalModeAction, SIGNAL(toggled(bool)), this, SLOT(switchCommandAndNormalModes(bool)));
     connect(mViewResolver, SIGNAL(urlResolved(View*)), this, SLOT(setView(View*)));
-    connect(mViewResolver, SIGNAL(unresolvableUrl(QString &)), this, SLOT(setFailView(QString &)));
+    connect(mViewResolver, SIGNAL(unresolvableUrl(QString)), this, SLOT(setFailView(QString)));
     connect(mContainer, SIGNAL(clientIsEmbedded()), this, SLOT(focusContainer()));
     connect(mContainer, SIGNAL(error(QX11EmbedContainer::Error)), this, SLOT(showEmbedError(QX11EmbedContainer::Error)));
 

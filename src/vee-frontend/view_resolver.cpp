@@ -40,9 +40,9 @@ void ViewResolver::askViewToResolve(View* view) {
 
 void ViewResolver::viewResolvedUrl() {
     qDebug() << "ViewResolver::viewResolvedUrl()";
-    ViewBuilder* builder = currentBuilder();
-    emit urlResolved(mCurrentView);
+    View* resultView = mCurrentView;
     cleanup();
+    emit urlResolved(resultView);
 }
 
 void ViewResolver::viewDidntResolveUrl() {
@@ -86,8 +86,9 @@ void ViewResolver::tryWithNextBuilder() {
         }
     }
     else {
-        emit unresolvableUrl(mUrl);
+        QString url(mUrl);
         cleanup();
+        emit unresolvableUrl(url);
     }
 }
 
@@ -100,10 +101,8 @@ void ViewResolver::cleanup() {
 }
 
 void ViewResolver::disconnectAll() {
-    if (mCurrentView != NULL) {
-        disconnect(mCurrentView, SIGNAL(urlResolved()), this, SLOT(viewResolvedUrl()));
-        disconnect(mCurrentView, SIGNAL(urlNotResolved()), this, SLOT(viewDidntResolveUrl()));
-    }
+    if (mCurrentView != NULL)
+        disconnect(mCurrentView, 0, this, 0);
     ViewBuilder* builder = currentBuilder();
     if (builder != NULL)
         disconnect(builder, 0, this, 0);
