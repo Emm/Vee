@@ -1,6 +1,8 @@
 #include "dummy_view_builder.h"
 #include "dummy_view.h"
 
+const QString DummyViewBuilder::msViewType = "org.vee.DummyView";
+
 DummyViewBuilder::DummyViewBuilder(QObject* parent) : ViewBuilder(parent) {
 }
 
@@ -13,5 +15,5 @@ View* DummyViewBuilder::buildView() {
 }
 
 const QString & DummyViewBuilder::viewType() const {
-    return "org.vee.DummyView";
+    return msViewType;
 }

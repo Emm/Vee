@@ -7,8 +7,7 @@ class DummyViewBuilder : public ViewBuilder {
     Q_OBJECT
 
 private:
-
-    const static QString* msViewType;
+    const static QString msViewType;
 
 public:
 
