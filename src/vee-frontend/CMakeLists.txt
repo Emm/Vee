@@ -52,7 +52,6 @@ set(vee-frontend_MOC_HDRS
     web_view.h
     view_builder.h
     web_view_builder.h
-    process_builder.h
     remote_view_builder.h
     blank_view_builder.h
     blank_view_builder.h
