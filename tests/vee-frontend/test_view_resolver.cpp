@@ -21,7 +21,7 @@ public slots:
         mView = view;
     }
 
-    void setUnresolvableUrl(QString & url) {
+    void setUnresolvableUrl(QString url) {
         mUnresolvableUrl = new QString(url);
     }
 
@@ -39,7 +39,7 @@ private slots:
         viewBuilders->append(blankBuilder);
         mViewResolver = new ViewResolver(viewBuilders);
         connect(mViewResolver, SIGNAL(urlResolved(View*)), this, SLOT(setView(View*)));
-        connect(mViewResolver, SIGNAL(unresolvableUrl(QString &)), this, SLOT(setUnresolvableUrl(QString &)));
+        connect(mViewResolver, SIGNAL(unresolvableUrl(QString)), this, SLOT(setUnresolvableUrl(QString)));
     }
 
     void testIdentifier() {
