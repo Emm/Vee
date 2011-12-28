@@ -1,5 +1,6 @@
 #include <QTest>
 #include "view_tab.h"
+#include "error_view.h"
 #include "dummy_view_builder.h"
 #include "dummy_view.h"
 
@@ -30,6 +31,14 @@ private slots:
         QVERIFY(mViewTab->view() != NULL);
         const DummyView* dummyView = dynamic_cast<const DummyView*>(mViewTab->view());
         QVERIFY(dummyView != NULL);
+    }
+
+
+    void testUnresolvableUrl() {
+        mViewTab->setUrl("unresolvable url");
+        QVERIFY(mViewTab->view() != NULL);
+        const ErrorView* errorView = dynamic_cast<const ErrorView*>(mViewTab->view());
+        QVERIFY(errorView != NULL);
     }
 
     void cleanup() {
