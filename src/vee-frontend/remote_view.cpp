@@ -24,6 +24,7 @@ void RemoteView::destroyWatcher() {
         mWatcher->removeWatchedService(*mService);
         mWatcher->disconnect();
         delete mWatcher;
+        qDebug() << "Destroyed watcher";
         mWatcher = NULL;
     }
 }
@@ -35,11 +36,9 @@ void RemoteView::init(const ulong identifier) {
     connect(mProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(processGotAnError(QProcess::ProcessError)));
     mService = new QString(mViewCommand.serviceIdPattern->arg(identifier));
 
-    mWatcher = new QDBusServiceWatcher(this);
-    mWatcher->setConnection(QDBusConnection::sessionBus());
-    mWatcher->addWatchedService(*mService);
+    mWatcher = new QDBusServiceWatcher(*mService, QDBusConnection::sessionBus(), QDBusServiceWatcher::WatchForRegistration, this);
     connect(mWatcher,
-            SIGNAL(serviceOwnerChanged(const QString &, const QString &, const QString)),
+            SIGNAL(serviceRegistered(const QString &)),
             this,
             SLOT(serviceIsUp()));
     qDebug() << "Creating remote view with command " << executable << " " << arguments;
