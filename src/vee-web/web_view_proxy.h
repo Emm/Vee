@@ -31,6 +31,10 @@ public:
 
     Q_PROPERTY(QString title READ title)
     QString title() const;
+
+    Q_PROPERTY(QByteArray iconImage READ iconImage)
+    QByteArray iconImage() const;
+
     void show();
 
 private slots:

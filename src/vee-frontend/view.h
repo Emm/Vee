@@ -2,9 +2,13 @@
 #define VIEW_H
 
 #include <QtCore/QObject>
+#include <QIcon>
 
 class View : public QObject {
     Q_OBJECT
+
+protected:
+    QIcon mIcon;
 
 public:
 
@@ -25,6 +29,8 @@ public:
 
     virtual ~View();
 
+    virtual QIcon icon() const;
+
 public slots:
     virtual void resolve(const QString &url) = 0;
 
@@ -35,6 +41,7 @@ signals:
     void urlNotResolved();
     void urlChanged(QString url);
     void initialized();
+    void iconChanged();
 };
 
 #endif

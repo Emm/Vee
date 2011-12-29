@@ -4,6 +4,7 @@
 #include <QFileInfo>
 #include <QVBoxLayout>
 #include <QWebFrame>
+#include <QBuffer>
 
 #include "constants.h"
 
@@ -124,6 +125,15 @@ QUrl WebViewProxy::url() const {
 
 QString WebViewProxy::title() const {
     return mWebView->title();
+}
+
+QByteArray WebViewProxy::iconImage() const {
+    QPixmap iconPixmap = mWebView->icon().pixmap(16,16);
+    QByteArray bytes;
+    QBuffer buffer(&bytes);
+    buffer.open(QIODevice::WriteOnly);
+    iconPixmap.save(&buffer, "ICO");
+    return bytes;
 }
 
 void WebViewProxy::show() {

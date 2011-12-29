@@ -55,8 +55,13 @@ void RemoteView::serviceIsUp() {
     connect(mRealInterface, SIGNAL(urlNotResolved()), this, SIGNAL(urlNotResolved()));
     connect(mRealInterface, SIGNAL(urlChanged(QString)), this, SIGNAL(urlChanged(QString)));
     connect(mRealInterface, SIGNAL(titleChanged(QString)), this, SIGNAL(titleChanged(QString)));
+    connect(mRealInterface, SIGNAL(iconChanged()), this, SLOT(updateIcon()));
     connect(mRealInterface, SIGNAL(error(int, int)), this, SLOT(remoteGotAnError(int, int)));
     emit initialized();
+}
+
+void RemoteView::updateIcon() {
+    emit(iconChanged());
 }
 
 void RemoteView::embed() {

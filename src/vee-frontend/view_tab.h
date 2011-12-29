@@ -48,6 +48,7 @@ public slots:
 signals:
     void urlChanged(const QString & title);
     void titleChanged(const QString & title);
+    void iconChanged();
     void openInNewTab(const QString & url);
 };
 

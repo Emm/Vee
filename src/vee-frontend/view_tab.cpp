@@ -85,7 +85,9 @@ void ViewTab::setView(View* view) {
         }
         connect(mView, SIGNAL(titleChanged(const QString &)), this, SIGNAL(titleChanged(const QString &)));
         connect(mView, SIGNAL(urlChanged(const QString &)), mInputBar, SLOT(setText(const QString &)));
+        connect(mView, SIGNAL(iconChanged()), this, SIGNAL(iconChanged()));
         emit titleChanged(mView->title());
+        emit iconChanged();
     }
 }
 

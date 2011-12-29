@@ -37,12 +37,15 @@ public:
 
     Q_PROPERTY(QString interface READ interface)
     QString interface() const;
+
 public slots:
     void embed();
     virtual void resolve(const QString &url);
     void serviceIsUp();
     void processGotAnError(QProcess::ProcessError processError);
     virtual void remoteGotAnError(int errorType, int errorCode);
+    virtual void updateIcon();
+
 };
 
 #endif

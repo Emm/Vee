@@ -14,6 +14,7 @@ public slots:
     void reload();
     void setHtml(const QString &html);
     void stop();
+    virtual void updateIcon();
 
 signals:
     void iconChanged();

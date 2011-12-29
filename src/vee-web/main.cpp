@@ -41,6 +41,9 @@ void initApp(int argc, char* argv[]) {
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
+    app.setOrganizationName(ORGANIZATION_NAME);
+    app.setApplicationName(MAIN_APP_NAME);
+    app.setApplicationVersion(APP_VERSION);
 
     initApp(app.argc(), app.argv());
 

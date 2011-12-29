@@ -18,6 +18,14 @@ void WebView::setHtml(const QString &html) {
     mRealInterface->asyncCallWithArgumentList(QLatin1String("setHtml"), argumentList);
 }
 
+void WebView::updateIcon() {
+    QByteArray bytes = qvariant_cast< QByteArray >(mRealInterface->property("iconImage"));
+    QPixmap pixmap;
+    pixmap.loadFromData(bytes, "ICO");
+    mIcon = QIcon(pixmap);
+    emit(iconChanged());
+}
+
 void WebView::stop() {
     mRealInterface->asyncCall(QLatin1String("stop"));
 }

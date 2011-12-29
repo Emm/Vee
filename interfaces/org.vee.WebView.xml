@@ -3,6 +3,7 @@
   <interface name="org.vee.WebView">
     <property name="title" type="s" access="read"/>
     <property name="url" type="s" access="read"/>
+    <property name="iconImage" type="ay" access="read"/>
     <signal name="loadStarted">
     </signal>
     <signal name="loadProgress">
