@@ -6,10 +6,10 @@
 #include <QProcess>
 #include <QLabel>
 #include <QVBoxLayout>
-#include <QLineEdit>
 #include <QDebug>
 
 #include "vim.h"
+#include "input_bar.h"
 #include "view_resolver.h"
 
 class ViewTab: public QWidget {
@@ -20,7 +20,7 @@ private:
     ViewResolver* mViewResolver;
     View* mView;
     QString mOldLineEditValue;
-    QLineEdit *mInputBar;
+    InputBar *mInputBar;
     QX11EmbedContainer *mContainer;
     QWidget* mWidget;
     QAction* mChangeUrlAction;

@@ -36,6 +36,7 @@ set(vee-frontend_SRCS
     view_process.cpp
     error_view.cpp
     vim.cpp
+    input_bar.cpp
     main.cpp
 )
 
@@ -60,6 +61,7 @@ set(vee-frontend_MOC_HDRS
     view_process.h
     error_view.h
     vim.h
+    input_bar.h
     main_window.h
 )
 

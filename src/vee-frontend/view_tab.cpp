@@ -9,7 +9,7 @@ ViewTab::ViewTab(Vim* vim, ViewResolver* viewResolver, QWidget* parent):
         mVim(vim),
         mViewResolver(viewResolver),
         mView(NULL),
-        mInputBar(new QLineEdit(this)),
+        mInputBar(new InputBar(this)),
         mContainer(new QX11EmbedContainer(this)),
         mWidget(NULL),
         mChangeUrlAction(new QAction(this)),
