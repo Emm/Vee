@@ -1,8 +1,4 @@
 #include <QApplication>
-#include <QApplication>
-#include <QProcess>
-#include <QString>
-#include <QStringList>
 
 #include "common_constants.h"
 #include "constants.h"
@@ -10,7 +6,6 @@
 #include "view_process_builder.h"
 #include "command_line_parser.h"
 #include "main_window.h"
-#include <QDebug>
 
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
