@@ -56,6 +56,7 @@ signals:
     void linkClicked(const QUrl & url);
     void loadProgress(int progress);
     void loadStarted();
+    void loadFinished(bool ok);
     void selectionChanged();
     void titleChanged(const QString & title);
     void urlChanged(const QUrl & url);

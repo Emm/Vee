@@ -9,6 +9,9 @@
     <signal name="loadProgress">
       <arg name="progress" type="i" direction="out"/>
     </signal>
+    <signal name="loadFinished">
+      <arg name="ok" type="b" direction="out"/>
+    </signal>
     <signal name="titleChanged">
       <arg name="title" type="s" direction="out"/>
     </signal>

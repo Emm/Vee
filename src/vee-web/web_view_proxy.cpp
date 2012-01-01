@@ -105,6 +105,7 @@ void WebViewProxy::resolve(const QString &value) {
 void WebViewProxy::broadcastLoadFinished(bool ok) {
     if (!ok)
         emit urlNotResolved();
+    emit loadFinished(ok);
 }
 
 void WebViewProxy::reload() {
