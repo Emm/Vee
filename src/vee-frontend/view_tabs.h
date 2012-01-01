@@ -21,7 +21,7 @@ public:
 public slots:
     void updateTabTitle(const QString & title);
     void updateTabUrl(const QString & url);
-    void updateTabIcon();
+    void updateTabIcon(QIcon icon);
     void showUrlInNewTab(const QString & url);
     void showUrlInActiveTab(const QString & url);
 

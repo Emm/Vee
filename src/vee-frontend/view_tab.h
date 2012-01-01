@@ -25,6 +25,7 @@ private:
     QWidget* mWidget;
     QAction* mChangeUrlAction;
     QAction* mSwitchCommandAndNormalModeAction;
+    QIcon mIcon;
 
 public:
     
@@ -32,6 +33,10 @@ public:
     virtual ~ViewTab();
 
     const View* view();
+
+    Q_PROPERTY(QIcon icon READ icon WRITE setIcon NOTIFY iconChanged)
+    QIcon icon() const;
+    void setIcon(QIcon icon);
 
 private slots:
     void switchCommandAndNormalModes(bool switchToCommandMode);
@@ -44,11 +49,12 @@ public slots:
     void focusContainer();
     void showEmbedError(QX11EmbedContainer::Error error);
     void resolveUrl();
+    void viewIconWasChanged();
 
 signals:
     void urlChanged(const QString & title);
     void titleChanged(const QString & title);
-    void iconChanged();
+    void iconChanged(QIcon icon);
     void openInNewTab(const QString & url);
 };
 

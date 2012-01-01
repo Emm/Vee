@@ -26,7 +26,7 @@ void ViewTabs::showUrlInNewTab(const QString & url) {
     connect(container, SIGNAL(titleChanged(const QString &)), this, SLOT(updateTabTitle(const QString &)));
     connect(container, SIGNAL(urlChanged(const QString &)), this, SLOT(updateTabUrl(const QString &)));
     connect(container, SIGNAL(openInNewTab(const QString &)), this, SLOT(showUrlInNewTab(const QString &)));
-    connect(container, SIGNAL(iconChanged()), this, SLOT(updateTabIcon()));
+    connect(container, SIGNAL(iconChanged(QIcon)), this, SLOT(updateTabIcon(QIcon)));
     setCurrentIndex(newTabPosition);
     container->setUrl(url);
 }
@@ -61,18 +61,9 @@ void ViewTabs::updateTabUrl(const QString & url) {
     }
 }
 
-void ViewTabs::updateTabIcon() {
+void ViewTabs::updateTabIcon(QIcon icon) {
     int tabPosition = getTabPosition();
     if (tabPosition == -1)
         return;
-    QWidget* tabWidget = widget(tabPosition);
-    if (tabWidget) {
-        ViewTab* tab = qobject_cast<ViewTab *>(tabWidget);
-        if (tab) {
-            const View* view = tab->view();
-            if (view) {
-                setTabIcon(tabPosition, view->icon());
-            }
-        }
-    }
+    setTabIcon(tabPosition, icon);
 }

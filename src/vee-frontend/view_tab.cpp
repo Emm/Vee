@@ -45,6 +45,15 @@ ViewTab::ViewTab(Vim* vim, ViewResolver* viewResolver, QWidget* parent):
 ViewTab::~ViewTab() {
 }
 
+QIcon ViewTab::icon() const {
+    return mIcon;
+}
+
+void ViewTab::setIcon(QIcon icon) {
+    mIcon = icon;
+    emit iconChanged(icon);
+}
+
 void ViewTab::setUrl(const QString & url) {
     // Switch back to normal mode if we were in command mode
     if (mSwitchCommandAndNormalModeAction->isChecked()) {
@@ -85,9 +94,17 @@ void ViewTab::setView(View* view) {
         }
         connect(mView, SIGNAL(titleChanged(const QString &)), this, SIGNAL(titleChanged(const QString &)));
         connect(mView, SIGNAL(urlChanged(const QString &)), mInputBar, SLOT(setText(const QString &)));
-        connect(mView, SIGNAL(iconChanged()), this, SIGNAL(iconChanged()));
+        connect(mView, SIGNAL(iconChanged()), this, SLOT(viewIconWasChanged()));
         emit titleChanged(mView->title());
-        emit iconChanged();
+        if (!mView->icon().isNull()) {
+            setIcon(mView->icon());
+        }
+    }
+}
+
+void ViewTab::viewIconWasChanged() {
+    if (!mView->icon().isNull()) {
+        setIcon(mView->icon());
     }
 }
 
