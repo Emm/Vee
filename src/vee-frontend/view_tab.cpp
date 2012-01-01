@@ -22,7 +22,7 @@ ViewTab::ViewTab(Vim* vim, ViewResolver* viewResolver, QWidget* parent):
     layout()->addWidget(mInputBar);
     layout()->addWidget(mContainer);
     addAction(mChangeUrlAction);
-    addAction(mSwitchCommandAndNormalModeAction);
+    mContainer->addAction(mSwitchCommandAndNormalModeAction);
 
     mSwitchCommandAndNormalModeAction->setCheckable(true);
     mSwitchCommandAndNormalModeAction->setShortcut(QKeySequence(Qt::Key_Colon));
@@ -159,4 +159,5 @@ void ViewTab::switchCommandAndNormalModes(bool switchToCommandMode) {
 
 void ViewTab::triggerVimParsing() {
     mVim->parse(mInputBar->text());
+    switchCommandAndNormalModes(false);
 }
