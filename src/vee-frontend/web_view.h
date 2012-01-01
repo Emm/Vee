@@ -15,13 +15,6 @@ public slots:
     void setHtml(const QString &html);
     void stop();
     virtual void updateIcon();
-
-signals:
-    void iconChanged();
-    void loadFinished(bool in0);
-    void loadProgress(int progress);
-    void loadStarted();
-    void selectionChanged();
 };
 
 #endif

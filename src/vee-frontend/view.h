@@ -42,6 +42,9 @@ signals:
     void urlChanged(QString url);
     void initialized();
     void iconChanged();
+    void loadStarted();
+    void loadProgress(int progress);
+    void loadFinished(bool ok);
 };
 
 #endif
