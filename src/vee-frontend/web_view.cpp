@@ -26,6 +26,20 @@ void WebView::updateIcon() {
     emit(iconChanged());
 }
 
+void WebView::remoteLoadFinished(bool ok) {
+    // If the icon is null, force the update to a 'blank' icon
+    if (RemoteView::icon().isNull()) {
+        emit iconChanged();
+    }
+    RemoteView::remoteLoadFinished(ok);
+}
+
+QIcon WebView::icon() const {
+    QIcon realIcon = RemoteView::icon();
+    QIcon icon = realIcon.isNull() ? QIcon::fromTheme("text-html") : realIcon;
+    return icon;
+}
+
 void WebView::stop() {
     mRealInterface->asyncCall(QLatin1String("stop"));
 }
