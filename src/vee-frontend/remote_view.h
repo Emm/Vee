@@ -45,7 +45,7 @@ public slots:
     void processGotAnError(QProcess::ProcessError processError);
     virtual void remoteGotAnError(int errorType, int errorCode);
     virtual void updateIcon();
-
+    virtual void remoteLoadFinished(bool ok);
 };
 
 #endif
