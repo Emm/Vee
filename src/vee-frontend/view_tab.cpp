@@ -1,7 +1,5 @@
 #include "view_tab.h"
 #include <QVBoxLayout>
-#include "remote_view.h"
-#include "local_view.h"
 #include "error_view.h"
 
 ViewTab::ViewTab(Vim* vim, ViewResolver* viewResolver, QWidget* parent):
@@ -64,42 +62,76 @@ void ViewTab::setUrl(const QString & url) {
 }
 
 void ViewTab::setView(View* view) {
-    if (view != mView) {
-        if (mView) {
-            mView->disconnect();
-            if (mWidget != NULL) {
-                layout()->removeWidget(mWidget);
-                delete mWidget;
-                mWidget = NULL;
-                qDebug() << "Removed old widget";
-            }
-            delete mView;
-        }
+    if (view == mView)
+        return;
+
+    discardOldView();
+
+    bool wasDisplayUpdated = dispatchUpdateDisplay(view);
+    if (wasDisplayUpdated) {
         mView = view;
-        mInputBar->setText(view->url());
-        qDebug() << "New view type: " << mView->interface();
-        RemoteView* remoteInt = qobject_cast<RemoteView *>(mView);
-        if (remoteInt) {
-            mView->setParent(mContainer);
-            mContainer->show();
-            remoteInt->embed();
+        mView->setParent(this);
+        updateInputBar();
+        connect(mView, SIGNAL(titleChanged(const QString &)), this, SIGNAL(titleChanged(const QString &)));
+        emit titleChanged(mView->title());
+        setIcon(mView->icon());
+        connect(mView, SIGNAL(iconChanged()), this, SLOT(viewIconWasChanged()));
+    }
+    else {
+        qDebug() << "Unknown view";
+    }
+}
+
+void ViewTab::discardOldView() {
+    if (mView == NULL)
+        return;
+
+    mView->disconnect();
+    if (mWidget != NULL) {
+        layout()->removeWidget(mWidget);
+        delete mWidget;
+        mWidget = NULL;
+        qDebug() << "Removed old widget";
+    }
+    delete mView;
+}
+
+void ViewTab::updateDisplay(RemoteView* view) {
+    mContainer->show();
+    view->embed();
+}
+
+void ViewTab::updateDisplay(LocalView* view) {
+    mWidget = view->widget();
+    mWidget->setParent(this);
+    mContainer->hide();
+    layout()->addWidget(mWidget);
+}
+
+bool ViewTab::dispatchUpdateDisplay(View* view) {
+    // For want of double dispatch in C++, use dynamic casts to retrieve the
+    // correct type of view
+    bool viewTypeFound = true;
+    LocalView* localView = qobject_cast<LocalView*>(view);
+    if (localView != NULL) {
+        updateDisplay(localView);
+    }
+    else {
+        RemoteView* remoteView = qobject_cast<RemoteView*>(view);
+        if (remoteView != NULL) {
+            updateDisplay(remoteView);
         }
         else {
-            LocalView* localView = qobject_cast<LocalView *>(mView);
-            localView->setParent(this);
-            mWidget = localView->widget();
-            mWidget->setParent(this);
-            mContainer->hide();
-            layout()->addWidget(mWidget);
-        }
-        connect(mView, SIGNAL(titleChanged(const QString &)), this, SIGNAL(titleChanged(const QString &)));
-        connect(mView, SIGNAL(urlChanged(const QString &)), mInputBar, SLOT(setText(const QString &)));
-        connect(mView, SIGNAL(iconChanged()), this, SLOT(viewIconWasChanged()));
-        emit titleChanged(mView->title());
-        if (!mView->icon().isNull()) {
-            setIcon(mView->icon());
+            viewTypeFound = false;
         }
     }
+    return viewTypeFound;
+}
+
+
+void ViewTab::updateInputBar() {
+    mInputBar->setText(mView->url());
+    connect(mView, SIGNAL(urlChanged(const QString &)), mInputBar, SLOT(setText(const QString &)));
 }
 
 void ViewTab::viewIconWasChanged() {

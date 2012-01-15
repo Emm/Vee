@@ -11,6 +11,8 @@
 #include "vim.h"
 #include "input_bar.h"
 #include "view_resolver.h"
+#include "remote_view.h"
+#include "local_view.h"
 
 class ViewTab: public QWidget {
     Q_OBJECT
@@ -26,6 +28,12 @@ private:
     QAction* mChangeUrlAction;
     QAction* mSwitchCommandAndNormalModeAction;
     QIcon mIcon;
+
+    void discardOldView();
+    void updateDisplay(RemoteView* view);
+    void updateDisplay(LocalView* view);
+    bool dispatchUpdateDisplay(View* view);
+    void updateInputBar();
 
 public:
     
