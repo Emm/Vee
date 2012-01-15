@@ -194,7 +194,12 @@ void ViewTab::switchCommandAndNormalModes(bool switchToCommandMode) {
         mSwitchCommandAndNormalModeAction->setShortcut(Qt::Key_Colon);
         mVim->setMode(Vim::NormalMode);
         mInputBar->setText(mOldLineEditValue);
-        mContainer->setFocus();
+        if (mWidget != NULL && mWidget->isVisible()) {
+            mWidget->setFocus();
+        }
+        else {
+            mContainer->setFocus();
+        }
         connect(mInputBar, SIGNAL(returnPressed()), mChangeUrlAction, SLOT(trigger()));
         qDebug() << "Switch to normal mode";
     }
