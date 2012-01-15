@@ -107,6 +107,8 @@ void ViewTab::updateDisplay(LocalView* view) {
     mWidget->setObjectName("view");
     mContainer->hide();
     layout()->addWidget(mWidget);
+    mWidget->addAction(mSwitchCommandAndNormalModeAction);
+    mWidget->setFocus(Qt::OtherFocusReason);
 }
 
 bool ViewTab::dispatchUpdateDisplay(View* view) {
