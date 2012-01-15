@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource>
+        <file>stylesheets/vee.css</file>
+    </qresource>
+</RCC>

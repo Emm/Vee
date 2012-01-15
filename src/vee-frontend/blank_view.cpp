@@ -25,7 +25,6 @@ QString BlankView::url() const {
 
 QWidget* BlankView::widget() {
     QWidget* blankWidget = new QWidget();
-    blankWidget->setStyleSheet("background-color: #FFF");
     return blankWidget;
 }
 

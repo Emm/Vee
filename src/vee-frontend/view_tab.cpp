@@ -104,6 +104,7 @@ void ViewTab::updateDisplay(RemoteView* view) {
 void ViewTab::updateDisplay(LocalView* view) {
     mWidget = view->widget();
     mWidget->setParent(this);
+    mWidget->setObjectName("view");
     mContainer->hide();
     layout()->addWidget(mWidget);
 }
@@ -140,8 +141,16 @@ void ViewTab::viewIconWasChanged() {
     }
 }
 
-const View * ViewTab::view() {
+View * ViewTab::view() const {
     return mView;
+}
+
+QString ViewTab::viewType() const {
+    QString viewType;
+    if (mView != NULL) {
+        viewType = mView->interface();
+    }
+    return viewType;
 }
 
 void ViewTab::setFailView(QString url) {

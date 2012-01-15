@@ -65,6 +65,9 @@ set(vee-frontend_MOC_HDRS
     main_window.h
 )
 
+set(vee-frontend_RCCS vee.qrc)
+qt4_add_resources(vee-frontend_RCC_SRCS ${vee-frontend_RCCS})
+
 qt4_wrap_cpp(vee-frontend_MOC_SRCS ${vee-frontend_MOC_HDRS})
 
 # tell cmake to create .moc files for all files in the variable vee-frontend_SRCS that require such a file.
@@ -75,7 +78,7 @@ qt4_automoc(${vee-frontend_SRCS})
 # create an executable file named "vee" from the source files in the variable "vee-frontend_SRCS".
 add_library(libvee-frontend ${vee-frontend_SRCS} ${vee-frontend_MOC_SRCS})
 set_target_properties(libvee-frontend PROPERTIES OUTPUT_NAME vee)
-add_executable(vee main.cpp)
+add_executable(vee main.cpp ${vee-frontend_RCC_SRCS})
 
 # link the "vee-frontend" target against the Qt libraries. which libraries exactly, is defined by the "include(${QT_USE_FILE})" line above, which sets up this variable.
 target_link_libraries(libvee-frontend ${QT_LIBRARIES})

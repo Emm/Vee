@@ -40,11 +40,14 @@ public:
     explicit ViewTab(Vim* mVim, ViewResolver* viewResolver, QWidget* parent=0);
     virtual ~ViewTab();
 
-    const View* view();
+    Q_PROPERTY(QString viewType READ viewType)
+    QString viewType() const;
 
     Q_PROPERTY(QIcon icon READ icon WRITE setIcon NOTIFY iconChanged)
     QIcon icon() const;
     void setIcon(QIcon icon);
+
+    View* view() const;
 
 private slots:
     void switchCommandAndNormalModes(bool switchToCommandMode);

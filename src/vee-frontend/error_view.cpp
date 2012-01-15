@@ -27,6 +27,7 @@ QString ErrorView::url() const {
 
 QWidget* ErrorView::widget() {
     QLabel* errorWidget = new QLabel(mErrorMessage);
+    errorWidget->setAlignment(Qt::AlignTop);
     return errorWidget;
 }
 
