@@ -36,7 +36,7 @@ void WebView::remoteLoadFinished(bool ok) {
 
 QIcon WebView::icon() const {
     QIcon realIcon = RemoteView::icon();
-    QIcon icon = realIcon.isNull() ? QIcon::fromTheme("text-html") : realIcon;
+    QIcon icon = realIcon.isNull() ? QIcon::fromTheme("text-html", QIcon(":/icons/text-html")) : realIcon;
     return icon;
 }
 

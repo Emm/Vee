@@ -4,4 +4,7 @@
     <qresource>
         <file>stylesheets/vee.css</file>
     </qresource>
+    <qresource>
+        <file>icons/text-html.png</file>
+    </qresource>
 </RCC>
