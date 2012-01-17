@@ -6,6 +6,7 @@ const QString BlankView::msUrl = "about:blank";
 
 BlankView::BlankView(QObject* parent):
     LocalView(parent) {
+    mIcon = QIcon::fromTheme("go-home", QIcon(":/icons/go-home"));
 }
 
 BlankView::~BlankView() {

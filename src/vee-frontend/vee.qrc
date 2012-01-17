@@ -7,4 +7,7 @@
     <qresource>
         <file>icons/text-html.png</file>
     </qresource>
+    <qresource>
+        <file>icons/go-home.png</file>
+    </qresource>
 </RCC>
