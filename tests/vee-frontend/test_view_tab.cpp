@@ -1,4 +1,5 @@
 #include <QTest>
+#include <QtGui>
 #include "view_tab.h"
 #include "error_view.h"
 #include "dummy_view_builder.h"
@@ -41,10 +42,27 @@ private slots:
         QVERIFY(errorView != NULL);
     }
 
+    void testInitialMode() {
+        QVERIFY(mViewTab->vim()->mode() == Vim::NormalMode);
+    }
+
+
+    void testModeChange() {
+        mViewTab->show();
+        mViewTab->setUrl("about:blank");
+        QTest::qWait(100);
+        QTest::keyClicks(mViewTab->widget(), ":");
+        QVERIFY(mViewTab->vim()->mode() == Vim::CommandMode);
+    }
+
+    void testDefaultFocus() {
+        QVERIFY(mViewTab->focusWidget() == mViewTab->inputBar());
+    }
+
     void cleanup() {
         delete mViewTab;
     }
- 
+
 };
 
 QTEST_MAIN(TestViewTab);
