@@ -38,6 +38,7 @@ ViewTab::ViewTab(Vim* vim, ViewResolver* viewResolver, QWidget* parent):
 
     connect(mVim, SIGNAL(openCommand(QString)), this, SLOT(setUrl(const QString &)));
     connect(mVim, SIGNAL(openInNewTabCommand(QString)), this, SIGNAL(openInNewTab(const QString &)));
+    mInputBar->setFocus(Qt::OtherFocusReason);
 }
 
 ViewTab::~ViewTab() {
@@ -208,4 +209,16 @@ void ViewTab::switchCommandAndNormalModes(bool switchToCommandMode) {
 void ViewTab::triggerVimParsing() {
     mVim->parse(mInputBar->text());
     switchCommandAndNormalModes(false);
+}
+
+Vim* ViewTab::vim() const {
+    return mVim;
+}
+
+QWidget* ViewTab::widget() const {
+    return mWidget;
+}
+
+InputBar* ViewTab::inputBar() const {
+    return mInputBar;
 }

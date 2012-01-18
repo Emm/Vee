@@ -49,6 +49,12 @@ public:
 
     View* view() const;
 
+    Vim* vim() const;
+
+    QWidget* widget() const;
+
+    InputBar* inputBar() const;
+
 private slots:
     void switchCommandAndNormalModes(bool switchToCommandMode);
     void triggerVimParsing();
