@@ -3,7 +3,9 @@
 #include "view_tab.h"
 #include "error_view.h"
 #include "dummy_view_builder.h"
+#include "blank_view_builder.h"
 #include "dummy_view.h"
+#include "blank_view.h"
 
 class TestViewTab : public QObject {
 
@@ -18,6 +20,7 @@ private slots:
     void init() {
         QVector<ViewBuilder*>* viewBuilders = new QVector<ViewBuilder*>();
         viewBuilders->append(new DummyViewBuilder());
+        viewBuilders->append(new BlankViewBuilder());
 
         ViewResolver* viewResolver = new ViewResolver(viewBuilders);
         mViewTab = new ViewTab(new Vim(), viewResolver);
@@ -46,7 +49,6 @@ private slots:
         QVERIFY(mViewTab->vim()->mode() == Vim::NormalMode);
     }
 
-
     void testModeChange() {
         mViewTab->show();
         mViewTab->setUrl("about:blank");
@@ -57,6 +59,19 @@ private slots:
 
     void testDefaultFocus() {
         QVERIFY(mViewTab->focusWidget() == mViewTab->inputBar());
+    }
+
+    void testViewChange() {
+        mViewTab->show();
+        mViewTab->setUrl("dummy url");
+        QTest::qWait(100);
+        QTest::keyClicks(mViewTab->widget(), ":");
+        QTest::qWait(100);
+        QTest::keyClicks(mViewTab->inputBar(), "o about:blank");
+        QTest::keyClick(mViewTab->inputBar(), Qt::Key_Enter);
+        QTest::qWait(100);
+        const BlankView* dummyView = dynamic_cast<const BlankView*>(mViewTab->view());
+        QVERIFY(dummyView != NULL);
     }
 
     void cleanup() {
