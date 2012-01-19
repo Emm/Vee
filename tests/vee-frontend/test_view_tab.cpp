@@ -49,12 +49,23 @@ private slots:
         QVERIFY(mViewTab->vim()->mode() == Vim::NormalMode);
     }
 
-    void testModeChange() {
+    void testChangeToCommandMode() {
         mViewTab->show();
         mViewTab->setUrl("about:blank");
         QTest::qWait(100);
         QTest::keyClicks(mViewTab->widget(), ":");
         QVERIFY(mViewTab->vim()->mode() == Vim::CommandMode);
+    }
+
+    void testChangeBackToNormalMode() {
+        mViewTab->show();
+        mViewTab->setUrl("dummy url");
+        QTest::qWait(100);
+        QTest::keyClicks(mViewTab->widget(), ":");
+        QTest::qWait(100);
+        QTest::keyClicks(mViewTab->inputBar(), "o about:blank");
+        QTest::keyClick(mViewTab->inputBar(), Qt::Key_Enter);
+        QVERIFY(mViewTab->vim()->mode() == Vim::NormalMode);
     }
 
     void testDefaultFocus() {
