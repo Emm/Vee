@@ -14,6 +14,13 @@ Q_OBJECT
 private:
 
     ViewTab* mViewTab;
+    QString mOpenInNewTabUrl;
+
+public slots:
+
+    void urlOpenedInNewTab(const QString & url) {
+        mOpenInNewTabUrl = url;
+    }
 
 private slots:
 
@@ -24,6 +31,9 @@ private slots:
 
         ViewResolver* viewResolver = new ViewResolver(viewBuilders);
         mViewTab = new ViewTab(new Vim(), viewResolver);
+        mOpenInNewTabUrl = QString();
+
+        connect(mViewTab, SIGNAL(openInNewTab(const QString &)), this, SLOT(urlOpenedInNewTab(const QString &)));
     }
 
     void testInitialView() {
@@ -83,6 +93,18 @@ private slots:
         QTest::qWait(100);
         const BlankView* dummyView = dynamic_cast<const BlankView*>(mViewTab->view());
         QVERIFY(dummyView != NULL);
+    }
+
+    void testOpenViewInNewTab() {
+        mViewTab->show();
+        mViewTab->setUrl("dummy url");
+        QTest::qWait(100);
+        QTest::keyClicks(mViewTab->widget(), ":");
+        QTest::qWait(100);
+        QTest::keyClicks(mViewTab->inputBar(), "t about:blank");
+        QTest::keyClick(mViewTab->inputBar(), Qt::Key_Enter);
+        QTest::qWait(100);
+        QVERIFY(mOpenInNewTabUrl == QString("about:blank"));
     }
 
     void cleanup() {
