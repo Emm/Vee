@@ -67,6 +67,7 @@ public slots:
     void showEmbedError(QX11EmbedContainer::Error error);
     void resolveUrl();
     void viewIconWasChanged();
+    void viewGotAnError(View::ErrorType errorType, int errorCode);
 
 signals:
     void urlChanged(const QString & title);

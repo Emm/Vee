@@ -77,6 +77,7 @@ void ViewTab::setView(View* view) {
         emit titleChanged(mView->title());
         setIcon(mView->icon());
         connect(mView, SIGNAL(iconChanged()), this, SLOT(viewIconWasChanged()));
+        connect(mView, SIGNAL(error(View::ErrorType, int)), this, SLOT(viewGotAnError(View::ErrorType, int)));
     }
     else {
         qDebug() << "Unknown view";
@@ -221,4 +222,17 @@ QWidget* ViewTab::widget() const {
 
 InputBar* ViewTab::inputBar() const {
     return mInputBar;
+}
+
+void ViewTab::viewGotAnError(View::ErrorType errorType, int errorCode) {
+    QString msg;
+    if (errorType == View::ProcessError) {
+        msg = "The view process probably crashed";
+        qDebug() << "Process error: " << errorCode;
+    }
+    else {
+        msg = "An unknown error occurred";
+    }
+    ErrorView* errorView = new ErrorView(msg);
+    setView(errorView);
 }

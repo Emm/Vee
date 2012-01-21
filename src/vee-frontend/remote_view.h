@@ -42,10 +42,10 @@ public slots:
     void embed();
     virtual void resolve(const QString &url);
     void serviceIsUp();
-    void processGotAnError(QProcess::ProcessError processError);
     virtual void remoteGotAnError(int errorType, int errorCode);
     virtual void updateIcon();
     virtual void remoteLoadFinished(bool ok);
+    void processFinished(int exitCode, QProcess::ExitStatus exitStatus);
 };
 
 #endif

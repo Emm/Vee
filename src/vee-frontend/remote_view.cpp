@@ -33,7 +33,9 @@ void RemoteView::init(const ulong identifier) {
     const QString & executable = mViewCommand.embedCommand->executable();
     QStringList* pArguments = mViewCommand.embedCommand->arguments(identifier);
     const QStringList & arguments = *pArguments;
-    connect(mProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(processGotAnError(QProcess::ProcessError)));
+    // Don't connect to the process error signal, we need to wait until the
+    // process emits its finished() signal before handling a crash
+    connect(mProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(processFinished(int, QProcess::ExitStatus)));
     mService = new QString(mViewCommand.serviceIdPattern->arg(identifier));
 
     mWatcher = new QDBusServiceWatcher(*mService, QDBusConnection::sessionBus(), QDBusServiceWatcher::WatchForRegistration, this);
@@ -98,6 +100,8 @@ void RemoteView::remoteGotAnError(int errorType, int errorCode) {
     emit error(UnknownError, errorCode);
 }
 
-void RemoteView::processGotAnError(QProcess::ProcessError processError) {
-    emit error(ProcessError, processError);
+void RemoteView::processFinished(int exitCode, QProcess::ExitStatus exitStatus) {
+    // Systematically emit crash as we shouldn't be getting the signal except
+    // when something very wrong happend
+    emit error(ProcessError, QProcess::Crashed);
 }
