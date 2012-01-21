@@ -12,9 +12,9 @@ ViewResolverFactory::ViewResolverFactory(const ProcessBuilder & processBuilder, 
     command->addWinId();
     ViewCommand* viewCommand = new ViewCommand;
     viewCommand->embedCommand = command;
-    viewCommand->interfaceName = new QString(WEB_VIEW_TYPE);
-    viewCommand->serviceIdPattern = new QString("org.vee.WebView_%1");
-    viewCommand->objectPath = new QString("/WebView");
+    viewCommand->interfaceName = QString(WEB_VIEW_TYPE);
+    viewCommand->serviceIdPattern = QString("org.vee.WebView_%1");
+    viewCommand->objectPath = QString("/WebView");
     mViewCommands->append(viewCommand);
 }
 
@@ -22,10 +22,6 @@ ViewResolverFactory::~ViewResolverFactory() {
     for (int i = 0 ; i < mViewCommands->size() ; i++) {
         ViewCommand* command = mViewCommands->at(i);
         delete command->embedCommand;
-        delete command->interfaceName;
-        delete command->serviceIdPattern;
-        delete command->objectPath;
-        delete command;
     }
     delete mViewCommands;
 }

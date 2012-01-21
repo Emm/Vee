@@ -58,9 +58,9 @@ private slots:
 
         mViewCommand = new ViewCommand;
         mViewCommand->embedCommand = command;
-        mViewCommand->interfaceName = new QString(WEB_VIEW_INTERFACE);
-        mViewCommand->serviceIdPattern = new QString(TEST_SERVICE_ID);
-        mViewCommand->objectPath = new QString(TEST_SERVICE_PATH);
+        mViewCommand->interfaceName = QString(WEB_VIEW_INTERFACE);
+        mViewCommand->serviceIdPattern = QString(TEST_SERVICE_ID);
+        mViewCommand->objectPath = QString(TEST_SERVICE_PATH);
         mNewUrl = NULL;
         mUrlResolved = -1;
         mErrorType = View::ProcessError;
@@ -207,9 +207,6 @@ private slots:
         dbus.unregisterObject(TEST_SERVICE_PATH);
         dbus.unregisterService(TEST_SERVICE_ID);
         delete mViewCommand->embedCommand;
-        delete mViewCommand->interfaceName;
-        delete mViewCommand->serviceIdPattern;
-        delete mViewCommand->objectPath;
         delete mViewCommand;
         delete mRemoteView;
         delete mView;

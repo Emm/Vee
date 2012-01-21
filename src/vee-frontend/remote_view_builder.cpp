@@ -12,5 +12,5 @@ RemoteViewBuilder::~RemoteViewBuilder() {
 }
 
 const QString & RemoteViewBuilder::viewType() const {
-    return *(mViewCommand.interfaceName);
+    return mViewCommand.interfaceName;
 }

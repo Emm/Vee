@@ -33,7 +33,7 @@ void RemoteView::init(const ulong identifier) {
     // Don't connect to the process error signal, we need to wait until the
     // process emits its finished() signal before handling a crash
     connect(mProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(processFinished(int, QProcess::ExitStatus)));
-    mService = QString(mViewCommand.serviceIdPattern->arg(identifier));
+    mService = QString(mViewCommand.serviceIdPattern.arg(identifier));
 
     mWatcher = new QDBusServiceWatcher(mService, QDBusConnection::sessionBus(), QDBusServiceWatcher::WatchForRegistration, this);
     connect(mWatcher,
@@ -47,8 +47,8 @@ void RemoteView::init(const ulong identifier) {
 void RemoteView::serviceIsUp() {
     destroyWatcher();
     qDebug() << "Remote view is reachable through DBus";
-    mRealInterface = new QDBusInterface(mService, *mViewCommand.objectPath,
-                mViewCommand.interfaceName->toLatin1().constData(),
+    mRealInterface = new QDBusInterface(mService, mViewCommand.objectPath,
+                mViewCommand.interfaceName.toLatin1().constData(),
                 QDBusConnection::sessionBus(), this);
     connect(mRealInterface, SIGNAL(urlResolved()), this, SIGNAL(urlResolved()));
     connect(mRealInterface, SIGNAL(urlNotResolved()), this, SIGNAL(urlNotResolved()));
