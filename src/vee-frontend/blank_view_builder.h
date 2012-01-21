@@ -8,7 +8,7 @@ class BlankViewBuilder : public ViewBuilder {
 
 private:
 
-    const static QString* msViewType;
+    const static QString msViewType;
 
 public:
 

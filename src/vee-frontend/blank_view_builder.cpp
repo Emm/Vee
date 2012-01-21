@@ -2,7 +2,7 @@
 #include "blank_view.h"
 #include "view_types.h"
 
-const QString* BlankViewBuilder::msViewType = new QString(BLANK_VIEW_TYPE);
+const QString BlankViewBuilder::msViewType = QString(BLANK_VIEW_TYPE);
 
 BlankViewBuilder::BlankViewBuilder(QObject* parent) : ViewBuilder(parent) {
 }
@@ -16,5 +16,5 @@ View* BlankViewBuilder::buildView() {
 }
 
 const QString & BlankViewBuilder::viewType() const {
-    return *BlankViewBuilder::msViewType;
+    return BlankViewBuilder::msViewType;
 }
