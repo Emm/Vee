@@ -1,6 +1,8 @@
 #include <QTest>
 #include <QtGui>
+#include <QProcess>
 #include "view_tab.h"
+#include "assert.h"
 #include "error_view.h"
 #include "dummy_view_builder.h"
 #include "blank_view_builder.h"
@@ -105,6 +107,19 @@ private slots:
         QTest::keyClick(mViewTab->inputBar(), Qt::Key_Enter);
         QTest::qWait(100);
         QVERIFY(mOpenInNewTabUrl == QString("about:blank"));
+    }
+
+    void testViewProcessError() {
+        mViewTab->setUrl("dummy url");
+        assert(mViewTab->view() != NULL);
+        QTest::qWait(100);
+        DummyView* dummyView = dynamic_cast<DummyView*>(mViewTab->view());
+        assert(dummyView != NULL);
+        dummyView->emitError(View::ProcessError, QProcess::Crashed);
+        QTest::qWait(100);
+        QVERIFY(mViewTab->view() != NULL);
+        const ErrorView* errorView = dynamic_cast<const ErrorView*>(mViewTab->view());
+        QVERIFY(errorView != NULL);
     }
 
     void cleanup() {

@@ -26,6 +26,8 @@ public:
 
     virtual QWidget* widget();
 
+    void emitError(View::ErrorType errorType, int errorCode);
+
 public slots:
     virtual void resolve(const QString &url);
 };

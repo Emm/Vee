@@ -36,3 +36,7 @@ void DummyView::resolve(const QString & url) {
     else
         emit urlNotResolved();
 }
+
+void DummyView::emitError(View::ErrorType errorType, int errorCode) {
+    emit error(errorType, errorCode);
+}
