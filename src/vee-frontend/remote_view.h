@@ -19,7 +19,7 @@ protected:
     const ViewCommand & mViewCommand;
     Process* mProcess;
     QDBusInterface* mRealInterface;
-    QString* mService;
+    QString mService;
     QDBusServiceWatcher* mWatcher;
 
 public:

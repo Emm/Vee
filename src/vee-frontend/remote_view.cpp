@@ -8,7 +8,6 @@ RemoteView::RemoteView(const ViewCommand & viewCommand, Process* process, QObjec
         mViewCommand(viewCommand),
         mProcess(process),
         mRealInterface(NULL),
-        mService(NULL),
         mWatcher(NULL) {
     mProcess->setParent(this);
 }
@@ -16,12 +15,11 @@ RemoteView::RemoteView(const ViewCommand & viewCommand, Process* process, QObjec
 
 RemoteView::~RemoteView() {
     destroyWatcher();
-    delete mService;
 }
 
 void RemoteView::destroyWatcher() {
     if (mWatcher != NULL) {
-        mWatcher->removeWatchedService(*mService);
+        mWatcher->removeWatchedService(mService);
         mWatcher->disconnect();
         delete mWatcher;
         qDebug() << "Destroyed watcher";
@@ -35,9 +33,9 @@ void RemoteView::init(const ulong identifier) {
     // Don't connect to the process error signal, we need to wait until the
     // process emits its finished() signal before handling a crash
     connect(mProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(processFinished(int, QProcess::ExitStatus)));
-    mService = new QString(mViewCommand.serviceIdPattern->arg(identifier));
+    mService = QString(mViewCommand.serviceIdPattern->arg(identifier));
 
-    mWatcher = new QDBusServiceWatcher(*mService, QDBusConnection::sessionBus(), QDBusServiceWatcher::WatchForRegistration, this);
+    mWatcher = new QDBusServiceWatcher(mService, QDBusConnection::sessionBus(), QDBusServiceWatcher::WatchForRegistration, this);
     connect(mWatcher,
             SIGNAL(serviceRegistered(const QString &)),
             this,
@@ -49,7 +47,7 @@ void RemoteView::init(const ulong identifier) {
 void RemoteView::serviceIsUp() {
     destroyWatcher();
     qDebug() << "Remote view is reachable through DBus";
-    mRealInterface = new QDBusInterface(*mService, *mViewCommand.objectPath,
+    mRealInterface = new QDBusInterface(mService, *mViewCommand.objectPath,
                 mViewCommand.interfaceName->toLatin1().constData(),
                 QDBusConnection::sessionBus(), this);
     connect(mRealInterface, SIGNAL(urlResolved()), this, SIGNAL(urlResolved()));
