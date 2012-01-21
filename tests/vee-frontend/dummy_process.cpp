@@ -7,15 +7,15 @@ DummyProcess::~DummyProcess() {
 }
 
 void DummyProcess::start(const QString & executable, const QStringList & arguments) {
-    mExecutable = &executable;
-    mArguments = &arguments;
+    mExecutable = executable;
+    mArguments = arguments;
 }
 
-const QString* DummyProcess::executable() {
+const QString DummyProcess::executable() const {
     return mExecutable;
 }
 
-const QStringList* DummyProcess::arguments() {
+const QStringList DummyProcess::arguments() const {
     return mArguments;
 }
 

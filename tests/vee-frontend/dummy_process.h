@@ -9,8 +9,8 @@ Q_OBJECT
 
 private:
 
-    const QString* mExecutable;
-    const QStringList* mArguments;
+    QString mExecutable;
+    QStringList mArguments;
 
 public:
 
@@ -26,9 +26,9 @@ public:
 
     void exit();
 
-    const QString* executable();
+    const QString executable() const;
 
-    const QStringList* arguments();
+    const QStringList arguments() const;
 
 public slots:
 

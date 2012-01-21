@@ -31,8 +31,7 @@ void RemoteView::destroyWatcher() {
 
 void RemoteView::init(const ulong identifier) {
     const QString & executable = mViewCommand.embedCommand->executable();
-    QStringList* pArguments = mViewCommand.embedCommand->arguments(identifier);
-    const QStringList & arguments = *pArguments;
+    QStringList arguments = mViewCommand.embedCommand->arguments(identifier);
     // Don't connect to the process error signal, we need to wait until the
     // process emits its finished() signal before handling a crash
     connect(mProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(processFinished(int, QProcess::ExitStatus)));

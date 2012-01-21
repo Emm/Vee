@@ -79,7 +79,7 @@ private slots:
 
     void testProcessStarted() {
         QVERIFY(mProcess->executable() == mViewCommand->embedCommand->executable());
-        QVERIFY(*(mProcess->arguments()) == *(mViewCommand->embedCommand->arguments(0ul)));
+        QVERIFY(mProcess->arguments() == mViewCommand->embedCommand->arguments(0ul));
     }
 
     void testInterface() {

@@ -21,14 +21,14 @@ const QString & EmbedCommand::executable() const {
     return mExecutable;
 }
 
-QStringList* EmbedCommand::arguments(ulong winId) const {
-    QStringList* arguments = new QStringList();
-    arguments->reserve(mArguments->size() + 1);
+QStringList EmbedCommand::arguments(ulong winId) const {
+    QStringList arguments;
+    arguments.reserve(mArguments->size() + 1);
     for (int i = 0 ; i < mArguments->size() ; i++) {
         if (i == mWinIdArgPos)
-            *arguments << QString::number(winId);
+            arguments << QString::number(winId);
         else
-            *arguments << mArguments->at(i);
+            arguments << mArguments->at(i);
     }
     return arguments;
 }

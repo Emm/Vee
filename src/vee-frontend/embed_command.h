@@ -15,7 +15,7 @@ public:
     void addArgument(const QString & argument);
     void addWinId();
     const QString & executable() const;
-    QStringList* arguments(ulong winId) const;
+    QStringList arguments(ulong winId) const;
     void operator<< (QString argument);
     void operator<< (int WIN_ID);
 
