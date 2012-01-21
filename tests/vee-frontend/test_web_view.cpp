@@ -175,6 +175,31 @@ private slots:
         QVERIFY(mErrorCode == errorCode);
     }
 
+    void testProcessError() {
+        connect(mView, SIGNAL(error(View::ErrorType, int)), this, SLOT(error(View::ErrorType, int)));
+        // Ensure error reported by the process are not propagated
+        mProcess->emitError(QProcess::Crashed);
+        QTest::qWait(100);
+        QVERIFY(mErrorCode == -1);
+    }
+
+    void testProcessExit() {
+        connect(mView, SIGNAL(error(View::ErrorType, int)), this, SLOT(error(View::ErrorType, int)));
+        mProcess->exit();
+        QTest::qWait(100);
+        QVERIFY(mErrorType == View::ProcessError);
+        QVERIFY(mErrorCode == QProcess::Crashed);
+    }
+
+    void testProcessCrash() {
+        connect(mView, SIGNAL(error(View::ErrorType, int)), this, SLOT(error(View::ErrorType, int)));
+        mProcess->crash();
+        QTest::qWait(100);
+        QVERIFY(mErrorType == View::ProcessError);
+        QVERIFY(mErrorCode == QProcess::Crashed);
+    }
+
+
     void cleanup() {
         disconnect(mView);
         disconnect(mRemoteView);

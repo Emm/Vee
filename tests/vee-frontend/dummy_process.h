@@ -20,6 +20,12 @@ public:
 
     virtual void start(const QString & executable, const QStringList & arguments);
 
+    void emitError(QProcess::ProcessError errorCode);
+
+    void crash();
+
+    void exit();
+
     const QString* executable();
 
     const QStringList* arguments();

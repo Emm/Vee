@@ -25,3 +25,15 @@ void DummyProcess::terminate() {
 QProcess::ProcessState DummyProcess::state() const {
     return QProcess::NotRunning;
 }
+
+void DummyProcess::emitError(QProcess::ProcessError errorCode) {
+    emit error(errorCode);
+}
+
+void DummyProcess::crash() {
+    emit finished(-1, QProcess::CrashExit);
+}
+
+void DummyProcess::exit() {
+    emit finished(0, QProcess::NormalExit);
+}
