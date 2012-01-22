@@ -10,4 +10,7 @@
     <qresource>
         <file>icons/go-home.png</file>
     </qresource>
+    <qresource>
+        <file>icons/dialog-error.png</file>
+    </qresource>
 </RCC>

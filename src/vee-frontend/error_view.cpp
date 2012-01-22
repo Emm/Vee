@@ -8,6 +8,7 @@ const QString ErrorView::msUrl = "";
 ErrorView::ErrorView(const QString errorMessage, QObject* parent):
     LocalView(parent),
     mErrorMessage(errorMessage) {
+    mIcon = QIcon::fromTheme("dialog-error", QIcon(":/icons/dialog-error"));
 }
 
 ErrorView::~ErrorView() {
