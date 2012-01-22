@@ -38,6 +38,7 @@ ViewTab::ViewTab(Vim* vim, ViewResolver* viewResolver, QWidget* parent):
 
     connect(mVim, SIGNAL(openCommand(QString)), this, SLOT(setUrl(const QString &)));
     connect(mVim, SIGNAL(openInNewTabCommand(QString)), this, SIGNAL(openInNewTab(const QString &)));
+    connect(mVim, SIGNAL(closeTabCommand()), this, SIGNAL(closeTab()));
     mInputBar->setFocus(Qt::OtherFocusReason);
 }
 

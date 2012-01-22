@@ -10,6 +10,7 @@ private:
     Vim* mVim;
     QString* mOpenUrl;
     QString* mOpenInNewTabUrl;
+    bool mCloseTab;
 
 public slots:
 
@@ -21,14 +22,20 @@ public slots:
         mOpenInNewTabUrl = new QString(url);
     }
 
+    void setCloseTab() {
+        mCloseTab = true;
+    }
+
 private slots:
 
     void init() {
         mVim = new Vim();
         mOpenUrl = NULL;
         mOpenInNewTabUrl= NULL;
+        mCloseTab = false;
         connect(mVim, SIGNAL(openCommand(QString)), this, SLOT(setOpenUrl(QString)));
         connect(mVim, SIGNAL(openInNewTabCommand(QString)), this, SLOT(setOpenInNewTabUrl(QString)));
+        connect(mVim, SIGNAL(closeTabCommand()), this, SLOT(setCloseTab()));
     }
 
 
@@ -75,6 +82,19 @@ private slots:
         QVERIFY(mVim->parse(command));
         QVERIFY(mOpenInNewTabUrl == QString(result));
         QVERIFY(mOpenUrl == NULL);
+    }
+
+    void testParseCloseTabCommand() {
+        QFETCH(QString, command);
+
+        QVERIFY(mVim->parse(command));
+        QVERIFY(mCloseTab == true);
+    }
+
+    void testParseCloseTabCommand_data() {
+        QTest::addColumn<QString>("command");
+        QTest::newRow("long form") << "quit";
+        QTest::newRow("short form") << "q";
     }
 
     void cleanup() {

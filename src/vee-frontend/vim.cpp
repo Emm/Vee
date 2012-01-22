@@ -29,6 +29,10 @@ bool Vim::parse(const QString& command) {
         emit openInNewTabCommand(command.section(' ', 1).trimmed());
         result = true;
     }
+    else if (command == "quit" || command == "q") {
+        emit closeTabCommand();
+        result = true;
+    }
     else {
         result = false;
     }

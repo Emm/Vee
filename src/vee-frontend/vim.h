@@ -33,6 +33,8 @@ signals:
     void openCommand(QString url);
 
     void openInNewTabCommand(QString url);
+
+    void closeTabCommand();
 };
 
 #endif

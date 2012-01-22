@@ -74,6 +74,7 @@ signals:
     void titleChanged(const QString & title);
     void iconChanged(QIcon icon);
     void openInNewTab(const QString & url);
+    void closeTab();
 };
 
 #endif
