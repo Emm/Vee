@@ -9,7 +9,7 @@ Q_OBJECT
 
 private:
 
-    QProcess* mProcess;
+    QProcess mProcess;
 
 public:
 
