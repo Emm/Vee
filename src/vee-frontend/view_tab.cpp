@@ -170,7 +170,9 @@ void ViewTab::focusContainer() {
 
 void ViewTab::showEmbedError(QX11EmbedContainer::Error error) {
     qDebug() << "error while embedding: " << error;
-    // FIXME actually handle error
+    QString msg = QString("Unable to embed the tab view");
+    ErrorView* errorView = new ErrorView(msg);
+    setView(errorView);
 }
 
 void ViewTab::resolveUrl() {
