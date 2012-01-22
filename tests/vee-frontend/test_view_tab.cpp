@@ -64,7 +64,7 @@ private slots:
     void testChangeToCommandMode() {
         mViewTab->show();
         mViewTab->setUrl("about:blank");
-        QTest::qWait(100);
+        QTest::qWait(500);
         QTest::keyClicks(mViewTab->widget(), ":");
         QVERIFY(mViewTab->vim()->mode() == Vim::CommandMode);
     }
@@ -72,9 +72,9 @@ private slots:
     void testChangeBackToNormalMode() {
         mViewTab->show();
         mViewTab->setUrl("dummy url");
-        QTest::qWait(100);
+        QTest::qWait(500);
         QTest::keyClicks(mViewTab->widget(), ":");
-        QTest::qWait(100);
+        QTest::qWait(500);
         QTest::keyClicks(mViewTab->inputBar(), "o about:blank");
         QTest::keyClick(mViewTab->inputBar(), Qt::Key_Enter);
         QVERIFY(mViewTab->vim()->mode() == Vim::NormalMode);
@@ -87,25 +87,25 @@ private slots:
     void testViewChange() {
         mViewTab->show();
         mViewTab->setUrl("dummy url");
-        QTest::qWait(100);
+        QTest::qWait(500);
         QTest::keyClicks(mViewTab->widget(), ":");
-        QTest::qWait(100);
+        QTest::qWait(500);
         QTest::keyClicks(mViewTab->inputBar(), "o about:blank");
         QTest::keyClick(mViewTab->inputBar(), Qt::Key_Enter);
-        QTest::qWait(100);
-        const BlankView* dummyView = dynamic_cast<const BlankView*>(mViewTab->view());
-        QVERIFY(dummyView != NULL);
+        QTest::qWait(500);
+        const BlankView* blankView = dynamic_cast<const BlankView*>(mViewTab->view());
+        QVERIFY(blankView != NULL);
     }
 
     void testOpenViewInNewTab() {
         mViewTab->show();
         mViewTab->setUrl("dummy url");
-        QTest::qWait(100);
+        QTest::qWait(500);
         QTest::keyClicks(mViewTab->widget(), ":");
-        QTest::qWait(100);
+        QTest::qWait(500);
         QTest::keyClicks(mViewTab->inputBar(), "t about:blank");
         QTest::keyClick(mViewTab->inputBar(), Qt::Key_Enter);
-        QTest::qWait(100);
+        QTest::qWait(500);
         QVERIFY(mOpenInNewTabUrl == QString("about:blank"));
     }
 
