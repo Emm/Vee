@@ -3,7 +3,9 @@
 #include "main_window.h"
 #include <QFileInfo>
 
-MainWindow::MainWindow(ViewResolverFactory & viewManagerFactory) : mTabs(new ViewTabs(viewManagerFactory)) {
+MainWindow::MainWindow(ViewResolverFactory & viewManagerFactory) :
+    QWidget(),
+    mTabs(new ViewTabs(viewManagerFactory)) {
     mTabs->setParent(this);
 
     QVBoxLayout* layout = new QVBoxLayout();
