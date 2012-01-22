@@ -7,6 +7,7 @@ MainWindow::MainWindow(ViewResolverFactory & viewManagerFactory) :
     QWidget(),
     mTabs(new ViewTabs(viewManagerFactory)) {
     mTabs->setParent(this);
+	mTabs->setTabsClosable(true);
 
     QVBoxLayout* layout = new QVBoxLayout();
 
@@ -17,6 +18,7 @@ MainWindow::MainWindow(ViewResolverFactory & viewManagerFactory) :
     connect(this, SIGNAL(showUrlInActiveTab(const QString &)), mTabs, SLOT(showUrlInActiveTab(const QString &)));
     setWindowTitle("vee");
     connect(mTabs, SIGNAL(titleChanged(const QString &)), this, SLOT(setTitle(const QString &)));
+    connect(mTabs, SIGNAL(lastTabClosed()), this, SLOT(close()));
 }
 
 MainWindow::~MainWindow() {

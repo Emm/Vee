@@ -27,6 +27,7 @@ void ViewTabs::showUrlInNewTab(const QString & url) {
     connect(container, SIGNAL(urlChanged(const QString &)), this, SLOT(updateTabUrl(const QString &)));
     connect(container, SIGNAL(openInNewTab(const QString &)), this, SLOT(showUrlInNewTab(const QString &)));
     connect(container, SIGNAL(iconChanged(QIcon)), this, SLOT(updateTabIcon(QIcon)));
+    connect(this, SIGNAL(tabCloseRequested(int)), this, SLOT(destroyTab(int)));
     setCurrentIndex(newTabPosition);
     container->setUrl(url);
 }
@@ -66,4 +67,24 @@ void ViewTabs::updateTabIcon(QIcon icon) {
     if (tabPosition == -1)
         return;
     setTabIcon(tabPosition, icon);
+}
+
+bool ViewTabs::closeTab() {
+    int tabPosition = getTabPosition();
+    if (tabPosition == -1)
+        return false;
+    return destroyTab(tabPosition);
+}
+
+bool ViewTabs::destroyTab(int position) {
+    QWidget* page = widget(position);
+    if (page == NULL)
+        return false;
+
+    page->deleteLater();
+    removeTab(position);
+    if (count() == 0) {
+        emit lastTabClosed();
+    }
+    return true;
 }
