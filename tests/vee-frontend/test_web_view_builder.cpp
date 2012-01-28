@@ -1,4 +1,5 @@
 #include <QTest>
+#include <QTemporaryFile>
 #include "web_view_builder.h"
 #include "web_view.h"
 #include "dummy_process_builder.h"
@@ -20,6 +21,7 @@ private:
     ViewCommand* mViewCommand;
     ProcessBuilder* mProcessBuilder;
     DummyRemoteWebView* mRemoteView;
+    QTemporaryFile* mDummyExe;
 
 public slots:
 
@@ -32,7 +34,14 @@ private slots:
     void init() {
 
         mView = NULL;
-        EmbedCommand* command = new EmbedCommand(QString("dummy-exe"));
+        mDummyExe = new QTemporaryFile();
+        // Generates the temporary executable file
+        if (mDummyExe->open()) {
+            mDummyExe->close();
+        }
+        mDummyExe->setPermissions(QFile::ExeOwner);
+
+        EmbedCommand* command = new EmbedCommand(mDummyExe->fileName());
         command->addArgument("-w");
         command->addWinId();
 
@@ -81,6 +90,7 @@ private slots:
         delete mBuilder;
         delete mProcessBuilder;
         delete mRemoteView;
+        delete mDummyExe;
         QTest::qWait(100);
     }
 };

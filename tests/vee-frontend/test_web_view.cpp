@@ -1,4 +1,5 @@
 #include <QTest>
+#include <QTemporaryFile>
 #include <QDBusConnection>
 #include "web_view.h"
 #include "dummy_process.h"
@@ -24,6 +25,7 @@ private:
     int mUrlResolved;
     View::ErrorType mErrorType;
     int mErrorCode;
+    QTemporaryFile* mDummyExe;
 
 public slots:
 
@@ -52,7 +54,14 @@ private slots:
 
     void init() {
 
-        EmbedCommand* command = new EmbedCommand(QString("dummy_embed_command"));
+        mDummyExe = new QTemporaryFile();
+        // Generates the temporary executable file
+        if (mDummyExe->open()) {
+            mDummyExe->close();
+        }
+        mDummyExe->setPermissions(QFile::ExeOwner);
+
+        EmbedCommand* command = new EmbedCommand(mDummyExe->fileName());
         command->addArgument("-w");
         command->addWinId();
 
@@ -210,6 +219,7 @@ private slots:
         delete mViewCommand;
         delete mRemoteView;
         delete mView;
+        delete mDummyExe;
         mProcess = NULL;
         QTest::qWait(100);
     }

@@ -14,6 +14,7 @@ class RemoteView : public View {
 private:
 
     void destroyWatcher();
+    bool ensureCanLaunchExecutable(const QString & executable);
 
 protected:
     const ViewCommand & mViewCommand;

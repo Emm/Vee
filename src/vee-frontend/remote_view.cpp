@@ -1,6 +1,7 @@
 #include "remote_view.h"
 #include <QDBusPendingCall>
 #include <QStringList>
+#include <QFileInfo>
 #include <QDebug>
 
 RemoteView::RemoteView(const ViewCommand & viewCommand, Process* process, QObject *parent) :
@@ -27,8 +28,30 @@ void RemoteView::destroyWatcher() {
     }
 }
 
+bool RemoteView::ensureCanLaunchExecutable(const QString & executable) {
+    QFileInfo fileInfo(executable);
+
+    bool canLaunchExecutable;
+    if (!fileInfo.isFile()) {
+        emit error(View::CommandError, 1);
+        canLaunchExecutable = false;
+    }
+    else if (!fileInfo.isExecutable()) {
+        emit error(View::CommandError, 2);
+        canLaunchExecutable = false;
+    }
+    else {
+        canLaunchExecutable = true;
+    }
+    return canLaunchExecutable;
+}
+
 void RemoteView::init(const ulong identifier) {
     const QString & executable = mViewCommand.embedCommand->executable();
+
+    if (!ensureCanLaunchExecutable(executable)) {
+        return;
+    }
     QStringList arguments = mViewCommand.embedCommand->arguments(identifier);
     // Don't connect to the process error signal, we need to wait until the
     // process emits its finished() signal before handling a crash

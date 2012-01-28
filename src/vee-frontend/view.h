@@ -12,7 +12,7 @@ protected:
 
 public:
 
-    enum ErrorType { ProcessError, UnknownError };
+    enum ErrorType { ProcessError, CommandError, UnknownError };
 
     Q_PROPERTY(QString title READ title)
     virtual QString title() const = 0;
