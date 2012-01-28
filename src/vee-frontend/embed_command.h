@@ -21,7 +21,7 @@ public:
 
 private:
     QString mExecutable;
-    QStringList *mArguments;
+    QStringList mArguments;
     int mWinIdArgPos;
 };
 
