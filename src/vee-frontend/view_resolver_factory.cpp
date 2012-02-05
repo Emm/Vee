@@ -7,22 +7,14 @@ ViewResolverFactory::ViewResolverFactory(const ProcessBuilder & processBuilder, 
     QObject(parent),
     mViewCommands(new QVector<ViewCommand *>()),
     mProcessBuilder(processBuilder) {
-    EmbedCommand* command = new EmbedCommand(QString("src/vee-web/vee-web"));
-    command->addArgument("-w");
-    command->addWinId();
-    ViewCommand* viewCommand = new ViewCommand;
-    viewCommand->embedCommand = command;
-    viewCommand->interfaceName = QString(WEB_VIEW_TYPE);
-    viewCommand->serviceIdPattern = QString("org.vee.WebView_%1");
-    viewCommand->objectPath = QString("/WebView");
+    EmbedCommand command(QString("src/vee-web/vee-web"));
+    command.addArgument("-w");
+    command.addWinId();
+    ViewCommand* viewCommand = new ViewCommand(command, WEB_VIEW_TYPE, "org.vee.WebView_%1", "/WebView");
     mViewCommands->append(viewCommand);
 }
 
 ViewResolverFactory::~ViewResolverFactory() {
-    for (int i = 0 ; i < mViewCommands->size() ; i++) {
-        ViewCommand* command = mViewCommands->at(i);
-        delete command->embedCommand;
-    }
     delete mViewCommands;
 }
 

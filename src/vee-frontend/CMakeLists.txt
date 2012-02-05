@@ -34,6 +34,7 @@ set(vee-frontend_SRCS
     view_resolver_factory.cpp
     view_process_builder.cpp
     view_process.cpp
+    view_command.cpp
     error_view.cpp
     vim.cpp
     input_bar.cpp

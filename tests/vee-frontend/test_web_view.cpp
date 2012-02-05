@@ -65,11 +65,7 @@ private slots:
         command->addArgument("-w");
         command->addWinId();
 
-        mViewCommand = new ViewCommand;
-        mViewCommand->embedCommand = command;
-        mViewCommand->interfaceName = QString(WEB_VIEW_INTERFACE);
-        mViewCommand->serviceIdPattern = QString(TEST_SERVICE_ID);
-        mViewCommand->objectPath = QString(TEST_SERVICE_PATH);
+        mViewCommand = new ViewCommand(*command, WEB_VIEW_INTERFACE, TEST_SERVICE_ID, TEST_SERVICE_PATH);
         mNewUrl = NULL;
         mUrlResolved = -1;
         mErrorType = View::ProcessError;
@@ -87,8 +83,8 @@ private slots:
     }
 
     void testProcessStarted() {
-        QVERIFY(mProcess->executable() == mViewCommand->embedCommand->executable());
-        QVERIFY(mProcess->arguments() == mViewCommand->embedCommand->arguments(0ul));
+        QVERIFY(mProcess->executable() == mViewCommand->embedCommand().executable());
+        QVERIFY(mProcess->arguments() == mViewCommand->embedCommand().arguments(0ul));
     }
 
     void testInterface() {
@@ -215,7 +211,6 @@ private slots:
         QDBusConnection dbus = QDBusConnection::sessionBus();
         dbus.unregisterObject(TEST_SERVICE_PATH);
         dbus.unregisterService(TEST_SERVICE_ID);
-        delete mViewCommand->embedCommand;
         delete mViewCommand;
         delete mRemoteView;
         delete mView;

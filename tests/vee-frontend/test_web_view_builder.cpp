@@ -45,11 +45,7 @@ private slots:
         command->addArgument("-w");
         command->addWinId();
 
-        mViewCommand = new ViewCommand;
-        mViewCommand->embedCommand = command;
-        mViewCommand->interfaceName = QString("org.vee.WebView");
-        mViewCommand->serviceIdPattern = QString("org.vee.WebView_%1");
-        mViewCommand->objectPath = QString("/WebView");
+        mViewCommand = new ViewCommand(*command, "org.vee.WebView", "org.vee.WebView_%1", "/WebView");
 
         mProcessBuilder = new DummyProcessBuilder();
 
@@ -84,7 +80,6 @@ private slots:
         QDBusConnection dbus = QDBusConnection::sessionBus();
         dbus.unregisterObject(TEST_SERVICE_PATH);
         dbus.unregisterService(TEST_SERVICE_ID);
-        delete mViewCommand->embedCommand;
         delete mViewCommand;
         delete mView;
         delete mBuilder;
