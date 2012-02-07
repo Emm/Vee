@@ -97,6 +97,7 @@ void ViewTab::discardOldView() {
         qDebug() << "Removed old widget";
     }
     delete mView;
+    mView = NULL;
 }
 
 void ViewTab::updateDisplay(RemoteView* view) {
