@@ -5,21 +5,21 @@
 
 MainWindow::MainWindow(ViewResolverFactory & viewManagerFactory) :
     QWidget(),
-    mTabs(new ViewTabs(viewManagerFactory)) {
-    mTabs->setParent(this);
-	mTabs->setTabsClosable(true);
+    mTabs(viewManagerFactory) {
+    mTabs.setParent(this);
+	mTabs.setTabsClosable(true);
 
     QVBoxLayout* layout = new QVBoxLayout();
 
-    layout->addWidget(mTabs);
+    layout->addWidget(& mTabs);
     layout->setMargin(0);
 
     setLayout(layout);
 
-    connect(this, SIGNAL(showUrlInActiveTab(const QString &)), mTabs, SLOT(showUrlInActiveTab(const QString &)));
+    connect(this, SIGNAL(showUrlInActiveTab(const QString &)), & mTabs, SLOT(showUrlInActiveTab(const QString &)));
     setWindowTitle("vee");
-    connect(mTabs, SIGNAL(titleChanged(const QString &)), this, SLOT(setTitle(const QString &)));
-    connect(mTabs, SIGNAL(lastTabClosed()), this, SLOT(close()));
+    connect(& mTabs, SIGNAL(titleChanged(const QString &)), this, SLOT(setTitle(const QString &)));
+    connect(& mTabs, SIGNAL(lastTabClosed()), this, SLOT(close()));
 }
 
 MainWindow::~MainWindow() {

@@ -10,7 +10,7 @@ class MainWindow : public QWidget {
     Q_OBJECT
 
 private:
-    ViewTabs *mTabs;
+    ViewTabs mTabs;
 
 public:
     explicit MainWindow(ViewResolverFactory & viewManagerFactory);
