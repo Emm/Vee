@@ -12,6 +12,7 @@ MainWindow::MainWindow(ViewResolverFactory & viewManagerFactory) :
     QVBoxLayout* layout = new QVBoxLayout();
 
     layout->addWidget(mTabs);
+    layout->setMargin(0);
 
     setLayout(layout);
 
