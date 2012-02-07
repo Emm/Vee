@@ -81,6 +81,7 @@ void WebViewProxy::embed() {
         // odd focus issues if the widget is created earlier
         mEmbedWidget = new QX11EmbedWidget();
         mEmbedWidget->setLayout(new QVBoxLayout());
+        mEmbedWidget->layout()->setMargin(0);
         mEmbedWidget->layout()->addWidget(mWebView);
         mEmbedWidget->embedInto(mWindowId);
         mEmbedWidget->show();
