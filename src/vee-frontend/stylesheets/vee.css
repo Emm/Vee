@@ -14,11 +14,6 @@ ViewTab[viewType="org.vee.BlankView"] #view {
     border-radius: 4px;
 }
 
-ViewTabs::pane {
-    padding: 0;
-    margin: 0;
-}
-
 ViewTab QLineEdit {
     padding: 1px;
     margin: 0;
