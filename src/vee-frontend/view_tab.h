@@ -22,11 +22,11 @@ private:
     ViewResolver* mViewResolver;
     View* mView;
     QString mOldLineEditValue;
-    InputBar *mInputBar;
-    QX11EmbedContainer *mContainer;
+    InputBar mInputBar;
+    QX11EmbedContainer mContainer;
     QWidget* mWidget;
-    QAction* mChangeUrlAction;
-    QAction* mSwitchCommandAndNormalModeAction;
+    QAction mChangeUrlAction;
+    QAction mSwitchCommandAndNormalModeAction;
     QIcon mIcon;
 
     void discardOldView();
@@ -53,7 +53,7 @@ public:
 
     QWidget* widget() const;
 
-    InputBar* inputBar() const;
+    InputBar* inputBar();
 
 private slots:
     void switchCommandAndNormalModes(bool switchToCommandMode);

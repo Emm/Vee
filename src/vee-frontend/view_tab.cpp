@@ -7,39 +7,39 @@ ViewTab::ViewTab(Vim* vim, ViewResolver* viewResolver, QWidget* parent):
         mVim(vim),
         mViewResolver(viewResolver),
         mView(NULL),
-        mInputBar(new InputBar(this)),
-        mContainer(new QX11EmbedContainer(this)),
+        mInputBar(this),
+        mContainer(this),
         mWidget(NULL),
-        mChangeUrlAction(new QAction(this)),
-        mSwitchCommandAndNormalModeAction(new QAction(this)) {
+        mChangeUrlAction(this),
+        mSwitchCommandAndNormalModeAction(this) {
     setLayout(new QVBoxLayout());
 
     mVim->setParent(this);
     mViewResolver->setParent(this);
 
-    layout()->addWidget(mInputBar);
-    layout()->addWidget(mContainer);
-    addAction(mChangeUrlAction);
-    mContainer->addAction(mSwitchCommandAndNormalModeAction);
+    layout()->addWidget(& mInputBar);
+    layout()->addWidget(& mContainer);
+    addAction(& mChangeUrlAction);
+    mContainer.addAction(& mSwitchCommandAndNormalModeAction);
 
-    mSwitchCommandAndNormalModeAction->setCheckable(true);
-    mSwitchCommandAndNormalModeAction->setShortcut(QKeySequence(Qt::Key_Colon));
+    mSwitchCommandAndNormalModeAction.setCheckable(true);
+    mSwitchCommandAndNormalModeAction.setShortcut(QKeySequence(Qt::Key_Colon));
 
     mViewResolver->setParent(this);
-    mViewResolver->setIdentifier(mContainer->winId());
+    mViewResolver->setIdentifier(mContainer.winId());
 
-    connect(mInputBar, SIGNAL(returnPressed()), mChangeUrlAction, SLOT(trigger()));
-    connect(mChangeUrlAction, SIGNAL(triggered()), this, SLOT(resolveUrl()));
-    connect(mSwitchCommandAndNormalModeAction, SIGNAL(toggled(bool)), this, SLOT(switchCommandAndNormalModes(bool)));
+    connect(& mInputBar, SIGNAL(returnPressed()), & mChangeUrlAction, SLOT(trigger()));
+    connect(& mChangeUrlAction, SIGNAL(triggered()), this, SLOT(resolveUrl()));
+    connect(& mSwitchCommandAndNormalModeAction, SIGNAL(toggled(bool)), this, SLOT(switchCommandAndNormalModes(bool)));
     connect(mViewResolver, SIGNAL(urlResolved(View*)), this, SLOT(setView(View*)));
     connect(mViewResolver, SIGNAL(unresolvableUrl(QString)), this, SLOT(setFailView(QString)));
-    connect(mContainer, SIGNAL(clientIsEmbedded()), this, SLOT(focusContainer()));
-    connect(mContainer, SIGNAL(error(QX11EmbedContainer::Error)), this, SLOT(showEmbedError(QX11EmbedContainer::Error)));
+    connect(& mContainer, SIGNAL(clientIsEmbedded()), this, SLOT(focusContainer()));
+    connect(& mContainer, SIGNAL(error(QX11EmbedContainer::Error)), this, SLOT(showEmbedError(QX11EmbedContainer::Error)));
 
     connect(mVim, SIGNAL(openCommand(QString)), this, SLOT(setUrl(const QString &)));
     connect(mVim, SIGNAL(openInNewTabCommand(QString)), this, SIGNAL(openInNewTab(const QString &)));
     connect(mVim, SIGNAL(closeTabCommand()), this, SIGNAL(closeTab()));
-    mInputBar->setFocus(Qt::OtherFocusReason);
+    mInputBar.setFocus(Qt::OtherFocusReason);
 }
 
 ViewTab::~ViewTab() {
@@ -56,11 +56,11 @@ void ViewTab::setIcon(QIcon icon) {
 
 void ViewTab::setUrl(const QString & url) {
     // Switch back to normal mode if we were in command mode
-    if (mSwitchCommandAndNormalModeAction->isChecked()) {
-        mSwitchCommandAndNormalModeAction->toggle();
+    if (mSwitchCommandAndNormalModeAction.isChecked()) {
+        mSwitchCommandAndNormalModeAction.toggle();
     }
-    mInputBar->setText(url);
-    mChangeUrlAction->trigger();
+    mInputBar.setText(url);
+    mChangeUrlAction.trigger();
 }
 
 void ViewTab::setView(View* view) {
@@ -100,7 +100,7 @@ void ViewTab::discardOldView() {
 }
 
 void ViewTab::updateDisplay(RemoteView* view) {
-    mContainer->show();
+    mContainer.show();
     view->embed();
 }
 
@@ -108,9 +108,9 @@ void ViewTab::updateDisplay(LocalView* view) {
     mWidget = view->widget();
     mWidget->setParent(this);
     mWidget->setObjectName("view");
-    mContainer->hide();
+    mContainer.hide();
     layout()->addWidget(mWidget);
-    mWidget->addAction(mSwitchCommandAndNormalModeAction);
+    mWidget->addAction(& mSwitchCommandAndNormalModeAction);
     mWidget->setFocus(Qt::OtherFocusReason);
 }
 
@@ -136,8 +136,8 @@ bool ViewTab::dispatchUpdateDisplay(View* view) {
 
 
 void ViewTab::updateInputBar() {
-    mInputBar->setText(mView->url());
-    connect(mView, SIGNAL(urlChanged(const QString &)), mInputBar, SLOT(setText(const QString &)));
+    mInputBar.setText(mView->url());
+    connect(mView, SIGNAL(urlChanged(const QString &)), & mInputBar, SLOT(setText(const QString &)));
 }
 
 void ViewTab::viewIconWasChanged() {
@@ -166,7 +166,7 @@ void ViewTab::setFailView(QString url) {
 
 void ViewTab::focusContainer() {
     qDebug() << "embedded";
-    mContainer->setFocus(Qt::OtherFocusReason);
+    mContainer.setFocus(Qt::OtherFocusReason);
 }
 
 void ViewTab::showEmbedError(QX11EmbedContainer::Error error) {
@@ -178,40 +178,40 @@ void ViewTab::showEmbedError(QX11EmbedContainer::Error error) {
 
 void ViewTab::resolveUrl() {
     qDebug() << "resolveUrl";
-    const QString & url = mInputBar->text();
+    const QString & url = mInputBar.text();
     mViewResolver->resolve(url, mView);
 }
 
 void ViewTab::switchCommandAndNormalModes(bool switchToCommandMode) {
     if (switchToCommandMode) {
         mVim->setMode(Vim::CommandMode);
-        mSwitchCommandAndNormalModeAction->setShortcut(Qt::Key_Escape);
-        mOldLineEditValue = mInputBar->text();
-        mInputBar->clear();
-        mInputBar->setFocus(Qt::ShortcutFocusReason);
-        disconnect(mInputBar, SIGNAL(returnPressed()), mChangeUrlAction, SLOT(trigger()));
-        connect(mInputBar, SIGNAL(returnPressed()), this, SLOT(triggerVimParsing()));
+        mSwitchCommandAndNormalModeAction.setShortcut(Qt::Key_Escape);
+        mOldLineEditValue = mInputBar.text();
+        mInputBar.clear();
+        mInputBar.setFocus(Qt::ShortcutFocusReason);
+        disconnect(& mInputBar, SIGNAL(returnPressed()), & mChangeUrlAction, SLOT(trigger()));
+        connect(& mInputBar, SIGNAL(returnPressed()), this, SLOT(triggerVimParsing()));
 
 
         qDebug() << "Switch to command mode";
     }
     else {
-        mSwitchCommandAndNormalModeAction->setShortcut(Qt::Key_Colon);
+        mSwitchCommandAndNormalModeAction.setShortcut(Qt::Key_Colon);
         mVim->setMode(Vim::NormalMode);
-        mInputBar->setText(mOldLineEditValue);
+        mInputBar.setText(mOldLineEditValue);
         if (mWidget != NULL && mWidget->isVisible()) {
             mWidget->setFocus();
         }
         else {
-            mContainer->setFocus();
+            mContainer.setFocus();
         }
-        connect(mInputBar, SIGNAL(returnPressed()), mChangeUrlAction, SLOT(trigger()));
+        connect(& mInputBar, SIGNAL(returnPressed()), & mChangeUrlAction, SLOT(trigger()));
         qDebug() << "Switch to normal mode";
     }
 }
 
 void ViewTab::triggerVimParsing() {
-    mVim->parse(mInputBar->text());
+    mVim->parse(mInputBar.text());
     switchCommandAndNormalModes(false);
 }
 
@@ -223,8 +223,8 @@ QWidget* ViewTab::widget() const {
     return mWidget;
 }
 
-InputBar* ViewTab::inputBar() const {
-    return mInputBar;
+InputBar* ViewTab::inputBar() {
+    return & mInputBar;
 }
 
 void ViewTab::viewGotAnError(View::ErrorType errorType, int errorCode) {
