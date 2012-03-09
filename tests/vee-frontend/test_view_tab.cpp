@@ -57,19 +57,11 @@ private slots:
         QVERIFY(errorView != NULL);
     }
 
-    void testInitialMode() {
-        QVERIFY(mViewTab->vim()->mode() == Vim::NormalMode);
+    void testDefaultFocus() {
+        QVERIFY(mViewTab->focusWidget() == mViewTab->inputBar());
     }
 
-    void testChangeToCommandMode() {
-        mViewTab->show();
-        mViewTab->setUrl("about:blank");
-        QTest::qWait(500);
-        QTest::keyClicks(mViewTab->widget(), ":");
-        QVERIFY(mViewTab->vim()->mode() == Vim::CommandMode);
-    }
-
-    void testChangeBackToNormalMode() {
+    void testViewChangeWithVimShortcut() {
         mViewTab->show();
         mViewTab->setUrl("dummy url");
         QTest::qWait(500);
@@ -77,20 +69,27 @@ private slots:
         QTest::qWait(500);
         QTest::keyClicks(mViewTab->inputBar(), "o about:blank");
         QTest::keyClick(mViewTab->inputBar(), Qt::Key_Enter);
-        QVERIFY(mViewTab->vim()->mode() == Vim::NormalMode);
+        QTest::qWait(500);
+        const BlankView* blankView = dynamic_cast<const BlankView*>(mViewTab->view());
+        QVERIFY(blankView != NULL);
     }
 
-    void testDefaultFocus() {
-        QVERIFY(mViewTab->focusWidget() == mViewTab->inputBar());
-    }
-
-    void testViewChange() {
+    void testViewChangeWithFocus() {
         mViewTab->show();
-        mViewTab->setUrl("dummy url");
+        QTest::mouseClick(mViewTab->inputBar(), Qt::LeftButton);
         QTest::qWait(500);
-        QTest::keyClicks(mViewTab->widget(), ":");
+        QTest::keyClicks(mViewTab->inputBar(), "about:blank");
+        QTest::keyClick(mViewTab->inputBar(), Qt::Key_Enter);
         QTest::qWait(500);
-        QTest::keyClicks(mViewTab->inputBar(), "o about:blank");
+        const BlankView* blankView = dynamic_cast<const BlankView*>(mViewTab->view());
+        QVERIFY(blankView != NULL);
+    }
+
+    void testViewChangeWithFocusAndVimCommand() {
+        mViewTab->show();
+        QTest::mouseClick(mViewTab->inputBar(), Qt::LeftButton);
+        QTest::qWait(500);
+        QTest::keyClicks(mViewTab->inputBar(), ":o about:blank");
         QTest::keyClick(mViewTab->inputBar(), Qt::Key_Enter);
         QTest::qWait(500);
         const BlankView* blankView = dynamic_cast<const BlankView*>(mViewTab->view());

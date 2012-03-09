@@ -26,7 +26,7 @@ private:
     QX11EmbedContainer mContainer;
     QWidget* mWidget;
     QAction mChangeUrlAction;
-    QAction mSwitchCommandAndNormalModeAction;
+    QAction mNewVimCommandAction;
     QIcon mIcon;
 
     void discardOldView();
@@ -35,6 +35,7 @@ private:
     bool dispatchUpdateDisplay(View* view);
     void updateInputBar();
 
+    const static QString VIM_COMMAND_PREFIX;
 public:
     
     explicit ViewTab(Vim* mVim, ViewResolver* viewResolver, QWidget* parent=0);
@@ -56,7 +57,8 @@ public:
     InputBar* inputBar();
 
 private slots:
-    void switchCommandAndNormalModes(bool switchToCommandMode);
+    void newVimCommand();
+    void blurInputBar();
     void triggerVimParsing();
 
 public slots:

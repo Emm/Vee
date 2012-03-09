@@ -1,27 +1,18 @@
 #include "vim.h"
 #include <QDebug>
 
-Vim::Vim(Mode mode, QObject* parent) :
-    QObject(parent),
-    mMode(mode) {
+Vim::Vim(QObject* parent) :
+    QObject(parent) {
 }
 
 Vim::~Vim() {
 }
 
-void Vim::setMode(Mode mode) {
-    mMode = mode;
-}
-
-Vim::Mode Vim::mode() const {
-    return mMode;
-}
-
-
-bool Vim::parse(const QString& command) {
+bool Vim::parse(QString command) {
     bool result;
     qDebug() << "Parsing " << command;
     if (!command.startsWith(":")) {
+        emit prefixMissing(command);
         result = false;
     }
     else {
@@ -39,6 +30,7 @@ bool Vim::parse(const QString& command) {
             result = true;
         }
         else {
+            emit parsingFailed(command);
             result = false;
         }
     }

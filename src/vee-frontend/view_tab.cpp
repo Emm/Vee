@@ -2,6 +2,8 @@
 #include <QVBoxLayout>
 #include "error_view.h"
 
+const QString ViewTab::VIM_COMMAND_PREFIX = ":";
+
 ViewTab::ViewTab(Vim* vim, ViewResolver* viewResolver, QWidget* parent):
         QWidget(parent),
         mVim(vim),
@@ -11,7 +13,7 @@ ViewTab::ViewTab(Vim* vim, ViewResolver* viewResolver, QWidget* parent):
         mContainer(this),
         mWidget(NULL),
         mChangeUrlAction(this),
-        mSwitchCommandAndNormalModeAction(this) {
+        mNewVimCommandAction(this) {
     setLayout(new QVBoxLayout());
 
     mVim->setParent(this);
@@ -20,17 +22,17 @@ ViewTab::ViewTab(Vim* vim, ViewResolver* viewResolver, QWidget* parent):
     layout()->addWidget(& mInputBar);
     layout()->addWidget(& mContainer);
     addAction(& mChangeUrlAction);
-    mContainer.addAction(& mSwitchCommandAndNormalModeAction);
+    mContainer.addAction(& mNewVimCommandAction);
 
-    mSwitchCommandAndNormalModeAction.setCheckable(true);
-    mSwitchCommandAndNormalModeAction.setShortcut(QKeySequence(Qt::Key_Colon));
+    mNewVimCommandAction.setCheckable(true);
+    mNewVimCommandAction.setShortcut(QKeySequence(Qt::Key_Colon));
 
     mViewResolver->setParent(this);
     mViewResolver->setIdentifier(mContainer.winId());
 
-    connect(& mInputBar, SIGNAL(returnPressed()), & mChangeUrlAction, SLOT(trigger()));
+    connect(& mInputBar, SIGNAL(returnPressed()), this, SLOT(triggerVimParsing()));
     connect(& mChangeUrlAction, SIGNAL(triggered()), this, SLOT(resolveUrl()));
-    connect(& mSwitchCommandAndNormalModeAction, SIGNAL(toggled(bool)), this, SLOT(switchCommandAndNormalModes(bool)));
+    connect(& mNewVimCommandAction, SIGNAL(toggled(bool)), this, SLOT(newVimCommand()));
     connect(mViewResolver, SIGNAL(urlResolved(View*)), this, SLOT(setView(View*)));
     connect(mViewResolver, SIGNAL(unresolvableUrl(QString)), this, SLOT(setFailView(QString)));
     connect(& mContainer, SIGNAL(clientIsEmbedded()), this, SLOT(focusContainer()));
@@ -38,7 +40,9 @@ ViewTab::ViewTab(Vim* vim, ViewResolver* viewResolver, QWidget* parent):
 
     connect(mVim, SIGNAL(openCommand(QString)), this, SLOT(setUrl(const QString &)));
     connect(mVim, SIGNAL(openInNewTabCommand(QString)), this, SIGNAL(openInNewTab(const QString &)));
+    connect(mVim, SIGNAL(openInNewTabCommand(QString)), this, SLOT(blurInputBar()));
     connect(mVim, SIGNAL(closeTabCommand()), this, SIGNAL(closeTab()));
+    connect(mVim, SIGNAL(prefixMissing(QString)), this, SLOT(setUrl(const QString &)));
     mInputBar.setFocus(Qt::OtherFocusReason);
 }
 
@@ -56,8 +60,8 @@ void ViewTab::setIcon(QIcon icon) {
 
 void ViewTab::setUrl(const QString & url) {
     // Switch back to normal mode if we were in command mode
-    if (mSwitchCommandAndNormalModeAction.isChecked()) {
-        mSwitchCommandAndNormalModeAction.toggle();
+    if (mNewVimCommandAction.isChecked()) {
+        mNewVimCommandAction.toggle();
     }
     mInputBar.setText(url);
     mChangeUrlAction.trigger();
@@ -111,7 +115,7 @@ void ViewTab::updateDisplay(LocalView* view) {
     mWidget->setObjectName("view");
     mContainer.hide();
     layout()->addWidget(mWidget);
-    mWidget->addAction(& mSwitchCommandAndNormalModeAction);
+    mWidget->addAction(& mNewVimCommandAction);
     mWidget->setFocus(Qt::OtherFocusReason);
 }
 
@@ -183,36 +187,28 @@ void ViewTab::resolveUrl() {
     mViewResolver->resolve(url, mView);
 }
 
-void ViewTab::switchCommandAndNormalModes(bool switchToCommandMode) {
-    if (switchToCommandMode) {
-        mVim->setMode(Vim::CommandMode);
-        mSwitchCommandAndNormalModeAction.setShortcut(Qt::Key_Escape);
-        mOldLineEditValue = mInputBar.text();
-        mInputBar.setFocus(Qt::ShortcutFocusReason);
-        mInputBar.setText(":");
-        disconnect(& mInputBar, SIGNAL(returnPressed()), & mChangeUrlAction, SLOT(trigger()));
-        connect(& mInputBar, SIGNAL(returnPressed()), this, SLOT(triggerVimParsing()));
+void ViewTab::newVimCommand() {
+    mOldLineEditValue = mInputBar.text();
+    mInputBar.setFocus(Qt::ShortcutFocusReason);
+    mInputBar.setText(ViewTab::VIM_COMMAND_PREFIX);
+    disconnect(& mInputBar, SIGNAL(returnPressed()), & mChangeUrlAction, SLOT(trigger()));
+    connect(& mInputBar, SIGNAL(returnPressed()), this, SLOT(triggerVimParsing()));
+}
 
-        qDebug() << "Switch to command mode";
+void ViewTab::blurInputBar() {
+    mNewVimCommandAction.setShortcut(Qt::Key_Colon);
+    mInputBar.setText(mView->url());
+    if (mWidget != NULL && mWidget->isVisible()) {
+        mWidget->setFocus();
     }
     else {
-        mSwitchCommandAndNormalModeAction.setShortcut(Qt::Key_Colon);
-        mVim->setMode(Vim::NormalMode);
-        mInputBar.setText(mOldLineEditValue);
-        if (mWidget != NULL && mWidget->isVisible()) {
-            mWidget->setFocus();
-        }
-        else {
-            mContainer.setFocus();
-        }
-        connect(& mInputBar, SIGNAL(returnPressed()), & mChangeUrlAction, SLOT(trigger()));
-        qDebug() << "Switch to normal mode";
+        mContainer.setFocus();
     }
+    connect(& mInputBar, SIGNAL(returnPressed()), this, SLOT(triggerVimParsing()));
 }
 
 void ViewTab::triggerVimParsing() {
     mVim->parse(mInputBar.text());
-    switchCommandAndNormalModes(false);
 }
 
 Vim* ViewTab::vim() const {

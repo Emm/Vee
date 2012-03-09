@@ -10,23 +10,13 @@ Q_OBJECT
 
 public:
 
-    enum Mode { NormalMode, CommandMode };
-
-    explicit Vim(Mode mode=NormalMode, QObject* parent=0);
+    explicit Vim(QObject* parent=0);
 
     virtual ~Vim();
 
-    void setMode(Mode mode);
-
-    Mode mode() const;
-
-private:
-
-    Mode mMode; 
-
 public slots:
     
-    bool parse(const QString & command);
+    bool parse(QString command);
 
 signals:
 
@@ -35,6 +25,10 @@ signals:
     void openInNewTabCommand(QString url);
 
     void closeTabCommand();
+
+    void prefixMissing(QString command);
+
+    void parsingFailed(QString command);
 };
 
 #endif
