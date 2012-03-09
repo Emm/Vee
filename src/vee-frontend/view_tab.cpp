@@ -188,11 +188,10 @@ void ViewTab::switchCommandAndNormalModes(bool switchToCommandMode) {
         mVim->setMode(Vim::CommandMode);
         mSwitchCommandAndNormalModeAction.setShortcut(Qt::Key_Escape);
         mOldLineEditValue = mInputBar.text();
-        mInputBar.clear();
         mInputBar.setFocus(Qt::ShortcutFocusReason);
+        mInputBar.setText(":");
         disconnect(& mInputBar, SIGNAL(returnPressed()), & mChangeUrlAction, SLOT(trigger()));
         connect(& mInputBar, SIGNAL(returnPressed()), this, SLOT(triggerVimParsing()));
-
 
         qDebug() << "Switch to command mode";
     }

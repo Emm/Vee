@@ -21,20 +21,26 @@ Vim::Mode Vim::mode() const {
 bool Vim::parse(const QString& command) {
     bool result;
     qDebug() << "Parsing " << command;
-    if (command.startsWith("open ") || command.startsWith("o ")) {
-        emit openCommand(command.section(' ', 1).trimmed());
-        result = true;
-    }
-    else if (command.startsWith("tab ") || command.startsWith("t ")) {
-        emit openInNewTabCommand(command.section(' ', 1).trimmed());
-        result = true;
-    }
-    else if (command == "quit" || command == "q") {
-        emit closeTabCommand();
-        result = true;
+    if (!command.startsWith(":")) {
+        result = false;
     }
     else {
-        result = false;
+        const QString & realCommand = QString(command).remove(0, 1).trimmed();
+        if (realCommand.startsWith("open ") || realCommand.startsWith("o ")) {
+            emit openCommand(realCommand.section(' ', 1).trimmed());
+            result = true;
+        }
+        else if (realCommand.startsWith("tab ") || realCommand.startsWith("t ")) {
+            emit openInNewTabCommand(realCommand.section(' ', 1).trimmed());
+            result = true;
+        }
+        else if (realCommand == "quit" || realCommand == "q") {
+            emit closeTabCommand();
+            result = true;
+        }
+        else {
+            result = false;
+        }
     }
     return result;
 }

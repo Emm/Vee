@@ -51,10 +51,10 @@ private slots:
     void testParseOpenCommand_data() {
         QTest::addColumn<QString>("command");
         QTest::addColumn<QString>("result");
-        QTest::newRow("long form") << "open about:blank" << "about:blank";
-        QTest::newRow("long form with spaces") << "open   about:blank   " << "about:blank";
-        QTest::newRow("short form") << "o about:blank" << "about:blank";
-        QTest::newRow("short form with spaces") << "o   about:blank  " << "about:blank";
+        QTest::newRow("long form") << ":open about:blank" << "about:blank";
+        QTest::newRow("long form with spaces") << ":  open   about:blank   " << "about:blank";
+        QTest::newRow("short form") << ":o about:blank" << "about:blank";
+        QTest::newRow("short form with spaces") << ":o   about:blank  " << "about:blank";
     }
 
     void testParseOpenCommand() {
@@ -69,10 +69,10 @@ private slots:
     void testParseOpenInNewTabCommand_data() {
         QTest::addColumn<QString>("command");
         QTest::addColumn<QString>("result");
-        QTest::newRow("long form") << "tab about:blank" << "about:blank";
-        QTest::newRow("long form with spaces") << "tab   about:blank   " << "about:blank";
-        QTest::newRow("short form") << "t about:blank" << "about:blank";
-        QTest::newRow("short form with spaces") << "t   about:blank  " << "about:blank";
+        QTest::newRow("long form") << ":tab about:blank" << "about:blank";
+        QTest::newRow("long form with spaces") << ":tab   about:blank   " << "about:blank";
+        QTest::newRow("short form") << ":t about:blank" << "about:blank";
+        QTest::newRow("short form with spaces") << ":t   about:blank  " << "about:blank";
     }
 
     void testParseOpenInNewTabCommand() {
@@ -93,8 +93,8 @@ private slots:
 
     void testParseCloseTabCommand_data() {
         QTest::addColumn<QString>("command");
-        QTest::newRow("long form") << "quit";
-        QTest::newRow("short form") << "q";
+        QTest::newRow("long form") << ":quit";
+        QTest::newRow("short form") << ":q";
     }
 
     void cleanup() {
