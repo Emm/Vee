@@ -12,26 +12,26 @@ WebViewProxy::WebViewProxy(ulong windowId, int scrollIncrement, QObject* parent)
     QObject(parent),
     mWebView(new QWebView()),
     mEmbedWidget(NULL),
-    mScrollDownAction(new QAction(mWebView)),
-    mScrollUpAction(new QAction(mWebView)),
-    mScrollLeftAction(new QAction(mWebView)),
-    mScrollRightAction(new QAction(mWebView)),
+    mScrollDownAction(mWebView),
+    mScrollUpAction(mWebView),
+    mScrollLeftAction(mWebView),
+    mScrollRightAction(mWebView),
     mWindowId(windowId),
     mScrollIncrement(scrollIncrement) {
-    mWebView->addAction(mScrollDownAction);
-    mWebView->addAction(mScrollUpAction);
-    mWebView->addAction(mScrollLeftAction);
-    mWebView->addAction(mScrollRightAction);
+    mWebView->addAction(& mScrollDownAction);
+    mWebView->addAction(& mScrollUpAction);
+    mWebView->addAction(& mScrollLeftAction);
+    mWebView->addAction(& mScrollRightAction);
 
-    mScrollDownAction->setShortcut(QKeySequence(Qt::Key_J));
-    mScrollUpAction->setShortcut(QKeySequence(Qt::Key_K));
-    mScrollLeftAction->setShortcut(QKeySequence(Qt::Key_L));
-    mScrollRightAction->setShortcut(QKeySequence(Qt::Key_H));
+    mScrollDownAction.setShortcut(QKeySequence(Qt::Key_J));
+    mScrollUpAction.setShortcut(QKeySequence(Qt::Key_K));
+    mScrollLeftAction.setShortcut(QKeySequence(Qt::Key_L));
+    mScrollRightAction.setShortcut(QKeySequence(Qt::Key_H));
 
-    connect(mScrollDownAction, SIGNAL(triggered()), this, SLOT(scrollDown()));
-    connect(mScrollUpAction, SIGNAL(triggered()), this, SLOT(scrollUp()));
-    connect(mScrollLeftAction, SIGNAL(triggered()), this, SLOT(scrollLeft()));
-    connect(mScrollRightAction, SIGNAL(triggered()), this, SLOT(scrollRight()));
+    connect(& mScrollDownAction, SIGNAL(triggered()), this, SLOT(scrollDown()));
+    connect(& mScrollUpAction, SIGNAL(triggered()), this, SLOT(scrollUp()));
+    connect(& mScrollLeftAction, SIGNAL(triggered()), this, SLOT(scrollLeft()));
+    connect(& mScrollRightAction, SIGNAL(triggered()), this, SLOT(scrollRight()));
 
     connect(mWebView, SIGNAL(loadFinished(bool)), this, SLOT(broadcastLoadFinished(bool)));
     connect(mWebView, SIGNAL(iconChanged()), this, SIGNAL(iconChanged()));

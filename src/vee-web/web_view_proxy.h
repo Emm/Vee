@@ -12,10 +12,10 @@ class WebViewProxy : public QObject {
 private:
     QWebView* mWebView;
     QX11EmbedWidget* mEmbedWidget;
-    QAction* mScrollDownAction;
-    QAction* mScrollUpAction;
-    QAction* mScrollLeftAction;
-    QAction* mScrollRightAction;
+    QAction mScrollDownAction;
+    QAction mScrollUpAction;
+    QAction mScrollLeftAction;
+    QAction mScrollRightAction;
     const ulong mWindowId;
     int mScrollIncrement;
 
