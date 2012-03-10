@@ -24,7 +24,6 @@ ViewTab::ViewTab(Vim* vim, ViewResolver* viewResolver, QWidget* parent):
     addAction(& mChangeUrlAction);
     mContainer.addAction(& mNewVimCommandAction);
 
-    mNewVimCommandAction.setCheckable(true);
     mNewVimCommandAction.setShortcut(QKeySequence(Qt::Key_Colon));
 
     mViewResolver->setParent(this);
@@ -32,7 +31,7 @@ ViewTab::ViewTab(Vim* vim, ViewResolver* viewResolver, QWidget* parent):
 
     connect(& mInputBar, SIGNAL(returnPressed()), this, SLOT(triggerVimParsing()));
     connect(& mChangeUrlAction, SIGNAL(triggered()), this, SLOT(resolveUrl()));
-    connect(& mNewVimCommandAction, SIGNAL(toggled(bool)), this, SLOT(newVimCommand()));
+    connect(& mNewVimCommandAction, SIGNAL(triggered()), this, SLOT(newVimCommand()));
     connect(mViewResolver, SIGNAL(urlResolved(View*)), this, SLOT(setView(View*)));
     connect(mViewResolver, SIGNAL(unresolvableUrl(QString)), this, SLOT(setFailView(QString)));
     connect(& mContainer, SIGNAL(clientIsEmbedded()), this, SLOT(focusContainer()));
@@ -59,10 +58,6 @@ void ViewTab::setIcon(QIcon icon) {
 }
 
 void ViewTab::setUrl(const QString & url) {
-    // Switch back to normal mode if we were in command mode
-    if (mNewVimCommandAction.isChecked()) {
-        mNewVimCommandAction.toggle();
-    }
     mInputBar.setText(url);
     mChangeUrlAction.trigger();
 }
@@ -182,8 +177,8 @@ void ViewTab::showEmbedError(QX11EmbedContainer::Error error) {
 }
 
 void ViewTab::resolveUrl() {
-    qDebug() << "resolveUrl";
     const QString & url = mInputBar.text();
+    qDebug() << "resolveUrl " << url;
     mViewResolver->resolve(url, mView);
 }
 
@@ -192,11 +187,9 @@ void ViewTab::newVimCommand() {
     mInputBar.setFocus(Qt::ShortcutFocusReason);
     mInputBar.setText(ViewTab::VIM_COMMAND_PREFIX);
     disconnect(& mInputBar, SIGNAL(returnPressed()), & mChangeUrlAction, SLOT(trigger()));
-    connect(& mInputBar, SIGNAL(returnPressed()), this, SLOT(triggerVimParsing()));
 }
 
 void ViewTab::blurInputBar() {
-    mNewVimCommandAction.setShortcut(Qt::Key_Colon);
     mInputBar.setText(mView->url());
     if (mWidget != NULL && mWidget->isVisible()) {
         mWidget->setFocus();
@@ -204,7 +197,6 @@ void ViewTab::blurInputBar() {
     else {
         mContainer.setFocus();
     }
-    connect(& mInputBar, SIGNAL(returnPressed()), this, SLOT(triggerVimParsing()));
 }
 
 void ViewTab::triggerVimParsing() {
