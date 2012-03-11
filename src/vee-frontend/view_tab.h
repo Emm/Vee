@@ -21,7 +21,6 @@ private:
     Vim* mVim;
     ViewResolver* mViewResolver;
     View* mView;
-    QString mOldLineEditValue;
     InputBar mInputBar;
     QX11EmbedContainer mContainer;
     QWidget* mWidget;

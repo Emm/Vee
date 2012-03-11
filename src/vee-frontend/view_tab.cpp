@@ -183,7 +183,6 @@ void ViewTab::resolveUrl() {
 }
 
 void ViewTab::newVimCommand() {
-    mOldLineEditValue = mInputBar.text();
     mInputBar.setFocus(Qt::ShortcutFocusReason);
     mInputBar.setText(ViewTab::VIM_COMMAND_PREFIX);
     disconnect(& mInputBar, SIGNAL(returnPressed()), & mChangeUrlAction, SLOT(trigger()));
