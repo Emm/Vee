@@ -16,22 +16,30 @@ WebViewProxy::WebViewProxy(ulong windowId, int scrollIncrement, QObject* parent)
     mScrollUpAction(mWebView),
     mScrollLeftAction(mWebView),
     mScrollRightAction(mWebView),
+    mScrollToTopAction(mWebView),
+    mScrollToBottomAction(mWebView),
     mWindowId(windowId),
     mScrollIncrement(scrollIncrement) {
     mWebView->addAction(& mScrollDownAction);
     mWebView->addAction(& mScrollUpAction);
     mWebView->addAction(& mScrollLeftAction);
     mWebView->addAction(& mScrollRightAction);
+    mWebView->addAction(& mScrollToTopAction);
+    mWebView->addAction(& mScrollToBottomAction);
 
     mScrollDownAction.setShortcut(QKeySequence(Qt::Key_J));
     mScrollUpAction.setShortcut(QKeySequence(Qt::Key_K));
     mScrollLeftAction.setShortcut(QKeySequence(Qt::Key_L));
     mScrollRightAction.setShortcut(QKeySequence(Qt::Key_H));
+    mScrollToTopAction.setShortcut(QKeySequence(Qt::Key_G, Qt::Key_G));
+    mScrollToBottomAction.setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_G));
 
     connect(& mScrollDownAction, SIGNAL(triggered()), this, SLOT(scrollDown()));
     connect(& mScrollUpAction, SIGNAL(triggered()), this, SLOT(scrollUp()));
     connect(& mScrollLeftAction, SIGNAL(triggered()), this, SLOT(scrollLeft()));
     connect(& mScrollRightAction, SIGNAL(triggered()), this, SLOT(scrollRight()));
+    connect(& mScrollToTopAction, SIGNAL(triggered()), this, SLOT(scrollToTop()));
+    connect(& mScrollToBottomAction, SIGNAL(triggered()), this, SLOT(scrollToBottom()));
 
     connect(mWebView, SIGNAL(loadFinished(bool)), this, SLOT(broadcastLoadFinished(bool)));
     connect(mWebView, SIGNAL(iconChanged()), this, SIGNAL(iconChanged()));
@@ -67,12 +75,36 @@ void WebViewProxy::scrollRight() {
     scroll(-1 * mScrollIncrement, 0);
 }
 
+void WebViewProxy::scrollToTop() {
+    QWebFrame* frame = getWebFrame();
+    if (frame == NULL) return;
+    frame->setScrollPosition(QPoint(0, 0));
+}
+
+void WebViewProxy::scrollToBottom() {
+    QWebFrame* frame = getWebFrame();
+    if (frame == NULL) return;
+    QSize contentsSize = frame->contentsSize();
+    int height = contentsSize.rheight();
+    frame->setScrollPosition(QPoint(0, height));
+}
+
 void WebViewProxy::scroll(int dx, int dy) {
-    QWebPage* webPage = mWebView->page();
-    if (webPage == NULL) return;
-    QWebFrame* frame = webPage->currentFrame();
+    QWebFrame* frame = getWebFrame();
     if (frame == NULL) return;
     frame->scroll(dx, dy);
+}
+
+QWebFrame* WebViewProxy::getWebFrame() {
+    QWebPage* webPage = mWebView->page();
+    QWebFrame* frame;
+    if (webPage != NULL) {
+        frame = webPage->currentFrame();
+    }
+    else {
+        frame = NULL;
+    }
+    return frame;
 }
 
 void WebViewProxy::embed() {

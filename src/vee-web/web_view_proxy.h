@@ -16,12 +16,14 @@ private:
     QAction mScrollUpAction;
     QAction mScrollLeftAction;
     QAction mScrollRightAction;
+    QAction mScrollToTopAction;
+    QAction mScrollToBottomAction;
     const ulong mWindowId;
     int mScrollIncrement;
 
     bool shouldEmbed();
     void scroll(int dx, int dy);
-
+    QWebFrame* getWebFrame();
 
 public:
     explicit WebViewProxy(ulong windowId = 0, int scrollIncrement = 10, QObject* parent=0);
@@ -43,6 +45,8 @@ private slots:
     void scrollUp();
     void scrollLeft();
     void scrollRight();
+    void scrollToTop();
+    void scrollToBottom();
 
 public slots:
     void resolve(const QString & value);
