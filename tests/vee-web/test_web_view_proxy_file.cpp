@@ -56,7 +56,6 @@ private slots:
 
     void testRelativePath() {
         QFileInfo fileInfo(*mHtmlFile);
-        QVERIFY(fileInfo.isRelative() == true);
         QString relPath = fileInfo.filePath();
         mSuccess = false;
         mProxy->resolve(relPath);
