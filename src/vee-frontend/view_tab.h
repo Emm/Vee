@@ -13,6 +13,7 @@
 #include "view_resolver.h"
 #include "remote_view.h"
 #include "local_view.h"
+#include "tab_history.h"
 
 class ViewTab: public QWidget {
     Q_OBJECT
@@ -21,18 +22,27 @@ private:
     Vim* mVim;
     ViewResolver* mViewResolver;
     View* mView;
+    TabHistory mHistory;
     InputBar mInputBar;
     QX11EmbedContainer mContainer;
     QWidget* mWidget;
     QAction mChangeUrlAction;
     QAction mNewVimCommandAction;
+    QAction mBackwardAction;
+    QAction mForwardAction;
     QIcon mIcon;
+    QString mUrl;
+    QString mTitle;
 
     void discardOldView();
     void updateDisplay(RemoteView* view);
     void updateDisplay(LocalView* view);
     bool dispatchUpdateDisplay(View* view);
     void updateInputBar();
+    void addSkeletonEntryToHistory(const QString & url);
+    void completeHistoryEntry();
+    void addActions(QWidget & widget);
+    void toggleBackwardAndForwardActionsIfNeeded();
 
     const static QString VIM_COMMAND_PREFIX;
 public:
@@ -46,6 +56,7 @@ public:
     Q_PROPERTY(QIcon icon READ icon WRITE setIcon NOTIFY iconChanged)
     QIcon icon() const;
     void setIcon(QIcon icon);
+    void setTitle(const QString & title);
 
     View* view() const;
 
@@ -62,6 +73,7 @@ private slots:
 
 public slots:
     void setUrl(const QString & url);
+    void newUrl(const QString & url);
     void setFailView(QString url);
     void setView(View* view);
     void focusContainer();
@@ -69,6 +81,8 @@ public slots:
     void resolveUrl();
     void viewIconWasChanged();
     void viewGotAnError(View::ErrorType errorType, int errorCode);
+    void backward();
+    void forward();
 
 signals:
     void urlChanged(const QString & title);

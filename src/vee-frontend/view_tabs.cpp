@@ -9,7 +9,7 @@ void ViewTabs::showUrlInActiveTab(const QString & url) {
     if (count() >0) {
         ViewTab * container = qobject_cast<ViewTab *>(currentWidget());
         if (container != NULL) {
-            container->setUrl(url);
+            container->newUrl(url);
         }
     }
     else {
@@ -30,7 +30,7 @@ void ViewTabs::showUrlInNewTab(const QString & url) {
     connect(container, SIGNAL(closeTab()), this, SLOT(closeTab()));
     connect(this, SIGNAL(tabCloseRequested(int)), this, SLOT(destroyTab(int)));
     setCurrentIndex(newTabPosition);
-    container->setUrl(url);
+    container->newUrl(url);
 }
 
 int ViewTabs::getTabPosition() {

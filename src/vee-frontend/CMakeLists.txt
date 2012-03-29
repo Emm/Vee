@@ -38,6 +38,8 @@ set(vee-frontend_SRCS
     error_view.cpp
     vim.cpp
     input_bar.cpp
+    history_entry.cpp
+    tab_history.cpp
     main.cpp
 )
 
