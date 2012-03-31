@@ -81,6 +81,7 @@ public slots:
     void resolveUrl();
     void viewIconWasChanged();
     void viewGotAnError(View::ErrorType errorType, int errorCode);
+    void focusView();
     void backward();
     void forward();
 

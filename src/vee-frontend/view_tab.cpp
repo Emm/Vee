@@ -121,10 +121,11 @@ void ViewTab::setView(View* view) {
     toggleBackwardAndForwardActionsIfNeeded();
 
     if (sameAsOldView) {
+        focusView();
         return;
     }
-
     bool wasDisplayUpdated = dispatchUpdateDisplay(view);
+
     if (wasDisplayUpdated) {
         mView->setParent(this);
         updateInputBar();
@@ -195,6 +196,15 @@ bool ViewTab::dispatchUpdateDisplay(View* view) {
         }
     }
     return viewTypeFound;
+}
+
+void ViewTab::focusView() {
+    if (mWidget != NULL) {
+        mWidget->setFocus(Qt::OtherFocusReason);
+    }
+    else {
+        mContainer.setFocus(Qt::OtherFocusReason);
+    }
 }
 
 void ViewTab::backward() {
