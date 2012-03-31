@@ -15,6 +15,10 @@ public:
 
     virtual ~InputBar();
 
+signals:
+
+    void escapePressed();
+
 protected:
 
     virtual void keyPressEvent(QKeyEvent* event);

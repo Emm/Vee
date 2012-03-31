@@ -10,8 +10,10 @@ InputBar::~InputBar() {
 }
 
 void InputBar::keyPressEvent(QKeyEvent* event) {
-    if (event->key() == Qt::Key_Escape)
+    if (event->key() == Qt::Key_Escape) {
         clearFocus();
+        emit escapePressed();
+    }
     else
         QLineEdit::keyPressEvent(event);
 }

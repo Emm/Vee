@@ -37,6 +37,7 @@ ViewTab::ViewTab(Vim* vim, ViewResolver* viewResolver, QWidget* parent):
     mViewResolver->setIdentifier(mContainer.winId());
 
     connect(& mInputBar, SIGNAL(returnPressed()), this, SLOT(triggerVimParsing()));
+    connect(& mInputBar, SIGNAL(escapePressed()), this, SLOT(focusView()));
 
     connect(& mChangeUrlAction, SIGNAL(triggered()), this, SLOT(resolveUrl()));
     connect(& mNewVimCommandAction, SIGNAL(triggered()), this, SLOT(newVimCommand()));
